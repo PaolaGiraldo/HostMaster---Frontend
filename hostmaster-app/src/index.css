@@ -1,0 +1,221 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.background {
+  background: linear-gradient(to bottom, #1a2a6c, #60c4ab);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+h2
+{color: white;}
+
+h4{
+  color: white;
+}
+
+.container {
+  flex: 1;
+  padding-bottom: 20px; /* Espacio antes del footer */
+}
+
+.navbar-custom {
+  background-color: rgba(26, 42, 108, 0.1);
+
+}
+
+.navbar-custom .nav-link {
+  color: #ffffff !important;
+}
+
+.navbar-custom .navbar-brand {
+  font-weight: bold;
+}
+
+.footer {  
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(96, 196, 171, 0.1);
+  color: white;
+  text-align: left;
+  padding: 15px 0;
+  backdrop-filter: blur(5px); /* Efecto de desenfoque */
+  margin-top: 30px; 
+}
+
+.footer .social-icons {
+  display: flex;
+  gap: 15px; /* Espacio entre iconos */
+}
+
+.social-icons a {
+  display: flex;
+  align-items: left;
+  color: white;
+  transition: color 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+  color: #1a2a6c; /* Azul oscuro */
+}
+
+.home-container {
+  text-align: center;
+  color: white;
+}
+
+.home-carousel img {
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.service-card {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-align: center;
+  border: none;
+  padding: 20px;
+}
+
+.contact-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.service-card {
+  height: 150px; /* Set a fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Adjust content */
+}
+
+.accommodations-container {
+  padding: 20px;
+}
+
+.accommodation-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.accommodation-card:hover {
+  transform: scale(1.05);
+}
+
+.accommodation-card {
+  background-color: #d9d9d9; /* Usa un gris claro */
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.accommodation-card:hover {
+  transform: scale(1.02); /* Efecto ligero al pasar el mouse */
+}
+
+.rooms-container {
+  margin-top: 20px;
+}
+
+table th, table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+form label {
+  font-weight: bold;
+}
+
+
+/* RoomStyles.css */
+.room-list-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.room-table {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.room-table th {
+  background-color: #60c4ab;
+  color: white;
+  text-align: center;
+}
+
+.room-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.filter-section {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section label {
+  font-weight: bold;
+}
+
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.room-type-table {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.room-type-table th {
+  background-color: #60c4ab;
+  opacity: 60%;
+  color: #3a3a3a;
+  text-align: center;
+}
+
+.room-type-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.unavailable-room {
+  color: red;
+  font-weight: bold;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal-image:hover {
+  transform: scale(1.1);
+}

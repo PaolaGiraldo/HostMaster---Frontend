@@ -1,5 +1,7 @@
+import ReservationCalendarList from "../components/ReservationCalendar/ReservationCalendarList";
+
 const Calendar: React.FC = () => {
-  return <h1>Bienvenido al Panel de calendario</h1>;
+  return <ReservationCalendarList />;
 };
 
 export default Calendar;

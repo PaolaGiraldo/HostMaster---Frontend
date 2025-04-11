@@ -219,3 +219,55 @@ button:hover {
 .modal-image:hover {
   transform: scale(1.1);
 }
+
+/*Calendar Styles*/
+
+.calendar-wrapper {
+  background-color: #ffffff; /* Azul oscuro */
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+
+/* Encabezado del calendario */
+
+.fc-button {
+  color: #ffffff !important;
+}
+
+.fc-toolbar-title,
+.fc .fc-daygrid-day-number
+{
+  color: #3a3a3a !important;
+}
+
+.fc-col-header-cell{
+  background-color: #60c4ab; 
+  color: #1a2a6c;
+  
+}
+.fc a{
+  color: #1a2a6c;
+}
+
+.fc .fc-event-title {
+  color: #ffffff !important;
+}
+
+.fc-event {
+  /* background-color: #1a2a6c !important; /* Verde menta */
+  border: none !important;
+  font-size: 0.9rem;
+}
+
+.fc-day-today {
+  background-color: rgba(96, 196, 171, 0.3) !important; /* Verde menta con opacidad */
+}
+
+/* Día actual – número visible y nítido */
+.fc-day-today .fc-daygrid-day-number {
+  color: #1a2a6c !important; /* Azul oscuro o blanco, según contraste */
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}

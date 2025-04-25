@@ -132,6 +132,7 @@
       "addProduct":"Add product to inventory",
       "quantity":"Quantity",
       "minQuantity":"Minimum Quantity",
-      "selectProduct":"Select a Product"
+      "selectProduct":"Select a Product",
+      "confirmDelete": "Are you sure you want to delete this product from inventory?"
     }
 }

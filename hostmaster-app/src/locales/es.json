@@ -132,6 +132,7 @@
       "addProduct":"Agregar producto al inventario",
       "quantity":"Cantidad",
       "minQuantity":"Cantidad mínima",
-      "selectProduct":"Seleccione un producto"
+      "selectProduct":"Seleccione un producto",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este producto del inventario?"
     }
 }

@@ -83,44 +83,48 @@ const RoomProductTable: React.FC<RoomProductProps> = ({
       >
         {t("roomProducts.addNew")}
       </Button>
-      <Table striped bordered hover className="room-type-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>{t("roomProducts.product")}</th>
-            <th>{t("description")}</th>
-            <th>{t("price")}</th>
-            <th>{t("actions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {roomProducts.map((product, index) => (
-            <tr key={product.id}>
-              <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td>{product.price}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleShowModal(product)}
-                >
-                  <FaEdit />
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDeleteClick(product.id)}
-                >
-                  <FaTrash />
-                </Button>
-              </td>
+      <div className="table-responsive">
+        <Table striped bordered hover className="room-type-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{t("roomProducts.product")}</th>
+              <th>{t("description")}</th>
+              <th>{t("price")}</th>
+              <th>{t("actions")}</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {roomProducts.map((product, index) => (
+              <tr key={product.id}>
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>{product.description}</td>
+                <td>{product.price}</td>
+                <td>
+                  <div className="d-flex flex-column flex-md-row gap-2">
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleShowModal(product)}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeleteClick(product.id)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       {/* Modal para crear/editar productos de habitación */}
       <Modal show={showModal} onHide={handleCloseModal}>

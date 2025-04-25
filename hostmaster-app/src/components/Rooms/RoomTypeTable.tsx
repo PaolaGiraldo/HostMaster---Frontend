@@ -81,46 +81,48 @@ const RoomTypeTable: React.FC<RoomTypeTableProps> = ({
       >
         {t("roomTypes.addNew")}
       </Button>
-
-      <Table striped bordered hover className="room-type-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>{t("roomTypes.type")}</th>
-            <th>{t("roomTypes.description")}</th>
-            <th>{t("roomTypes.maxCapacity")}</th>
-            <th>{t("roomTypes.actions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {roomTypes.map((roomType, index) => (
-            <tr key={roomType.id}>
-              <td>{index + 1}</td>
-              <td>{roomType.name}</td>
-              <td>{roomType.description}</td>
-              <td>{roomType.max_guests}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleShowModal(roomType)}
-                >
-                  <FaEdit />
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDeleteClick(roomType.id)}
-                >
-                  <FaTrash />
-                </Button>
-              </td>
+      <div className="table-responsive">
+        <Table striped bordered hover className="room-type-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{t("roomTypes.type")}</th>
+              <th>{t("roomTypes.description")}</th>
+              <th>{t("roomTypes.maxCapacity")}</th>
+              <th>{t("roomTypes.actions")}</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-
+          </thead>
+          <tbody>
+            {roomTypes.map((roomType, index) => (
+              <tr key={roomType.id}>
+                <td>{index + 1}</td>
+                <td>{roomType.name}</td>
+                <td>{roomType.description}</td>
+                <td>{roomType.max_guests}</td>
+                <td>
+                  <div className="d-flex flex-column flex-md-row gap-2">
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleShowModal(roomType)}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeleteClick(roomType.id)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
       {/* Modal para crear/editar tipos de habitación */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

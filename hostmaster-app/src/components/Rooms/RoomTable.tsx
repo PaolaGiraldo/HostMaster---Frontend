@@ -96,81 +96,86 @@ const RoomTable: React.FC<RoomTableProps> = ({
       </Row>
 
       {/* Tabla de habitaciones */}
-      <Table striped bordered hover className="room-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>{t("accommodation")}</th>
-            <th>{t("number")}</th>
-            <th>{t("type")}</th>
-            <th>{t("image")}</th>
-            <th>{t("price")}</th>
-            <th>{t("availability")}</th>
-            <th>{t("inventory.title")}</th>
-            <th>{t("actions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRooms.map((room) => (
-            <tr key={room.id}>
-              <td>{room.id}</td>
-              <td>
-                {accommodations.find((a) => a.id === room.accommodation_id)
-                  ?.name || "N/A"}
-              </td>
-
-              <td>{room.number}</td>
-              <td>
-                {roomTypes.find((rt) => rt.id === room.type_id)?.name || "N/A"}
-              </td>
-              <td>
-                {room.images.length > 0 ? (
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => openImageModal(room.images)}
-                  >
-                    {t("showImages")}
-                  </Button>
-                ) : (
-                  <span>{t("noImages")}</span>
-                )}
-              </td>
-              <td>{room.price.toFixed()}</td>
-              <td>
-                {room.isAvailable ? (
-                  <FaCheck color="green" />
-                ) : (
-                  <FaTimes color="red" />
-                )}
-              </td>
-              <td>
-                <InventoryButton
-                  roomId={room.id!}
-                  onOpen={handleOpenInventory}
-                />
-              </td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => onEdit(room)}
-                >
-                  <FaEdit />
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDeleteClick(room.id)}
-                >
-                  <FaTrash />
-                </Button>
-              </td>
+      <div className="table-responsive">
+        <Table striped bordered hover className="room-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{t("accommodation")}</th>
+              <th>{t("number")}</th>
+              <th>{t("type")}</th>
+              <th>{t("image")}</th>
+              <th>{t("price")}</th>
+              <th>{t("availability")}</th>
+              <th>{t("inventory.title")}</th>
+              <th>{t("actions")}</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredRooms.map((room) => (
+              <tr key={room.id}>
+                <td>{room.id}</td>
+                <td>
+                  {accommodations.find((a) => a.id === room.accommodation_id)
+                    ?.name || "N/A"}
+                </td>
+
+                <td>{room.number}</td>
+                <td>
+                  {roomTypes.find((rt) => rt.id === room.type_id)?.name ||
+                    "N/A"}
+                </td>
+                <td>
+                  {room.images.length > 0 ? (
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => openImageModal(room.images)}
+                    >
+                      {t("showImages")}
+                    </Button>
+                  ) : (
+                    <span>{t("noImages")}</span>
+                  )}
+                </td>
+                <td>{room.price.toFixed()}</td>
+                <td>
+                  {room.isAvailable ? (
+                    <FaCheck color="green" />
+                  ) : (
+                    <FaTimes color="red" />
+                  )}
+                </td>
+                <td>
+                  <InventoryButton
+                    roomId={room.id!}
+                    onOpen={handleOpenInventory}
+                  />
+                </td>
+                <td>
+                  <div className="d-flex flex-column flex-md-row gap-2">
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => onEdit(room)}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeleteClick(room.id)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       {/* Modal de confirmación de eliminación */}
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)}>

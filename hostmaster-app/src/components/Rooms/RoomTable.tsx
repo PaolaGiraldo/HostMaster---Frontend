@@ -7,6 +7,8 @@ import "../../index.css";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { Room } from "../../interfaces/roomInterface";
 import { Image } from "../../interfaces/imageInterface";
+import RoomInventoryModal from "../Inventory/RoomInventoryModal";
+import { useRoomInventory } from "../../hooks/useRoomIneventory";
 
 interface RoomTableProps {
   rooms: Room[];
@@ -30,6 +32,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
   const [searchRoomNumber, setSearchRoomNumber] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [showInventoryModal, setShowInventoryModal] = useState(false);
 
   const handleDeleteClick = (roomId?: number) => {
     setSelectedRoomId(roomId ?? null);
@@ -61,9 +64,20 @@ const RoomTable: React.FC<RoomTableProps> = ({
     setShowModal(true);
   };
 
+  const handleOpenInventory = (roomId: number) => {
+    setSelectedRoomId(roomId);
+    setShowInventoryModal(true);
+  };
+
+  const handleCloseInventory = () => {
+    setShowInventoryModal(false);
+    setSelectedRoomId(null);
+  };
+
   const closeImageModal = () => {
     setShowModal(false);
   };
+
   return (
     <>
       {/* Filtros */}
@@ -85,18 +99,21 @@ const RoomTable: React.FC<RoomTableProps> = ({
       <Table striped bordered hover className="room-table">
         <thead>
           <tr>
+            <th>#</th>
             <th>{t("accommodation")}</th>
             <th>{t("number")}</th>
             <th>{t("type")}</th>
             <th>{t("image")}</th>
             <th>{t("price")}</th>
             <th>{t("availability")}</th>
+            <th>{t("inventory.title")}</th>
             <th>{t("actions")}</th>
           </tr>
         </thead>
         <tbody>
           {filteredRooms.map((room) => (
             <tr key={room.id}>
+              <td>{room.id}</td>
               <td>
                 {accommodations.find((a) => a.id === room.accommodation_id)
                   ?.name || "N/A"}
@@ -126,6 +143,12 @@ const RoomTable: React.FC<RoomTableProps> = ({
                 ) : (
                   <FaTimes color="red" />
                 )}
+              </td>
+              <td>
+                <InventoryButton
+                  roomId={room.id!}
+                  onOpen={handleOpenInventory}
+                />
               </td>
               <td>
                 <Button
@@ -191,8 +214,36 @@ const RoomTable: React.FC<RoomTableProps> = ({
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <RoomInventoryModal
+        show={showInventoryModal}
+        onClose={handleCloseInventory}
+        roomId={selectedRoomId!}
+      />
     </>
   );
 };
 
 export default RoomTable;
+
+type InventoryButtonProps = {
+  roomId: number;
+  onOpen: (roomId: number) => void;
+};
+
+const InventoryButton = ({ roomId, onOpen }: InventoryButtonProps) => {
+  const { inventory } = useRoomInventory(roomId);
+
+  const needsRestock = inventory?.some((item) => item.needs_restock);
+
+  return (
+    <Button
+      variant={needsRestock ? "outline-warning" : "outline-success"}
+      size="sm"
+      onClick={() => onOpen(roomId)}
+    >
+      <i className="bi bi-box-seam"></i>
+      <span className="d-none d-md-inline"> Inventario</span>
+    </Button>
+  );
+};

@@ -26,6 +26,8 @@
   "description":"Descripción",
   "price":"Precio",
   "close":"Cerrar",
+  "reservation":"Reserva",
+  "missingField":"Este campo es obligatorio",
 
     "navbar": {
       "home": "Inicio",
@@ -40,7 +42,6 @@
       "login": "Iniciar sesión",      
       "logout": "Cerrar Sesión",
       "users": "Usuarios"
-      
     },
     "footer": {
       "about": "Sobre nosotros",
@@ -79,7 +80,6 @@
     "selectCountry":"Seleccionar país",
     "selectCity":"Seleccionar ciudad",
     "selectState":"Seleccionar departamento"
-
   },
   "rooms": {
   "title": "Gestión de Habitaciones",
@@ -95,6 +95,7 @@
   "editRoom":"Editar Habitación",
   "newRoom":"Nueva Habitación",
   "types":"Tipos de Habitación",
+  "products":"Productos de Habitación",
   "roomImages":"Imágenes de la habitación"
   },
   "roomTypes": {
@@ -115,5 +116,22 @@
     "editService":"Editar Servicio",
     "service":"Servicio",
     "validationError": "Verifica los valores ingresados"
+    },
+    "roomProducts": {
+      "addNew": "Agregar nuevo producto de habitación",
+      "edit": "Editar producto de habitación",
+      "product": "Producto",
+      "description": "Descripción",
+      "price": "Precio",
+      "actions": "Acciones",
+      "save": "Guardar",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este producto de habitación?"
+    },
+    "inventory":{
+      "title":"Inventario",
+      "addProduct":"Agregar producto al inventario",
+      "quantity":"Cantidad",
+      "minQuantity":"Cantidad mínima",
+      "selectProduct":"Seleccione un producto"
     }
 }

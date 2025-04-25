@@ -43,7 +43,8 @@ const RoomForm: React.FC<RoomFormProps> = ({
       setRoomNumber("");
       setAccommodationId(0);
       setType(0);
-      setIsAvailable(true);
+      setPrice(0);
+      //setIsAvailable(true);
       setImages(null);
     }
   }, [editingRoom]);
@@ -59,7 +60,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
     }
   };
 
-  const ñ- = () => {
+  const handleSubmit = () => {
     onSave({
       id: editingRoom?.id,
       number,
@@ -69,6 +70,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
       info,
       isAvailable,
       images: [],
+      inventory_items: [],
     });
     onHide();
   };
@@ -90,6 +92,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
               type="text"
               value={number}
               onChange={(e) => setRoomNumber(e.target.value)}
+              required
             />
           </Form.Group>
           <Form.Group>
@@ -97,6 +100,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
             <Form.Select
               value={accommodation_id}
               onChange={(e) => setAccommodationId(Number(e.target.value))}
+              required
             >
               <option value="">{t("select")}</option>
               {accommodations.map((a) => (
@@ -111,6 +115,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
             <Form.Select
               value={type_id}
               onChange={(e) => setType(Number(e.target.value))}
+              required
             >
               <option value="">{t("select")}</option>
               {roomTypes.map((rt) => (

@@ -6,7 +6,7 @@ import { Reservation
 
  export const getReservations = async (): Promise<Reservation[]> => {
     try {
-      const response = await apiService.get("/resevations");
+      const response = await apiService.get("/reservations");
       return response.data;
     } catch (error) {
       throw error;

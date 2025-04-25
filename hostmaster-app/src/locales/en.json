@@ -25,9 +25,11 @@
   "viewImages":"View images",
   "description":"Description",
   "price":"Price",
-  "close":"Close",
-  
-    "navbar": {
+  "close":"Close",  
+  "reservation": "Booking",
+  "missingField":"This field is required",
+
+  "navbar": {
       "home": "Home",
       "accommodations": "Accommodations",
       "rooms": "Rooms",
@@ -78,7 +80,6 @@
       "selectCountry":"Select country",
       "selectCity":"Select city",
       "selectState":"Select State"
-
     },
     "rooms": {
     "title": "Rooms management",
@@ -93,7 +94,8 @@
     "InsertNumber":"Insert number",
     "editRoom":"Edit Room",
     "newRoom":"New Room",
-    "types":"Room Types",
+    "types":"Room Types",    
+    "products":"Room Products",
     "roomImages":"Room Images"
     },
     "roomTypes": {
@@ -114,5 +116,22 @@
       "editService":"Editar Habitación",
       "service":"Service",
       "validationError": "Verify the entered values"
-      }
+      },
+    "roomProducts": {
+      "addNew": "Add new Room Product",
+      "edit": "Edit Room Product",
+      "product": "Product",
+      "description": "Description",
+      "price": "Price",
+      "actions": "ActionsS",
+      "save": "Save",
+      "confirmDelete": "Are you sure you want to delete this room product?"
+    },
+    "inventory":{
+      "title":"Inventory",
+      "addProduct":"Add product to inventory",
+      "quantity":"Quantity",
+      "minQuantity":"Minimum Quantity",
+      "selectProduct":"Select a Product"
+    }
 }

@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { Room } from "../../interfaces/roomInterface";
 import {
+  createAccommodation,
   deleteAccommodation,
   getAccommodations,
   updateAccommodation,
 } from "../../Services/accommodationService";
-import { createAccommodation } from "../../Services/accommodationService";
 import { getRoomsByAccommodation } from "../../Services/roomService";
 import { getRoomTypeById } from "../../Services/roomTypeService";
 import { useLocation } from "../../context/LocationContext";

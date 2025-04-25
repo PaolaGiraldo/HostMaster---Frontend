@@ -1,4 +1,6 @@
 import { Image } from "./imageInterface";
+import { RoomInventory } from "./roomInventorynterface";
+
 export interface Room {
     id?: number;
     accommodation_id: number;
@@ -7,5 +9,6 @@ export interface Room {
     price: number;
     info: string;
     images: Image[];
-    isAvailable: boolean
+    isAvailable: boolean;
+    inventory_items: RoomInventory[];
   }

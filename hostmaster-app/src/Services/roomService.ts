@@ -25,9 +25,9 @@ export const getRooms = async (): Promise<Room[]> => {
 
 
 // Crear un nuevo alojamiento
-export const createRoom = async (accommodation: Room): Promise<Room> => {
+export const createRoom = async (room: Room): Promise<Room> => {
     try {
-      const response = await apiService.post("/rooms", accommodation);
+      const response = await apiService.post("/rooms", room);
       return response.data;
     } catch (error) {
       throw error;
@@ -45,7 +45,7 @@ export const createRoom = async (accommodation: Room): Promise<Room> => {
   };
   
 // Eliminar un alojamiento
-export const deleteService = async (id: number): Promise<void> => {
+export const deleteRoom = async (id: number): Promise<void> => {
     try {
       await apiService.delete(`/rooms/${id}`);
     } catch (error) {

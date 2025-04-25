@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,6 +8,7 @@ import { Reservation } from "../../interfaces/reservationInterface"; // Ajusta t
 import { Room } from "../../interfaces/roomInterface";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useTranslation } from "react-i18next";
+import { FaHotel } from "react-icons/fa";
 
 interface ReservationCalendarProps {
   reservations: Reservation[];
@@ -25,6 +27,9 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
     number | null
   >(null);
 
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
+
   accommodations?.forEach((acc) => {
     if (acc.id !== undefined) {
       accommodationColors[acc.id] = generateColorFromId(acc.id);
@@ -34,18 +39,23 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
   // Convertimos las reservas al formato que FullCalendar espera
   const events = reservations.map((res) => {
     const room = rooms.find((r) => r.id === res.room_id);
-    const accommodationId = room?.accommodation_id;
+    const accommodation = accommodations?.find(
+      (a) => a.id === res.accommodation_id
+    );
 
     return {
       id: String(res.id),
-      title: `Reserva - Habitación ${room?.number ?? "?"}`,
+      title: `${t("reservation")} - ${t("room")} ${room?.number ?? "?"}`,
       start: res.start_date,
       end: res.end_date,
-      backgroundColor: generateColorFromId(accommodationId ?? 0), // Color dinámico
+      backgroundColor: generateColorFromId(accommodation?.id ?? 0), // Color dinámico
       textColor: "#fff",
       borderColor: "transparent",
       extendedProps: {
         roomNumber: room?.number,
+        accommodationName: accommodation?.name,
+        guest_name: res.user_username,
+        notes: res.observations,
         ...res,
       },
     };
@@ -82,32 +92,68 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
               `,
             };
           }}
+          eventClick={(info) => {
+            setSelectedEvent(info.event.extendedProps);
+            setShowModal(true);
+          }}
         />
         <div className="mb-3"></div>
         <div className="mb-3 d-flex flex-wrap gap-3 align-items-center">
-          <strong>🗂️ {t("accommodations.legend")}:</strong>
           {accommodations?.map((acc) => (
-            <div
+            <button
               key={acc.id}
-              className="d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleSelect(acc.id ?? 0)} // Para filtrar (opcional)
+              onClick={() => handleSelect(acc.id ?? 0)}
+              className={`btn btn-sm d-flex align-items-center gap-2 ${
+                selectedAccommodationId === acc.id
+                  ? "btn-primary"
+                  : "btn-outline-primary"
+              }`}
+              style={{
+                borderRadius: "20px",
+                opacity:
+                  selectedAccommodationId && selectedAccommodationId !== acc.id
+                    ? 0.6
+                    : 1,
+              }}
             >
-              <span
-                style={{
-                  backgroundColor: accommodationColors[acc.id ?? 0],
-                  width: "16px",
-                  height: "16px",
-                  display: "inline-block",
-                  borderRadius: "3px",
-                  marginRight: "8px",
-                }}
-              />
-              <span>{acc.name}</span>
-            </div>
+              <FaHotel color={accommodationColors[acc.id ?? 0] || "#1a2a6c"} />
+              {acc.name}
+            </button>
           ))}
         </div>
       </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Detalles de la reserva</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedEvent && (
+            <>
+              <p>
+                <strong>{t("accommodation")} :</strong>{" "}
+                {selectedEvent.accommodationName}
+              </p>
+              <p>
+                <strong>{t("room")}:</strong> {selectedEvent.roomNumber}
+              </p>
+              <p>
+                <strong>{t("customer")}:</strong> {selectedEvent.guest_name}
+              </p>
+              <p>
+                <strong>{t("starDate")}:</strong> {selectedEvent.start_date}
+              </p>
+              <p>
+                <strong>{t("endDate")}:</strong> {selectedEvent.end_date}
+              </p>
+              <p>
+                <strong>{t("observations")} :</strong>{" "}
+                {selectedEvent.notes || "Sin notas"}
+              </p>
+            </>
+          )}
+        </Modal.Body>
+      </Modal>
     </>
   );
 

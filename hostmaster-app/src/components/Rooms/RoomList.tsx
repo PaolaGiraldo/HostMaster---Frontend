@@ -5,18 +5,34 @@ import RoomTable from "./RoomTable";
 import RoomForm from "./RoomForm";
 import RoomTypeTable from "./RoomTypeTable";
 import { getAccommodations } from "../../Services/accommodationService";
-import { getRooms, updateRoom, createRoom } from "../../Services/roomService";
-import { getRoomTypes } from "../../Services/roomTypeService";
-import { createRoomType } from "../../Services/roomTypeService";
-import { updateRoomType } from "../../Services/roomTypeService";
-import { deleteRoomType } from "../../Services/roomTypeService";
+import {
+  getRooms,
+  updateRoom,
+  createRoom,
+  deleteRoom,
+} from "../../Services/roomService";
+import {
+  getRoomTypes,
+  createRoomType,
+  updateRoomType,
+  deleteRoomType,
+} from "../../Services/roomTypeService";
 import { RoomType } from "../../interfaces/roomTypeInterface";
 import { Room } from "../../interfaces/roomInterface";
+import { Product } from "../../interfaces/roomProductInterface";
+import RoomProductTable from "./RoomProductTable";
+import {
+  getProducts,
+  createRoomProduct,
+  updateRoomProduct,
+  deleteRoomProduct,
+} from "../../Services/productsService";
 
 const RoomList: React.FC = () => {
   const [rooms, setRooms] = useState<any[]>([]);
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
+  const [roomProducts, setRoomProducts] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingRoom, setEditingRoom] = useState<any | null>(null);
   const [filterAccommodation, setFilterAccommodation] = useState("");
@@ -27,6 +43,7 @@ const RoomList: React.FC = () => {
     fetchRooms();
     fetchAccommodations();
     fetchRoomTypes();
+    fetchProducts();
   }, []);
 
   const { t } = useTranslation();
@@ -47,7 +64,11 @@ const RoomList: React.FC = () => {
     setRoomTypes(response);
   };
 
-  //TODO
+  const fetchProducts = async () => {
+    const response = await getProducts();
+    setRoomProducts(response);
+  };
+
   const handleSaveRoom = async (room: Room) => {
     try {
       if (room.id) {
@@ -85,8 +106,17 @@ const RoomList: React.FC = () => {
     );
   });
 
-  const handleDelete = (roomId: number) => {
-    setRooms(rooms.filter((room) => room.id !== roomId));
+  const handleDelete = async (roomId: number) => {
+    try {
+      if (roomId === undefined) {
+        console.error("Error: El ID de Room es undefined.");
+        return;
+      }
+      await deleteRoom(roomId); // Llamado al backend
+      setRooms(rooms.filter((rt) => rt.id !== roomId));
+    } catch (error) {
+      console.error("Error deleting room", error);
+    }
   };
 
   const handleAddRoomType = async (newRoomType: RoomType) => {
@@ -125,6 +155,45 @@ const RoomList: React.FC = () => {
       setRoomTypes(roomTypes.filter((rt) => rt.id !== id));
     } catch (error) {
       console.error("Error deleting room type", error);
+    }
+  };
+
+  const handleAddRoomProduct = async (newRoomProduct: Product) => {
+    try {
+      const createdRoomType = await createRoomProduct(newRoomProduct); // Llamado al backend
+      setRoomProducts([...roomProducts, createdRoomType]); // Actualiza el estado con la respuesta del backend
+    } catch (error) {
+      console.error("Error adding room type", error);
+    }
+  };
+
+  const handleEditRoomProduct = async (updatedRoomProduct: Product) => {
+    try {
+      if (updatedRoomProduct.id === undefined) {
+        console.error("Error: El ID de Producto es undefined.");
+        return;
+      }
+      await updateRoomProduct(updatedRoomProduct.id, updatedRoomProduct);
+      setRoomProducts(
+        roomProducts.map((rp) =>
+          rp.id === updatedRoomProduct.id ? updatedRoomProduct : rp
+        )
+      );
+    } catch (error) {
+      console.error("Error updating room product", error);
+    }
+  };
+
+  const handleDeleteRoomProduct = async (id?: number) => {
+    try {
+      if (id === undefined) {
+        console.error("Error: El ID de Product es undefined.");
+        return;
+      }
+      await deleteRoomProduct(id); // Llamado al backend
+      setRoomProducts(roomProducts.filter((rt) => rt.id !== id));
+    } catch (error) {
+      console.error("Error deleting room product", error);
     }
   };
 
@@ -224,6 +293,14 @@ const RoomList: React.FC = () => {
         onAdd={handleAddRoomType}
         onEdit={handleEditRoomType}
         onDelete={handleDeleteRoomType}
+      />
+
+      <h4 className="text-center my-4">{t("rooms.products")}</h4>
+      <RoomProductTable
+        roomProducts={roomProducts}
+        onAdd={handleAddRoomProduct}
+        onEdit={handleEditRoomProduct}
+        onDelete={handleDeleteRoomProduct}
       />
     </Container>
   );

@@ -81,7 +81,7 @@ const NavigationBar: React.FC = () => {
       roles: ["admin", "manager"],
     },
     {
-      path: "/dashboard",
+      path: "/reports",
       label: "navbar.reports",
       icon: <FaChartBar size={30} />,
       roles: ["admin"],

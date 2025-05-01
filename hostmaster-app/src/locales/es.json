@@ -28,7 +28,8 @@
   "close":"Cerrar",
   "reservation":"Reserva",
   "missingField":"Este campo es obligatorio",
-
+  "clearFilters": "Limpiar filtros",
+  
     "navbar": {
       "home": "Inicio",
       "accommodations":"Alojamientos",
@@ -129,10 +130,15 @@
     },
     "inventory":{
       "title":"Inventario",
+      "roomInventory":"Inventario de Habitación",
       "addProduct":"Agregar producto al inventario",
       "quantity":"Cantidad",
       "minQuantity":"Cantidad mínima",
       "selectProduct":"Seleccione un producto",
       "confirmDelete": "¿Estás seguro de que deseas eliminar este producto del inventario?"
+    },
+    "reviews":{
+      "title":"Reseñas"
     }
+  
 }

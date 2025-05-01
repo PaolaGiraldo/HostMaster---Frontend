@@ -28,6 +28,7 @@
   "close":"Close",  
   "reservation": "Booking",
   "missingField":"This field is required",
+  "clearFilters": "Clear filters",
 
   "navbar": {
       "home": "Home",
@@ -129,10 +130,14 @@
     },
     "inventory":{
       "title":"Inventory",
+      "roomInventory":"Room Inventory",
       "addProduct":"Add product to inventory",
       "quantity":"Quantity",
       "minQuantity":"Minimum Quantity",
       "selectProduct":"Select a Product",
       "confirmDelete": "Are you sure you want to delete this product from inventory?"
+    },
+    "reviews":{
+      "title":"Reviews"
     }
 }

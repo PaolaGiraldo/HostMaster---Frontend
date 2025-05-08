@@ -12,6 +12,7 @@
   "cancel":"Cancel",
   "delete":"Delete",
   "all": "All",
+  "all1": "All",
   "toSelect":"Select",
   "select":"Select",
   "update":"Update",
@@ -29,7 +30,8 @@
   "reservation": "Booking",
   "missingField":"This field is required",
   "clearFilters": "Clear filters",
-
+  "customer":"Customer",
+  "date":"Date",
   "navbar": {
       "home": "Home",
       "accommodations": "Accommodations",
@@ -44,14 +46,14 @@
       "logout": "Log Out",
       "users": "Users"
     },
-    "footer": {
+  "footer": {
       "about": "About Us",
       "contact": "Contact",
       "aboutText":"We provide premium accommodation management services.",
       "email": "Email",
       "phone": "Phone"
     },
-    "home": {
+  "home": {
       "aboutTitle": "Welcome to Our Accommodations",
       "aboutDescription": "We offer unique lodging experiences with the best quality and comfort.",
       "service1Title": "High-Speed WiFi",
@@ -62,7 +64,7 @@
       "service3Description": "Close to the city's top tourist attractions.",
       "contactTitle": "Contact Us"
     },
-    "accommodations": {
+  "accommodations": {
       "title": "Our Accommodations",
       "rooms": "Rooms",
       "noAccommodations": "No accommodations available at the moment.",
@@ -82,24 +84,24 @@
       "selectCity":"Select city",
       "selectState":"Select State"
     },
-    "rooms": {
-    "title": "Rooms management",
-    "filterType": "Filter by type",
-    "filterAvailability": "Filter by Availability",
-    "filterAccommodation": "Filter by Accommodation",
-    "filterNumber":"Filter by Room Number",
-    "roomNumber": "Room number",
-    "noRooms": "There is no available rooms",
-    "confirmDelete": "Are you sure you want to delete this room?",
-    "addRoom":"Create Room",
-    "InsertNumber":"Insert number",
-    "editRoom":"Edit Room",
-    "newRoom":"New Room",
-    "types":"Room Types",    
-    "products":"Room Products",
-    "roomImages":"Room Images"
+  "rooms": {
+      "title": "Rooms management",
+      "filterType": "Filter by type",
+      "filterAvailability": "Filter by Availability",
+      "filterAccommodation": "Filter by Accommodation",
+      "filterNumber":"Filter by Room Number",
+      "roomNumber": "Room number",
+      "noRooms": "There is no available rooms",
+      "confirmDelete": "Are you sure you want to delete this room?",
+      "addRoom":"Create Room",
+      "InsertNumber":"Insert number",
+      "editRoom":"Edit Room",
+      "newRoom":"New Room",
+      "types":"Room Types",    
+      "products":"Room Products",
+      "roomImages":"Room Images"
     },
-    "roomTypes": {
+  "roomTypes": {
       "addNew": "Add new Room Type",
       "edit": "Edit Room Type",
       "type": "Type",
@@ -110,7 +112,7 @@
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this room type?"
     },
-    "services": {
+  "services": {
       "title": "Additional Services",
       "confirmDelete": "Are you sure you want to delete this service?",
       "newService":"New Service",
@@ -118,7 +120,7 @@
       "service":"Service",
       "validationError": "Verify the entered values"
       },
-    "roomProducts": {
+   "roomProducts": {
       "addNew": "Add new Room Product",
       "edit": "Edit Room Product",
       "product": "Product",
@@ -128,7 +130,7 @@
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this room product?"
     },
-    "inventory":{
+  "inventory":{
       "title":"Inventory",
       "roomInventory":"Room Inventory",
       "addProduct":"Add product to inventory",
@@ -137,7 +139,15 @@
       "selectProduct":"Select a Product",
       "confirmDelete": "Are you sure you want to delete this product from inventory?"
     },
-    "reviews":{
-      "title":"Reviews"
+  "reviews":{
+      "title":"Reviews",
+      "rating":"Rating",
+      "addReview":"Add Review",
+      "reservationCode":"Insert reservation code",
+      "validate":"Validate",
+      "commments":"Comments",
+      "addTittle":"¿Te hospedaste con nosotros?",
+      "addText":"¡Tu opinión es muy importante! {br} Ayuda a otros viajeros dejando tu reseña. {br} Comparte tu experiencia y ayuda a mejorar nuestro servicio."
+
     }
 }

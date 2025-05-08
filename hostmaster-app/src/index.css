@@ -271,3 +271,33 @@ button:hover {
   position: relative;
   z-index: 2;
 }
+
+.review-call-to-action {
+  background: rgba(96, 196, 171, 0.6);
+  color: #ffffff;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 5%;
+}
+
+.review-call-to-action:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.review-icon {
+  font-size: 1.5rem;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.review-card {
+  transition: transform 0.2s ease;
+}
+.review-card:hover {
+  transform: translateY(-5px);
+}

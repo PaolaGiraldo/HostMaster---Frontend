@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Card, Form, Button, Spinner, Modal, Alert } from "react-bootstrap";
-import { format } from "date-fns";
+import { Form, Button, Spinner, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAllAccommodationReviews } from "../../hooks/useReviews";
 import { useAccommodations } from "../../hooks/useAccommodations";
-import { getReservationById } from "./getReservationById";
-import { Reservation } from "../../interfaces/reservationInterface";
 import ReviewCard from "./ReviewCard";
+import { ReviewForm } from "./ReviewForm";
+import { Review } from "../../interfaces/reviewInterface";
+import { createReview } from "../../Services/reviewService";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Filter = {
   accommodationId?: number;
@@ -15,8 +16,9 @@ type Filter = {
   rating?: number;
 };
 
-export const ReviewList = () => {
+export const ReviewList: React.FC = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { data: accommodations = [] } = useAccommodations();
   const accommodationIds = accommodations
     .map((a) => a.id)
@@ -55,33 +57,15 @@ export const ReviewList = () => {
     });
   };
 
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [reservationCode, setReservationCode] = useState("");
-  const [isCodeValid, setIsCodeValid] = useState(false);
-  const [isCheckingCode, setIsCheckingCode] = useState(false);
-  const [reservation, setReservation] = useState<Reservation | null>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
-  const handleOpenReviewModal = () => {
-    setShowReviewModal(true);
-    setReservationCode("");
-    setIsCodeValid(false);
-    setReservation(null);
-  };
-
-  const handleCheckCode = async () => {
-    setIsCheckingCode(true);
+  const handleSaveReview = async (review: Review) => {
     try {
-      const result = await getReservationById(Number(reservationCode)); // tu función de validación
-      if (result) {
-        setIsCodeValid(true);
-        setReservation(result);
-      } else {
-        <Alert variant="error">Código de reserva inválido.</Alert>;
-      }
+      // Crear nueva habitación
+      await createReview(review);
+      queryClient.invalidateQueries({ queryKey: ["allAccommodationReviews"] });
     } catch (error) {
-      console.error("Error al validar código de reserva", error);
-    } finally {
-      setIsCheckingCode(false);
+      console.error("Error en handleSaveRoom:", error);
     }
   };
 
@@ -98,121 +82,109 @@ export const ReviewList = () => {
     <div className="container mt-4">
       <h2 className="text-center mb-4">{t("reviews.title")}</h2>
 
-      <Button variant="primary" onClick={handleOpenReviewModal}>
-        <i className="bi bi-pencil-square"></i> Agregar reseña
-      </Button>
-
-      <Form className="row g-2 mb-3">
-        <Form.Group className="col-md-3">
-          <Form.Label style={{ color: "#FFFFFF" }}>Alojamiento</Form.Label>
-          <Form.Select
-            value={filters.accommodationId}
-            onChange={(e) =>
-              setFilters({
-                ...filters,
-                accommodationId: Number(e.target.value),
-              })
-            }
-          >
-            <option value="">Todos</option>
-            {accommodations.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-
-        {/* <Form.Group className="col-md-3">
-          <Form.Label>Usuario</Form.Label>
-          <Form.Control
-            type="text"
-            value={filters.user}
-            onChange={(e) => setFilters({ ...filters, user: e.target.value })}
-          />
-        </Form.Group> */}
-
-        <Form.Group className="col-md-3">
-          <Form.Label style={{ color: "#FFFFFF" }}>Fecha</Form.Label>
-          <Form.Control
-            type="date"
-            value={filters.date}
-            onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-          />
-        </Form.Group>
-
-        <Form.Group className="col-md-3">
-          <Form.Label style={{ color: "#FFFFFF" }}>Calificación</Form.Label>
-          <Form.Select
-            value={filters.rating}
-            onChange={(e) =>
-              setFilters({ ...filters, rating: Number(e.target.value) })
-            }
-          >
-            <option value="">Todas</option>
-            {[5, 4, 3, 2, 1].map((r) => (
-              <option key={r} value={r}>
-                {r} ⭐
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-        <Form.Group className="col-md-2 d-flex align-items-end">
-          <Button
-            variant="secondary"
-            onClick={handleClearFilters}
-            className="w-100 d-flex align-items-center justify-content-center gap-2"
-            title="Limpiar filtros"
-          >
-            <i className="bi bi-x-circle"></i> Limpiar
-          </Button>
-        </Form.Group>
-      </Form>
-
-      <div className="review-list">
-        {filteredReviews.map((review) => (
-          <ReviewCard review={review} />
-        ))}
+      <div className="review-call-to-action text-muted">
+        <h5>{t("reviews.addTittle")}</h5>
+        <p className="alert text-center">
+          {t("reviews.addText", { render: { br: () => <br /> } })}
+        </p>
+        <Button variant="primary" onClick={() => setShowReviewForm(true)}>
+          <i className="bi bi-pencil-square"></i> {t("reviews.addReview")}
+        </Button>
       </div>
 
-      <Modal show={showReviewModal} onHide={() => setShowReviewModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar reseña</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {!isCodeValid ? (
-            <>
-              <Form.Group>
-                <Form.Label>Ingrese el código de reserva</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={reservationCode}
-                  onChange={(e) => setReservationCode(e.target.value)}
-                />
-              </Form.Group>
-              <Button
-                variant="success"
-                className="mt-3"
-                onClick={handleCheckCode}
-                disabled={isCheckingCode}
-              >
-                {isCheckingCode ? "Verificando..." : "Validar código"}
-              </Button>
-            </>
-          ) : (
-            <>
-              <p>
-                <strong>Reserva encontrada:</strong>{" "}
-                {reservation?.user_username}
-              </p>
-              {/* Aquí luego irá el formulario real de reseña */}
-              <Alert variant="success">
-                Código válido. Puedes agregar tu reseña.
-              </Alert>
-            </>
-          )}
-        </Modal.Body>
-      </Modal>
+      <div
+        style={{
+          marginBottom: "5%",
+        }}
+      >
+        <Form className="row g-2 mb-3">
+          <Form.Group className="col-md-3">
+            <Form.Label style={{ color: "#FFFFFF" }}>
+              {t("accommodation")}
+            </Form.Label>
+            <Form.Select
+              value={filters.accommodationId}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  accommodationId: Number(e.target.value),
+                })
+              }
+            >
+              <option value="">{t("all1")}</option>
+              {accommodations.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="col-md-3">
+            <Form.Label style={{ color: "#FFFFFF" }}>
+              {t("customer")}
+            </Form.Label>
+            <Form.Control
+              type="text"
+              value={filters.user}
+              onChange={(e) => setFilters({ ...filters, user: e.target.value })}
+            />
+          </Form.Group>
+
+          <Form.Group className="col-md-3">
+            <Form.Label style={{ color: "#FFFFFF" }}>{t("date")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={filters.date}
+              onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+            />
+          </Form.Group>
+
+          <Form.Group className="col-md-3">
+            <Form.Label style={{ color: "#FFFFFF" }}>
+              {t("reviews.rating")}
+            </Form.Label>
+            <Form.Select
+              value={filters.rating}
+              onChange={(e) =>
+                setFilters({ ...filters, rating: Number(e.target.value) })
+              }
+            >
+              <option value="">{t("all1")}</option>
+              {[5, 4, 3, 2, 1].map((r) => (
+                <option key={r} value={r}>
+                  {r} ⭐
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="col-md-2 d-flex align-items-end">
+            <Button
+              variant="secondary"
+              onClick={handleClearFilters}
+              className="w-100 d-flex align-items-center justify-content-center gap-2"
+              title="Limpiar filtros"
+            >
+              {t("clearFilters")}
+            </Button>
+          </Form.Group>
+        </Form>
+      </div>
+
+      <ReviewForm
+        show={showReviewForm}
+        onClose={() => setShowReviewForm(false)}
+        onSave={handleSaveReview}
+        accommodations={accommodations}
+      />
+
+      <Row xs={1} sm={2} md={3} className="g-4">
+        {filteredReviews.map((review) => (
+          <Col key={review.id}>
+            <ReviewCard review={review} key={review.id!} />
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };

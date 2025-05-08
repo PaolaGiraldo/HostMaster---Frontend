@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Review } from "../../interfaces/reviewInterface";
-import { Card, ListGroup, Button, Modal, Carousel } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { format } from "date-fns";
 
 interface ReviewCardProps {
@@ -10,7 +10,7 @@ interface ReviewCardProps {
 const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   return (
     <>
-      <Card className="mb-3 shadow-sm" key={review.id}>
+      <Card className="h-100 mb-3 shadow-sm review-card" key={review.id}>
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center mb-2">
             <div className="d-flex align-items-center gap-2">

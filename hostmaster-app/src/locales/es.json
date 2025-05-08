@@ -12,6 +12,7 @@
   "cancel":"Cancelar",
   "delete":"Eliminar",
   "all": "Todas",
+  "all1": "Todos",
   "toSelect":"Seleccionar",
   "select":"Seleccione",
   "update":"Actualizar",
@@ -29,8 +30,9 @@
   "reservation":"Reserva",
   "missingField":"Este campo es obligatorio",
   "clearFilters": "Limpiar filtros",
-  
-    "navbar": {
+  "customer":"Cliente",
+  "date":"Fecha",
+  "navbar": {
       "home": "Inicio",
       "accommodations":"Alojamientos",
       "rooms": "Habitaciones",
@@ -40,85 +42,85 @@
       "calendar": "Calendario",
       "reviews": "Reseñas",
       "reports": "Reportes",
-      "login": "Iniciar sesión",      
+      "login": "Iniciar sesión",
       "logout": "Cerrar Sesión",
       "users": "Usuarios"
     },
-    "footer": {
+  "footer": {
       "about": "Sobre nosotros",
       "contact": "Contacto",
       "aboutText":"Ofrecemos servicios de gestión de alojamientos premium.",
       "email": "Correo Electrónico",
       "phone": "Telefono"
     },
-    "home": {
-    "aboutTitle": "Bienvenidos a nuestros alojamientos",
-    "aboutDescription": "Ofrecemos experiencias de hospedaje únicas con la mejor calidad y confort.",
-    "service1Title": "WiFi de Alta Velocidad",
-    "service1Description": "Mantente conectado con nuestra red de alta velocidad en todas las habitaciones.",
-    "service2Title": "Desayuno Incluido",
-    "service2Description": "Disfruta de un desayuno variado y delicioso cada mañana.",
-    "service3Title": "Ubicación Privilegiada",
-    "service3Description": "Cerca de los mejores atractivos turísticos de la ciudad.",
-    "contactTitle": "Contáctanos"
+  "home": {
+      "aboutTitle": "Bienvenidos a nuestros alojamientos",
+      "aboutDescription": "Ofrecemos experiencias de hospedaje únicas con la mejor calidad y confort.",
+      "service1Title": "WiFi de Alta Velocidad",
+      "service1Description": "Mantente conectado con nuestra red de alta velocidad en todas las habitaciones.",
+      "service2Title": "Desayuno Incluido",
+      "service2Description": "Disfruta de un desayuno variado y delicioso cada mañana.",
+      "service3Title": "Ubicación Privilegiada",
+      "service3Description": "Cerca de los mejores atractivos turísticos de la ciudad.",
+      "contactTitle": "Contáctanos"
     },
   "accommodations": {
-    "title": "Nuestros Alojamientos",
-    "rooms": "Habitaciones",
-    "noAccommodations": "No hay alojamientos disponibles en este momento.",
-    "noRooms": "El alojamiento aún no tiene habitaciones registradas",
-    "viewDetails": "Ver Detalles",
-    "name":"Nombre",
-    "address":"Dirección",
-    "info":"Información",
-    "newAccommodation":"Nueva Alojamiento",
-    "addAccommodation":"Crear Alojamiento",
-    "edit":"Editar Alojamiento",
-    "confirmDelete": "¿Estás seguro de que deseas eliminar este alojamiento?",
-    "country":"País",
-    "city":"Ciudad",
-    "state":"Departamento",
-    "selectCountry":"Seleccionar país",
-    "selectCity":"Seleccionar ciudad",
-    "selectState":"Seleccionar departamento"
-  },
-  "rooms": {
-  "title": "Gestión de Habitaciones",
-  "filterType": "Filtrar por Tipo",
-  "filterAvailability": "Filtrar por Disponibilidad",
-  "filterAccommodation": "Filtrar por Alojamiento",
-  "filterNumber":"Filtrar por número de habitación",
-  "roomNumber": "Número de Habitación",
-  "noRooms": "No hay habitaciones disponibles",
-  "confirmDelete": "¿Estás seguro de que deseas eliminar esta habitación?",
-  "addRoom":"Crear Habitación",
-  "InsertNumber":"Ingrese número",
-  "editRoom":"Editar Habitación",
-  "newRoom":"Nueva Habitación",
-  "types":"Tipos de Habitación",
-  "products":"Productos de Habitación",
-  "roomImages":"Imágenes de la habitación"
-  },
-  "roomTypes": {
-    "addNew": "Agregar nuevo tipo de habitación",
-    "edit": "Editar tipo de habitación",
-    "type": "Tipo",
-    "description": "Descripción",
-    "price": "Precio",
-    "maxCapacity": "Capacidad máxima",
-    "actions": "Acciones",
-    "save": "Guardar",
-    "confirmDelete": "¿Estás seguro de que deseas eliminar este tipo de habitación?"
-  },
-  "services": {
-    "title": "Servicios Adicionales",
-    "confirmDelete": "¿Estás seguro de que deseas eliminar este servicio?",
-    "newService":"Nuevo Servicio",
-    "editService":"Editar Servicio",
-    "service":"Servicio",
-    "validationError": "Verifica los valores ingresados"
+      "title": "Nuestros Alojamientos",
+      "rooms": "Habitaciones",
+      "noAccommodations": "No hay alojamientos disponibles en este momento.",
+      "noRooms": "El alojamiento aún no tiene habitaciones registradas",
+      "viewDetails": "Ver Detalles",
+      "name":"Nombre",
+      "address":"Dirección",
+      "info":"Información",
+      "newAccommodation":"Nueva Alojamiento",
+      "addAccommodation":"Crear Alojamiento",
+      "edit":"Editar Alojamiento",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este alojamiento?",
+      "country":"País",
+      "city":"Ciudad",
+      "state":"Departamento",
+      "selectCountry":"Seleccionar país",
+      "selectCity":"Seleccionar ciudad",
+      "selectState":"Seleccionar departamento"
     },
-    "roomProducts": {
+  "rooms": {
+      "title": "Gestión de Habitaciones",
+      "filterType": "Filtrar por Tipo",
+      "filterAvailability": "Filtrar por Disponibilidad",
+      "filterAccommodation": "Filtrar por Alojamiento",
+      "filterNumber":"Filtrar por número de habitación",
+      "roomNumber": "Número de Habitación",
+      "noRooms": "No hay habitaciones disponibles",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar esta habitación?",
+      "addRoom":"Crear Habitación",
+      "InsertNumber":"Ingrese número",
+      "editRoom":"Editar Habitación",
+      "newRoom":"Nueva Habitación",
+      "types":"Tipos de Habitación",
+      "products":"Productos de Habitación",
+      "roomImages":"Imágenes de la habitación"
+   },
+  "roomTypes": {
+      "addNew": "Agregar nuevo tipo de habitación",
+      "edit": "Editar tipo de habitación",
+      "type": "Tipo",
+      "description": "Descripción",
+      "price": "Precio",
+      "maxCapacity": "Capacidad máxima",
+      "actions": "Acciones",
+      "save": "Guardar",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este tipo de habitación?"
+   },
+  "services": {
+      "title": "Servicios Adicionales",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este servicio?",
+      "newService":"Nuevo Servicio",
+      "editService":"Editar Servicio",
+      "service":"Servicio",
+      "validationError": "Verifica los valores ingresados"
+    },
+  "roomProducts": {
       "addNew": "Agregar nuevo producto de habitación",
       "edit": "Editar producto de habitación",
       "product": "Producto",
@@ -128,7 +130,7 @@
       "save": "Guardar",
       "confirmDelete": "¿Estás seguro de que deseas eliminar este producto de habitación?"
     },
-    "inventory":{
+  "inventory":{
       "title":"Inventario",
       "roomInventory":"Inventario de Habitación",
       "addProduct":"Agregar producto al inventario",
@@ -137,8 +139,15 @@
       "selectProduct":"Seleccione un producto",
       "confirmDelete": "¿Estás seguro de que deseas eliminar este producto del inventario?"
     },
-    "reviews":{
-      "title":"Reseñas"
-    }
-  
+  "reviews":{
+      "title":"Reseñas",
+      "rating":"Calificación",
+      "addReview":"Agregar Reseña",
+      "reservationCode":"Ingrese código de reserva",
+      "validate":"Validar",
+      "commments":"Comentarios",
+      "addTittle":"¿Te hospedaste con nosotros?",
+      "addText":"¡Tu opinión es muy importante! {br} Ayuda a otros viajeros dejando tu reseña. {br} Comparte tu experiencia y ayuda a mejorar nuestro servicio."
+
+  }
 }

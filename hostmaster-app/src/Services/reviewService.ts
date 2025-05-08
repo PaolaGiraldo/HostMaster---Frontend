@@ -9,3 +9,13 @@ export const getReviewByAccommodation = async (accommodation_id?:number): Promis
       throw error;
     }
   };
+
+  // Crear un nuevo reseña
+  export const createReview= async (review: Review): Promise<Review> => {
+    try {
+      const response = await apiService.post("/reviews", review);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };

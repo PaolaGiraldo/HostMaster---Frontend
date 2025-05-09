@@ -7,8 +7,9 @@ export interface User {
     role: string
     firstname: string
     lastname: string
+    full_name: string
     document_number: string
     image: string
-    review: Review[]
+    reviews: Review[]
     accommodation_ids: number[]
   }

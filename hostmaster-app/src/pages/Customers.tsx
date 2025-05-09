@@ -1,5 +1,7 @@
+import ClientsList from "../components/Customers/CustomerList";
+
 const Customers: React.FC = () => {
-  return <h1>Bienvenido al Panel de Clientes</h1>;
+  return <ClientsList />;
 };
 
 export default Customers;

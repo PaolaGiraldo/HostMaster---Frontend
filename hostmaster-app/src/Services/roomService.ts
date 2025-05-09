@@ -52,4 +52,14 @@ export const deleteRoom = async (id: number): Promise<void> => {
       throw error;
     }
   };
+
+  
+  export const getRoomsWithReservations = async ({ params }): Promise<Room[]> => {
+    try {
+      const response = await apiService.get("/booked_rooms/", { params });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
   

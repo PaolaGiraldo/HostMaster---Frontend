@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Container, Row, Col, Form } from "react-bootstrap";
+import { Card, Container, Row, Col, Form, Accordion } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OccupancyChart from "./OccupancyChart";
 import AvailabilityHeatmap from "./AvailabilityHeatmap";
@@ -18,90 +18,123 @@ const ReportDashboard: React.FC = ({}) => {
     useState<number>(0);
 
   return (
-    // ReportDashboard.tsx
-    <DateRangeProvider>
-      <Container fluid className="mt-4">
-        <h2 className="mb-4 text-center">{t("reports.title")}</h2>
+    <div className="report-dashboard">
+      <DateRangeProvider>
+        <Container className="py-4">
+          <h2 className="text-center my-4">{t("reports.title")}</h2>
+          <div className="filters-container d-flex flex-column flex-md-row justify-content-center gap-3 mb-4">
+            <div className="mb-3">
+              <Form.Label className="fw-bold">
+                Seleccionar un alojamiento
+              </Form.Label>
+              {accommodations?.map((accommodation) => (
+                <Form.Check
+                  key={accommodation.id}
+                  type="radio"
+                  name="accommodation"
+                  id={`accommodation-${accommodation.id}`}
+                  label={accommodation.name}
+                  value={accommodation.id}
+                  checked={selectedAccommodationId === accommodation.id}
+                  onChange={() => setSelectedAccommodationId(accommodation.id!)}
+                  className="mb-2"
+                />
+              ))}
+            </div>
+            <div className="range-selector">
+              <DateRangeSelector></DateRangeSelector>
+            </div>
+          </div>
 
-        <Form.Select
-          value={selectedAccommodationId}
-          onChange={(e) => setSelectedAccommodationId(Number(e.target.value))}
-        >
-          <option value="">Todos los alojamientos</option>
-          {accommodations?.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </Form.Select>
+          <Card className="shadow report-card">
+            <Card.Body>
+              <Accordion defaultActiveKey="0" className="my-4">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>{t("reports.occupancy")}</Accordion.Header>
+                  <Accordion.Body>
+                    <p className="mb-4">{t("reports.occupancyDescription")}</p>
+                    <div className="my-4">
+                      <OccupancyChart
+                        accommodationId={selectedAccommodationId}
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-        <DateRangeSelector></DateRangeSelector>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>
+                    {t("reports.availability")}
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <p className="mb-4">
+                      {t("reports.availabilityDescription")}
+                    </p>
+                    <div className="my-4">
+                      <AvailabilityHeatmap
+                        accommodationId={selectedAccommodationId}
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-        <Row className="gy-4">
-          {/* Ocupación */}
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Header className="bg-dark text-white">
-                {t("reports.occupancy")}
-              </Card.Header>
-              <Card.Body>
-                {/* Chart de ocupación (e.g. Chart.js) */}
-                <OccupancyChart accommodationId={selectedAccommodationId} />
-              </Card.Body>
-            </Card>
-          </Col>
+                <Accordion.Item eventKey="2">
+                  <Accordion.Header>{t("reports.inventory")}</Accordion.Header>
+                  <Accordion.Body>
+                    <p className="mb-4">{t("reports.inventoryDescription")}</p>
 
-          {/* Disponibilidad */}
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Header className="bg-dark text-white">
-                {t("reports.availability")}
-              </Card.Header>
-              <Card.Body>
-                {/* Gráfico de calor o calendario */}
-                <AvailabilityHeatmap />
-              </Card.Body>
-            </Card>
-          </Col>
+                    <div className="my-4">
+                      <InventoryPieChart
+                        accommodationId={selectedAccommodationId}
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-          {/* Inventario */}
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Header className="bg-dark text-white">
-                {t("reports.inventory")}
-              </Card.Header>
-              <Card.Body>
-                <InventoryPieChart />
-              </Card.Body>
-            </Card>
-          </Col>
+                <Accordion.Item eventKey="3">
+                  <Accordion.Header>{t("reports.revenue")}</Accordion.Header>
+                  <Accordion.Body>
+                    <p className="mb-4">{t("reports.revenueDescription")}</p>
+                    <div className="my-4">
+                      <RevenueLineChart
+                        accommodationId={selectedAccommodationId}
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-          {/* Ingresos */}
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Header className="bg-dark text-white">
-                {t("reports.revenue")}
-              </Card.Header>
-              <Card.Body>
-                <RevenueLineChart />
-              </Card.Body>
-            </Card>
-          </Col>
+                <Accordion.Item eventKey="4">
+                  <Accordion.Header>{t("reports.reviews")}</Accordion.Header>
+                  <Accordion.Body>
+                    <p className="mb-4">{t("reports.reviewsDescription")}</p>
+                    <div className="my-4">
+                      <ReviewSummary
+                        accommodationId={selectedAccommodationId}
+                      />
+                    </div>
+                  </Accordion.Body>
+                </Accordion.Item>
 
-          {/* Reseñas */}
-          <Col md={12}>
-            <Card className="shadow-sm">
-              <Card.Header className="bg-dark text-white">
-                {t("reports.reviews")}
-              </Card.Header>
-              <Card.Body>
-                <ReviewSummary />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </DateRangeProvider>
+                <Accordion.Item eventKey="5">
+                  <Accordion.Header>xxxx</Accordion.Header>
+                  <Accordion.Body>
+                    {/* Aquí va tu componente de inventario */}
+                  </Accordion.Body>
+                </Accordion.Item>
+
+                <Accordion.Item eventKey="6">
+                  <Accordion.Header>xxxx</Accordion.Header>
+                  <Accordion.Body>
+                    {/* Aquí va tu componente de inventario */}
+                  </Accordion.Body>
+                </Accordion.Item>
+
+                {/* Agregar más secciones según los reportes */}
+              </Accordion>
+            </Card.Body>
+          </Card>
+        </Container>
+      </DateRangeProvider>
+    </div>
   );
 };
 export default ReportDashboard;

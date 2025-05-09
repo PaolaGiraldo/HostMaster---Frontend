@@ -9,7 +9,7 @@ export const DateRangeSelector = () => {
 
   return (
     <div className="mb-4">
-      <h5 className="mb-2">{t("reports.selectRange")}</h5>
+      <h6 className="mb-2">{t("reports.selectRange")}</h6>
       <DateRange
         editableDateInputs
         moveRangeOnFirstSelection={false}

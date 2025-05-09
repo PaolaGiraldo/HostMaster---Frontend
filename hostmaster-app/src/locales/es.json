@@ -156,6 +156,11 @@
     "inventory":"Estado del Inventario",
     "revenue":"Ingresos",
     "reviews":"Reseñas de Clientes",
-    "selectRange": "Seleccionar rango de fechas"
+    "selectRange": "Seleccionar rango de fechas",
+    "occupancyDescription":"Este reporte muestra el número de habitaciones ocupadas por día en el rango de fechas seleccionado. Permite identificar picos de ocupación, temporadas altas y días con baja demanda.",
+    "availabilityDescription":"Este reporte muestra la disponibilidad diaria de habitaciones en el alojamiento seleccionado durante el rango de fechas indicado. Permite identificar rápidamente los días con mayor o menor disponibilidad, ayudando a optimizar la gestión de reservas y anticipar períodos de alta demanda.",
+    "inventoryDescription":"Visualiza el estado actual del inventario por habitación, incluyendo productos disponibles y aquellos que han alcanzado su mínimo permitido. Es útil para mantener el control logístico del alojamiento.",
+    "revenueDescription":"Este reporte presenta los ingresos generados por reservas a lo largo del tiempo dentro del rango de fechas seleccionado. La gráfica permite visualizar tendencias de facturación, identificar picos de ingresos y evaluar el rendimiento económico del alojamiento en períodos específicos.",
+    "reviewsDescription":"Este reporte ofrece un resumen de las reseñas realizadas  por los huéspedes, incluyendo el promedio de calificaciones, distribución de puntuaciones y comentarios  destacados. Permite evaluar la satisfacción del cliente y detectar oportunidades de mejora en la experiencia del alojamiento."
   }
 }

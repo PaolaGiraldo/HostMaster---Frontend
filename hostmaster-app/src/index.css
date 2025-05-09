@@ -301,3 +301,159 @@ button:hover {
 .review-card:hover {
   transform: translateY(-5px);
 }
+
+.report-dashboard {
+  
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-title {
+  color: #60c4ab;
+  font-weight: bold;
+}
+
+.filters-container {
+  /* background: rgba(96, 196, 171, 0.3); */
+  color: #ffffff;
+  padding: 15px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.report-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #60c4ab;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.accordion-button {
+  background-color: #1a2a6c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #60c4ab;
+  color: #1a2a6c;
+}
+
+.accordion-body {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #3a3a3a;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.my-4 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.range-selector {
+  border-radius: 10px;
+  text-align: center;
+}
+
+.availability-heatmap {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.grid-header,
+.grid-row {
+  display: grid;
+  grid-template-columns: 150px repeat(auto-fit, 40px);
+  align-items: center;
+}
+
+.grid-cell {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.room-name {
+  font-weight: 600;
+  background-color: #d9d9d9;
+}
+
+.status-available {
+  background-color: #60c4ab;
+}
+
+.status-reserved {
+  background-color: #1a2a6c;
+  color: white;
+}
+
+.status-maintenance {
+  background-color: #ffcc00;
+}
+
+.heatmap {
+  overflow-x: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.heatmap-header,
+.heatmap-row {
+  display: flex;
+}
+
+.heatmap-cell {
+  padding: 8px;
+  text-align: center;
+  min-width: 80px;
+  border: 1px solid #ddd;
+}
+
+.header-room,
+.room-label {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.header-date {
+  background-color: #f9f9f9;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.available {
+  background-color: #60c4ab; /* verde menta */
+}
+
+.unavailable {
+  background-color: #d9534f; /* rojo */
+}
+
+.heatmap-legend {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #3a3a3a;
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.legend-box.available {
+  background-color: #60c4ab;
+}
+
+.legend-box.unavailable {
+  background-color: #d9534f;
+}

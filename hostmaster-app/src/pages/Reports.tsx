@@ -1,5 +1,8 @@
+import React from "react";
+import ReportDashboard from "../components/Dashboard/ReportDashboard";
+
 const Reports: React.FC = () => {
-  return <h1>Bienvenido al Panel de Gestión</h1>;
+  return <ReportDashboard />;
 };
 
 export default Reports;

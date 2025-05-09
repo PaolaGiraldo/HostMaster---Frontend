@@ -5,7 +5,7 @@ import {
 
 export const useAccommodations = () => {
     return useQuery({
-        queryKey: ["accommodations"],
+      queryKey: ["accommodations"],
       queryFn: getAccommodations,
       staleTime: 1000 * 60 * 5, // 5 minutos de caché
     });

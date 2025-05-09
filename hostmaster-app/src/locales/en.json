@@ -148,6 +148,14 @@
       "commments":"Comments",
       "addTittle":"¿Te hospedaste con nosotros?",
       "addText":"¡Tu opinión es muy importante! {br} Ayuda a otros viajeros dejando tu reseña. {br} Comparte tu experiencia y ayuda a mejorar nuestro servicio."
-
-    }
+    },
+  "reports":{
+    "title":"Reports Dashboard",
+    "occupancy":"Current Occupancy",
+    "availability":"Availability",
+    "inventory":"Inventory Status",
+    "revenue":"Revenue",
+    "reviews":"Customer reviews",
+    "selectRange": "Select date range"
+  }
 }

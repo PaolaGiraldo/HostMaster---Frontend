@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReservationList from "./ReservationList";
-import apiService from "../Apis/ApiService";
+import { hotelApi } from "../Apis/ApiService";
 import { Reservation } from "../../interfaces/reservationInterface";
 
 const ReservationsPage: React.FC = () => {
@@ -9,7 +9,7 @@ const ReservationsPage: React.FC = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await apiService.get("/reservations");
+        const response = await hotelApi.get("/reservations");
         setReservations(response.data);
       } catch (error) {
         console.error("Error fetching reservations:", error);

@@ -1,10 +1,10 @@
-import apiService from "../components/Apis/ApiService";
+import {hotelApi} from "../components/Apis/ApiService";
 import { RoomInventory } from "../interfaces/roomInventorynterface";
 
 
 export const getRoomInventory = async (id?:number): Promise<RoomInventory[]> => {
     try {
-      const response = await apiService.get(`/room-inventory/room/${id}`);
+      const response = await hotelApi.get(`/room-inventory/room/${id}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -13,7 +13,7 @@ export const getRoomInventory = async (id?:number): Promise<RoomInventory[]> => 
 
   export const getRoomInventoryById = async (id?:number): Promise<RoomInventory> => {
     try {
-      const response = await apiService.get(`/room-inventory/${id}`);
+      const response = await hotelApi.get(`/room-inventory/${id}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -22,7 +22,7 @@ export const getRoomInventory = async (id?:number): Promise<RoomInventory[]> => 
 
 export const createRoomInventory = async (roomInventory: RoomInventory): Promise<RoomInventory> => {
     try {
-      const response = await apiService.post("/room-inventory", roomInventory);
+      const response = await hotelApi.post("/room-inventory", roomInventory);
       return response.data;
     } catch (error) {
       throw error;
@@ -31,7 +31,7 @@ export const createRoomInventory = async (roomInventory: RoomInventory): Promise
 
   export const updateRoomInventory = async (id: number, roomInventory: RoomInventory): Promise<RoomInventory> => {
     try {
-      const response = await apiService.put(`/room-inventory/${id}`, roomInventory);
+      const response = await hotelApi.put(`/room-inventory/${id}`, roomInventory);
       return response.data;
     } catch (error) {
       throw error;
@@ -40,7 +40,7 @@ export const createRoomInventory = async (roomInventory: RoomInventory): Promise
   
 export const deleteRoomInventory = async (id: number): Promise<void> => {
     try {
-      await apiService.delete(`/room-inventory/${id}`);
+      await hotelApi.delete(`/room-inventory/${id}`);
     } catch (error) {
       throw error;
     }

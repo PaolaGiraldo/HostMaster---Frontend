@@ -1,4 +1,4 @@
-import apiService from "../components/Apis/ApiService";
+import {hotelApi} from "../components/Apis/ApiService";
 import { Reservation
 
 
@@ -6,7 +6,7 @@ import { Reservation
 
  export const getReservations = async (): Promise<Reservation[]> => {
     try {
-      const response = await apiService.get("/reservations");
+      const response = await hotelApi.get("/reservations");
       return response.data;
     } catch (error) {
       throw error;

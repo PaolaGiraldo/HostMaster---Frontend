@@ -1,11 +1,11 @@
-import apiService from "../components/Apis/ApiService";
+import {hotelApi} from "../components/Apis/ApiService";
 import { Room } from "../interfaces/roomInterface";
 
 
 // Obtener habitación por alojamiento
 export const getRoomsByAccommodation = async (accommodation_id?:number): Promise<Room[]> => {
   try {
-    const response = await apiService.get(`/accommodations/${accommodation_id}/rooms`);
+    const response = await hotelApi.get(`/accommodations/${accommodation_id}/rooms`);
     return response.data;
   } catch (error) {
     throw error;
@@ -15,7 +15,7 @@ export const getRoomsByAccommodation = async (accommodation_id?:number): Promise
 
 export const getRooms = async (): Promise<Room[]> => {
     try {
-      const response = await apiService.get("/rooms");
+      const response = await hotelApi.get("/rooms");
       return response.data;
     } catch (error) {
       throw error;
@@ -27,7 +27,7 @@ export const getRooms = async (): Promise<Room[]> => {
 // Crear un nuevo alojamiento
 export const createRoom = async (room: Room): Promise<Room> => {
     try {
-      const response = await apiService.post("/rooms", room);
+      const response = await hotelApi.post("/rooms", room);
       return response.data;
     } catch (error) {
       throw error;
@@ -37,7 +37,7 @@ export const createRoom = async (room: Room): Promise<Room> => {
   // Actualizar un alojamiento existente
   export const updateRoom = async (id: number, room: Room): Promise<Room> => {
     try {
-      const response = await apiService.patch(`/rooms/${id}?room_id=${id}`, room);
+      const response = await hotelApi.patch(`/rooms/${id}?room_id=${id}`, room);
       return response.data;
     } catch (error) {
       throw error;
@@ -47,7 +47,7 @@ export const createRoom = async (room: Room): Promise<Room> => {
 // Eliminar un alojamiento
 export const deleteRoom = async (id: number): Promise<void> => {
     try {
-      await apiService.delete(`/rooms/${id}`);
+      await hotelApi.delete(`/rooms/${id}`);
     } catch (error) {
       throw error;
     }
@@ -56,7 +56,7 @@ export const deleteRoom = async (id: number): Promise<void> => {
   
   export const getRoomsWithReservations = async ({ params }): Promise<Room[]> => {
     try {
-      const response = await apiService.get("/booked_rooms/", { params });
+      const response = await hotelApi.get("/booked_rooms/", { params });
       return response.data;
     } catch (error) {
       throw error;

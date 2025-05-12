@@ -1,9 +1,9 @@
-import apiService from "../components/Apis/ApiService";
+import {hotelApi} from "../components/Apis/ApiService";
 
 const locationService = {
   getCountries: async () => {
     try {
-      const response = await apiService.get("/countries");
+      const response = await hotelApi.get("/countries");
       return response.data;
     } catch (error) {
       console.error("Error fetching countries:", error);
@@ -13,7 +13,7 @@ const locationService = {
 
   getCities: async () => {
     try {
-      const response = await apiService.get("/cities");
+      const response = await hotelApi.get("/cities");
       return response.data;
     } catch (error) {
       console.error("Error fetching cities:", error);
@@ -23,7 +23,7 @@ const locationService = {
 
   getStates: async () => {
     try {
-      const response = await apiService.get("/states");
+      const response = await hotelApi.get("/states");
       return response.data;
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -33,7 +33,7 @@ const locationService = {
 
   getCityById: async (Id: number) => {
     try {
-      const response = await apiService.get(`/cities/${Id}`);
+      const response = await hotelApi.get(`/cities/${Id}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching cities:", error);

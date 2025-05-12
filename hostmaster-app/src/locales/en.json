@@ -155,7 +155,22 @@
     "availability":"Availability",
     "inventory":"Inventory Status",
     "revenue":"Revenue",
-    "reviews":"Customer reviews",
-    "selectRange": "Select date range"
+    "reviews":"Customer reviews","selectRange": "Select date range",
+    "occupancyDescription": "This report shows the number of rooms occupied per day within the selected date range. It helps identify occupancy peaks, high seasons, and low-demand days.",
+    "availabilityDescription": "This report displays the daily room availability in the selected accommodation during the specified date range. It quickly highlights days with higher or lower availability, helping optimize reservation management and anticipate high-demand periods.",
+    "inventoryDescription": "Displays the current inventory status per room, including available products and those that have reached their minimum allowed quantity. Useful for maintaining logistical control of the accommodation.",
+    "revenueDescription": "This report presents the revenue generated from bookings over time within the selected date range. The chart reveals billing trends, highlights revenue peaks, and helps assess the financial performance of the accommodation during specific periods.",
+    "reviewsDescription": "This report provides a summary of guest reviews, including average ratings, score distribution, and highlighted comments. It allows for evaluating guest satisfaction and identifying areas for improvement in the lodging experience."
+  },
+  "clients":{
+    "title":"Customers",
+    "name":"Name",
+    "new":"New",
+    "document":"Document",
+    "email":"Email",
+    "reviews":"Reviews",
+    "username":"Username",
+    "firstname":"First Name",
+    "lastname":"Last Name"
   }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { Table, Button, OverlayTrigger, Popover, Modal } from "react-bootstrap";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { User } from "../../interfaces/userInterface";
@@ -20,13 +20,21 @@ const CustomerTable: React.FC<ClientTableProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUsername, setSelectedselectedUsername] = useState<
     string | null
   >(null);
 
   const handleDeleteClick = (username?: string) => {
     setSelectedselectedUsername(username ?? null);
-    //setShowConfirm(true);
+    setShowConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedUsername !== null) {
+      onDelete(selectedUsername);
+    }
+    setShowConfirm(false);
   };
 
   return (
@@ -112,6 +120,22 @@ const CustomerTable: React.FC<ClientTableProps> = ({
           </tbody>
         </Table>
       </div>
+
+      {/* Modal de confirmación de eliminación */}
+      <Modal show={showConfirm} onHide={() => setShowConfirm(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("confirmDelete")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{t("clients.confirmDelete")}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirm(false)}>
+            {t("cancel")}
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            {t("delete")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

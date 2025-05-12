@@ -162,5 +162,16 @@
     "inventoryDescription":"Visualiza el estado actual del inventario por habitación, incluyendo productos disponibles y aquellos que han alcanzado su mínimo permitido. Es útil para mantener el control logístico del alojamiento.",
     "revenueDescription":"Este reporte presenta los ingresos generados por reservas a lo largo del tiempo dentro del rango de fechas seleccionado. La gráfica permite visualizar tendencias de facturación, identificar picos de ingresos y evaluar el rendimiento económico del alojamiento en períodos específicos.",
     "reviewsDescription":"Este reporte ofrece un resumen de las reseñas realizadas  por los huéspedes, incluyendo el promedio de calificaciones, distribución de puntuaciones y comentarios  destacados. Permite evaluar la satisfacción del cliente y detectar oportunidades de mejora en la experiencia del alojamiento."
+  },
+  "clients":{
+    "title":"Clientes",
+    "name":"Nombre",
+    "new":"Nuevo Cliente",
+    "document":"Documento",
+    "email":"Correo Electrónico",
+    "reviews":"Reseñas",
+    "username":"Nombre de Usuario",
+    "firstname":"Nombre",
+    "lastname":"Apellidos"
   }
 }

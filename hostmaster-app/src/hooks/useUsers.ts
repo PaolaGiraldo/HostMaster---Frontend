@@ -4,7 +4,7 @@ import { User } from "../interfaces/userInterface";
 
 export const useClients = (accommodationId?: number) => {
   return useQuery<User[]>({
-    queryKey: ['reviews', accommodationId],
+    queryKey: ['clients', accommodationId],
     queryFn: () => {
       return getClients();
     },

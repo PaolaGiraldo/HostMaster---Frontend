@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Reservation } from "../../interfaces/reservationInterface";
 import ReservationCard from "./ReservationCard";
@@ -8,6 +9,7 @@ interface ReservationListProps {
 }
 
 const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
+  const { t } = useTranslation();
   const [filterDateFrom, setFilterDateFrom] = useState("");
   const [filterDateTo, setFilterDateTo] = useState("");
   const [filterAccommodation, setFilterAccommodation] = useState("");
@@ -66,18 +68,21 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
 
   return (
     <>
+      <h2 className="text-center my-4">{t("reservations.title")}</h2>
       <Button
         variant="success"
         className="mb-3"
         onClick={() => setShowModal(true)}
       >
-        Nueva Reserva
+        {t("reservations.new")}
       </Button>
       <Form className="mb-3">
         <Row>
           <Col md={3}>
             <Form.Group>
-              <Form.Label>Desde</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("reservations.from")}
+              </Form.Label>
               <Form.Control
                 type="date"
                 value={filterDateFrom}
@@ -87,7 +92,9 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
           </Col>
           <Col md={3}>
             <Form.Group>
-              <Form.Label>Hasta</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("reservations.until")}
+              </Form.Label>
               <Form.Control
                 type="date"
                 value={filterDateTo}
@@ -97,7 +104,9 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
           </Col>
           <Col md={2}>
             <Form.Group>
-              <Form.Label>Alojamiento</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("accommodation")}
+              </Form.Label>
               <Form.Control
                 type="text"
                 placeholder="ID o nombre"
@@ -108,7 +117,7 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
           </Col>
           <Col md={2}>
             <Form.Group>
-              <Form.Label>Habitación</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>{t("room")}</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="ID o número"
@@ -119,7 +128,9 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
           </Col>
           <Col md={2}>
             <Form.Group>
-              <Form.Label>Cliente</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("customer")}
+              </Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Nombre"
@@ -130,12 +141,14 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
           </Col>
           <Col md={2}>
             <Form.Group>
-              <Form.Label>Estado</Form.Label>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("reservations.status")}
+              </Form.Label>
               <Form.Select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
-                <option value="">Todos</option>
+                <option value="">{t("all1")}</option>
                 <option value="confirmado">Confirmado</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="cancelado">Cancelado</option>
@@ -146,7 +159,7 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
         <Row className="mt-3">
           <Col className="text-end">
             <Button variant="secondary" onClick={handleClearFilters}>
-              Limpiar Filtros
+              {t("clearFilters")}
             </Button>
           </Col>
         </Row>
@@ -209,7 +222,7 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Cerrar
+            {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>

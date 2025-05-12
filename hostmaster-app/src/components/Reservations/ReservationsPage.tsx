@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReservationList from "./ReservationList";
-import { hotelApi } from "../Apis/ApiService";
 import { Reservation } from "../../interfaces/reservationInterface";
+import { getReservations } from "../../Services/reservationService";
 
 const ReservationsPage: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -9,8 +9,8 @@ const ReservationsPage: React.FC = () => {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await hotelApi.get("/reservations");
-        setReservations(response.data);
+        const response = await getReservations();
+        setReservations(response);
       } catch (error) {
         console.error("Error fetching reservations:", error);
       }
@@ -21,7 +21,6 @@ const ReservationsPage: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Reservas</h2>
       <ReservationList reservations={reservations} />
     </div>
   );

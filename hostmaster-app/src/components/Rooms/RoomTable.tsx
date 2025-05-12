@@ -83,7 +83,9 @@ const RoomTable: React.FC<RoomTableProps> = ({
       <Row className="mb-3">
         <Col md={4}>
           <Form.Group>
-            <Form.Label>{t("rooms.filterNumber")}</Form.Label>
+            <Form.Label style={{ color: "#FFFFFF" }}>
+              {t("rooms.filterNumber")}
+            </Form.Label>
             <Form.Control
               type="text"
               placeholder={t("rooms.InsertNumber")}

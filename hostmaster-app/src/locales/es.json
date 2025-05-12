@@ -173,5 +173,14 @@
     "username":"Nombre de Usuario",
     "firstname":"Nombre",
     "lastname":"Apellidos"
+  },
+  "reservations":{
+    "title":"Reservas",
+    "new":"Nueva Reserva",
+    "from":"Desde",
+    "until":"Hasta",
+    "status":"Estado",
+    "viewDetails":"Ver Detalles"
+
   }
 }

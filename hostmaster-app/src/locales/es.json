@@ -44,7 +44,8 @@
       "reports": "Reportes",
       "login": "Iniciar sesión",
       "logout": "Cerrar Sesión",
-      "users": "Usuarios"
+      "users": "Usuarios",
+      "customers":"Clientes"
     },
   "footer": {
       "about": "Sobre nosotros",
@@ -177,10 +178,23 @@
   "reservations":{
     "title":"Reservas",
     "new":"Nueva Reserva",
+    "edit":"Actualizar Reserva",
     "from":"Desde",
     "until":"Hasta",
     "status":"Estado",
-    "viewDetails":"Ver Detalles"
-
+    "date_range":"Rango de Fechas",
+    "viewDetails":"Ver Detalles",
+    "start_date": "Fecha inicio",
+    "end_date":"Fecha fin",
+    "guest_count": "Número de huéspedes",
+    "extraservices": "Servicios Adicionales",
+    "observations":"Observaciones",
+    "statusOptions": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancelada"
+    }
   }
+
+
 }

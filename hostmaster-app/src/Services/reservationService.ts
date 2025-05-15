@@ -9,4 +9,16 @@ import { Reservation} from "../interfaces/reservationInterface";
       throw error;
     }
   };
+
+  export const createReservations = async (reservation: Reservation): Promise<Reservation[]> => {
+    try {
+      console.log("enviar reserva")
+      const response = await hotelApi.post("/reservations", reservation);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
   

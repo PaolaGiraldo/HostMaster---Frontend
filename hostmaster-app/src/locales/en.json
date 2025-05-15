@@ -44,7 +44,8 @@
       "reports": "Reports",
       "login": "Login",
       "logout": "Log Out",
-      "users": "Users"
+      "users": "Users",
+      "customers":"Clientes"
     },
   "footer": {
       "about": "About Us",

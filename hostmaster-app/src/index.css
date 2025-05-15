@@ -457,3 +457,7 @@ button:hover {
 .legend-box.unavailable {
   background-color: #d9534f;
 }
+
+.datepicker {
+  width: 100%;
+}

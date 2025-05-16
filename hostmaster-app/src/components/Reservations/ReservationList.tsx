@@ -35,9 +35,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   const [filterRoom, setFilterRoom] = useState("");
   const [filterCustomer, setFilterCustomer] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [editingReservation, setEditingReservation] =
-    useState<Reservation | null>(null);
+
   const [roomId, setRoomId] = useState<number | null>(null);
   const [customerName, setCustomerName] = useState<string | null>(null);
 
@@ -60,24 +58,22 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
   const handleEditReservation = (reservation: Reservation) => {
     setEditingReservation(reservation);
-    setShowModal(true);
+    setShowReservationForm(true);
   };
 
   const [loading, setLoading] = useState(false);
 
   const handleSaveReservation = async (reservation: Reservation) => {
     try {
-      console.log(reservation.id);
-      console.log(reservation);
       if (reservation.id) {
         await updateReservation(reservation.id, reservation);
         queryClient.invalidateQueries({ queryKey: ["reservations"] });
-        setShowModal(false);
+        setShowReservationForm(false);
         setEditingReservation(null);
       } else {
         await createReservation(reservation);
         queryClient.invalidateQueries({ queryKey: ["reservations"] });
-        setShowModal(false);
+        setShowReservationForm(false);
       }
 
       // Recargar la lista de reservas después de la actualización/creación
@@ -138,11 +134,6 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     setCustomerName(foundRoom?.username ?? null);
   };
 
-  const handleClose = () => {
-    setEditingReservation(null);
-    setShowModal(false);
-  };
-
   const canCancelReservation = (startDateStr: string): boolean => {
     const today = new Date();
     const startDate = new Date(startDateStr);
@@ -162,6 +153,15 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     }
   };
 
+  const [showReservationForm, setShowReservationForm] = useState(false);
+  const [editingReservation, setEditingReservation] =
+    useState<Reservation | null>(null);
+
+  const handleCloseReservationForm = () => {
+    setShowReservationForm(false);
+    setEditingReservation(null); // ✅ Limpiar la reserva en edición
+  };
+
   if (isLoading) return <Spinner animation="border" />;
   return (
     <div className="container mt-4">
@@ -170,7 +170,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
       <Button
         variant="primary"
         className="mb-3"
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowReservationForm(true)}
       >
         {t("reservations.new")}
       </Button>
@@ -371,8 +371,8 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         </section>
 
         <ReservationForm
-          show={showModal}
-          onHide={handleClose}
+          show={showReservationForm}
+          onHide={handleCloseReservationForm}
           onSave={handleSaveReservation}
           editingReservation={editingReservation}
         ></ReservationForm>

@@ -68,6 +68,26 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     },
   });
 
+  useEffect(() => {
+    if (!show) {
+      reset({
+        accommodation_id: 0,
+        room_id: 0,
+        user_username: "",
+        start_date: "",
+        end_date: "",
+        guest_count: 1,
+        status: "",
+        observations: "",
+        extra_services: [],
+        date_range: [null, null],
+      });
+      setSelectedServices([]);
+      setServiceToAdd("");
+      setQuantityToAdd(1);
+    }
+  }, [show, reset]);
+
   const handleClose = () => {
     reset();
     onHide();
@@ -130,13 +150,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     }
   }, [editingReservation, reset]);
 
-  useEffect(() => {
-    if (!show) {
-      editingReservation === null;
-      reset();
-    }
-  }, [show]);
-
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -152,7 +165,11 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
               control={control}
               name="accommodation_id"
               render={({ field }) => (
-                <Form.Select {...field} required>
+                <Form.Select
+                  {...field}
+                  required
+                  disabled={!!editingReservation}
+                >
                   <option value="">{t("select")}</option>
                   {accommodations?.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -188,7 +205,11 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
               control={control}
               name="user_username"
               render={({ field }) => (
-                <Form.Select {...field} required>
+                <Form.Select
+                  {...field}
+                  required
+                  disabled={!!editingReservation}
+                >
                   <option value="">{t("select")}</option>
                   {clients?.map((u) => (
                     <option key={u.username} value={u.username}>
@@ -253,7 +274,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
               control={control}
               name="status"
               render={({ field }) => (
-                <Form.Select>
+                <Form.Select {...field} required>
                   {reservationStatuses.map((status) => (
                     <option key={status.value} value={status.value}>
                       {t(status.labelKey)}
@@ -332,7 +353,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
           </Form.Group>
 
           <div className="d-flex justify-content-end mt-3">
-            <Button variant="secondary" onClick={onHide}>
+            <Button variant="secondary" onClick={handleClose}>
               {t("cancel")}
             </Button>
             <Button variant="primary" type="submit" className="ms-2">

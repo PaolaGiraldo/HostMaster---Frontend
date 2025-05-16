@@ -11,6 +11,9 @@ import {
   STATUS_COLORS,
 } from "../../constants/reservationStatusList";
 import { FaEdit } from "react-icons/fa";
+import { isToday, parseISO } from "date-fns";
+import { updateReservation } from "../../Services/reservationService";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -24,6 +27,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   onEdit,
 }) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { data: clients } = useClients();
   const client = clients?.find(
     (client) => client.username === reservation.user_username
@@ -40,6 +44,28 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const isTodayStartDate = isToday(parseISO(reservation.start_date));
+  const handleCheckInOut = () => {
+    if (reservation.status === "confirmed") {
+      updateReservationStatus(reservation, "checkedIn");
+    } else if (reservation.status === "checkedIn") {
+      updateReservationStatus(reservation, "checkedOut");
+    }
+  };
+
+  const updateReservationStatus = async (
+    reservation: Reservation,
+    newStatus: string
+  ) => {
+    try {
+      reservation.status = newStatus;
+      await updateReservation(reservation.id!, reservation);
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+    } catch (error) {
+      console.error("Error updating reservation status", error);
+    }
   };
 
   return (
@@ -99,6 +125,19 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
               Cancelar Reserva
             </Button>
           )}
+
+          <Button
+            variant={reservation.status === "checkedIn" ? "warning" : "success"}
+            onClick={handleCheckInOut}
+            disabled={
+              !isTodayStartDate ||
+              !["confirmed", "checkedIn"].includes(reservation.status)
+            }
+          >
+            {reservation.status === "checkedIn"
+              ? t("Check-Out")
+              : t("Check-In")}
+          </Button>
         </Card.Body>
       </Card>
 

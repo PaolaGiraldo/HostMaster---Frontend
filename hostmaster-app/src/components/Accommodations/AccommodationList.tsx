@@ -1,61 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import AccommodationCard from "./AccommodationCard";
 import AccommodationForm from "./AccommodationForm";
 import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";
-import { Room } from "../../interfaces/roomInterface";
+import { Spinner } from "react-bootstrap";
 import {
   createAccommodation,
   deleteAccommodation,
-  getAccommodations,
   updateAccommodation,
 } from "../../Services/accommodationService";
-import { getRoomsByAccommodation } from "../../Services/roomService";
-import { getRoomTypeById } from "../../Services/roomTypeService";
-import { useLocation } from "../../context/LocationContext";
+import { useAccommodationsComplete } from "../../hooks/useAccommodationsComplete";
 
 const AccommodationList: React.FC = () => {
-  const { cities } = useLocation();
-  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
-
   const [showForm, setShowForm] = useState(false);
   const [editingAccommodation, setEditingAccommodation] = useState<any | null>(
     null
   );
 
-  useEffect(() => {
-    fetchAccommodations();
-  }, []);
-
-  const fetchAccommodations = async () => {
-    try {
-      const accommodationsData = await getAccommodations();
-
-      // Obtener las habitaciones de cada alojamiento
-      const accommodationsWithRooms = await Promise.all(
-        accommodationsData.map(async (accommodation: Accommodation) => {
-          const roomsData = await getRoomsByAccommodation(accommodation.id);
-          const cityName = cities.find(
-            (city) => city.id === accommodation.city_id
-          )?.name;
-
-          // Para cada habitación, obtener su tipo de habitación
-          const roomsWithTypes = await Promise.all(
-            roomsData.map(async (room: Room) => {
-              const typeResponse = await getRoomTypeById(room.type_id);
-              return { ...room, roomType: typeResponse };
-            })
-          );
-
-          return { ...accommodation, cityName, rooms: roomsWithTypes };
-        })
-      );
-      setAccommodations(accommodationsWithRooms);
-    } catch (error) {
-      console.error("Error fetching accommodations:", error);
-    }
-  };
+  const {
+    data: accommodations,
+    isLoading,
+    error,
+    refetch,
+  } = useAccommodationsComplete();
 
   const { t } = useTranslation();
 
@@ -72,8 +40,8 @@ const AccommodationList: React.FC = () => {
         await createAccommodation(accommodation);
       }
       setShowForm(false);
-      fetchAccommodations();
       setEditingAccommodation(null);
+      refetch();
     } catch (error) {
       console.error("Error saving accommodation:", error);
     }
@@ -86,7 +54,7 @@ const AccommodationList: React.FC = () => {
     }
     try {
       await deleteAccommodation(id);
-      fetchAccommodations();
+      refetch();
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -105,24 +73,34 @@ const AccommodationList: React.FC = () => {
       >
         {t("accommodations.addAccommodation")}
       </Button>
-      <Row>
-        {accommodations.length > 0 ? (
-          accommodations.map((accommodation) => (
-            <Col key={accommodation.id} md={6} lg={4} className="mb-4">
-              <AccommodationCard
-                accommodation={accommodation}
-                onEdit={handleEditAccommodation}
-                onDelete={handleDelete}
-              />
-            </Col>
-          ))
-        ) : (
-          <h4 className="text-center">
-            {t("accommodations.noAccommodations")}
-          </h4>
-        )}
-      </Row>
-
+      {isLoading ? (
+        <div className="text-center my-5">
+          <Spinner animation="border" role="status" />
+          <div>{t("loading")}</div>
+        </div>
+      ) : error ? (
+        <div className="text-center text-danger">
+          {t("accommodations.loadError")}
+        </div>
+      ) : (
+        <Row>
+          {accommodations && accommodations.length > 0 ? (
+            accommodations.map((accommodation) => (
+              <Col key={accommodation.id} md={6} lg={4} className="mb-4">
+                <AccommodationCard
+                  accommodation={accommodation}
+                  onEdit={handleEditAccommodation}
+                  onDelete={handleDelete}
+                />
+              </Col>
+            ))
+          ) : (
+            <h4 className="text-center">
+              {t("accommodations.noAccommodations")}
+            </h4>
+          )}
+        </Row>
+      )}
       <AccommodationForm
         show={showForm}
         onHide={() => setShowForm(false)}

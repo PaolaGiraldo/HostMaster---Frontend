@@ -127,6 +127,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           )}
 
           <Button
+            className="ms-2"
             variant={reservation.status === "checkedIn" ? "warning" : "success"}
             onClick={handleCheckInOut}
             disabled={

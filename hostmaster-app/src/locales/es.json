@@ -193,7 +193,8 @@
       "pending": "Pendiente",
       "confirmed": "Confirmada",
       "cancelled": "Cancelada",
-      
+      "checkedIn": "Ingresada",
+      "checkedOut": "Finalizada"
     }
   }
 

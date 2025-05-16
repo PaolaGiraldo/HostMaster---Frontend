@@ -46,7 +46,6 @@ const ServiceForm: React.FC<ServiceFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.price <= 0) {
-      //TODO
       alert(t("services.validationError"));
       return;
     }

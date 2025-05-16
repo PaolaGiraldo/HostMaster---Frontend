@@ -86,12 +86,9 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     }
   };
 
-  //TODO
   const handleCancelReservation = (reservation: Reservation) => {
     if (!canCancelReservation(reservation.start_date)) {
-      alert(
-        "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
-      );
+      alert(t("reservations.cancel_error_15_days"));
       return;
     }
     setSelectedReservation(reservation);

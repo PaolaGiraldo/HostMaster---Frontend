@@ -194,7 +194,8 @@
       "confirmed": "Confirmada",
       "cancelled": "Cancelada",
       "checkedIn": "Ingresada",
-      "checkedOut": "Finalizada"
+      "checkedOut": "Finalizada",
+      "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
     }
   }
 

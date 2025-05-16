@@ -9,7 +9,7 @@ export const reservationStatuses = [
 export const STATUS_COLORS: Record<string, string> = {
   pending: "rgba(253, 255, 122, 0.7)",
   confirmed: "rgba(106, 255, 106, 0.7)",
-  cancelled: "rgba(255, 63, 63, 0.7)",
+  cancelled: "rgba(220,53,69)",
   checkedIn: "rgba(63, 210, 255, 0.7)",
   checkedOut  : "rgba(150, 150, 150, 0.7)",
 };

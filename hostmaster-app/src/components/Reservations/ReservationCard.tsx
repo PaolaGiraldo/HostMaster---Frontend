@@ -6,16 +6,20 @@ import { useClients } from "../../hooks/useUsers";
 import { useRooms } from "../../hooks/useRooms";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import ReservationDetailModal from "./ReservationDetailModal";
-import { STATUS_COLORS } from "../../constants/reservationStatusList";
+import {
+  reservationStatuses,
+  STATUS_COLORS,
+} from "../../constants/reservationStatusList";
+import { FaEdit } from "react-icons/fa";
 
 interface ReservationCardProps {
   reservation: Reservation;
-  onDelete: (id?: number) => void;
+  onCancel: (reservation: Reservation) => void;
 }
 
 const ReservationCard: React.FC<ReservationCardProps> = ({
   reservation,
-  onDelete,
+  onCancel,
 }) => {
   const { t } = useTranslation();
   const { data: clients } = useClients();
@@ -50,7 +54,19 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       >
         <Card.Body>
           <Card.Title>
-            {accommodation?.name} {room?.number}
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              {accommodation?.name} {room?.number}
+              {reservation.status !== "cancelled" && (
+                <Button
+                  variant="ligth"
+                  size="lg"
+                  className="me-2"
+                  onClick={() => onCancel(reservation)}
+                >
+                  <FaEdit />
+                </Button>
+              )}
+            </div>
           </Card.Title>
 
           <Card.Subtitle className="mb-2 text-muted">
@@ -59,20 +75,28 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             {client?.full_name}
           </Card.Subtitle>
           <Card.Text>
-            <strong>Estado:</strong> {reservation.status} <br />
+            <strong>Estado:</strong>{" "}
+            {reservationStatuses
+              .filter((status) => status.value === reservation.status)
+              .map((status) => t(status.labelKey))}{" "}
+            <br />
             <strong>Email:</strong> {client?.email}
             <br />
           </Card.Text>
+
           <Button variant="primary" onClick={() => setShowModal(true)}>
             Ver Detalles
           </Button>
-          <Button
-            variant="danger"
-            className="ms-2"
-            onClick={() => onDelete(reservation.id)}
-          >
-            Finalizar
-          </Button>
+
+          {reservation.status !== "cancelled" && (
+            <Button
+              variant="danger"
+              className="ms-2"
+              onClick={() => onCancel(reservation)}
+            >
+              Cancelar Reserva
+            </Button>
+          )}
         </Card.Body>
       </Card>
 

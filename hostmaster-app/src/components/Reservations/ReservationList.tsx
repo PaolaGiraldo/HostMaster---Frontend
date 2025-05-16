@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, Modal } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { Reservation } from "../../interfaces/reservationInterface";
 import ReservationCard from "./ReservationCard";
 import ReservationForm from "./RerservationForm";
-import { createReservations } from "../../Services/reservationService";
+import {
+  createReservation,
+  updateReservation,
+} from "../../Services/reservationService";
 import { useReservations } from "../../hooks/useReservations";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -21,7 +25,8 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: accommodations } = useAccommodations();
-  const { data: reservations = [] } = useReservations();
+  const { upcoming, completed, cancelled, isLoading } = useReservations();
+
   const { data: rooms = [] } = useRooms();
   const { data: clients } = useClients();
   const [filterDateFrom, setFilterDateFrom] = useState("");
@@ -30,13 +35,19 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   const [filterRoom, setFilterRoom] = useState("");
   const [filterCustomer, setFilterCustomer] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [selectedReservation, setSelectedReservation] =
-    useState<Reservation | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [editingReservation, setEditingReservation] =
     useState<Reservation | null>(null);
   const [roomId, setRoomId] = useState<number | null>(null);
   const [customerName, setCustomerName] = useState<string | null>(null);
+
+  const [showUpcoming, setShowUpcoming] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(true);
+  const [showCancelled, setShowCancelled] = useState(true);
+
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const handleClearFilters = () => {
     setFilterDateFrom("");
@@ -61,7 +72,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
       } else {
         // Crear nueva habitación
         console.log(reservation);
-        await createReservations(reservation);
+        await createReservation(reservation);
         queryClient.invalidateQueries({ queryKey: ["reservations"] });
       }
 
@@ -80,22 +91,30 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   };
 
   //TODO
-  const handleDeleteReservation = (id?: number) => {
-    console.log("Eliminar reserva con ID:", id);
+  const handleCancelReservation = (reservation: Reservation) => {
+    if (!canCancelReservation(reservation.start_date)) {
+      alert(
+        "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
+      );
+      return;
+    }
+    setSelectedReservation(reservation);
+    setShowCancelModal(true);
   };
 
-  const filteredReservations = reservations.filter((reservation) => {
-    return (
-      (!filterDateFrom || reservation.start_date >= filterDateFrom) &&
-      (!filterDateTo || reservation.end_date <= filterDateTo) &&
-      (!filterAccommodation ||
-        reservation.accommodation_id === Number(filterAccommodation)) &&
-      (!filterRoom || reservation.room_id === roomId) &&
-      (!filterCustomer || reservation.user_username === customerName) &&
-      (!filterStatus ||
-        reservation.status.toLowerCase() === filterStatus.toLowerCase())
-    );
-  });
+  const filteredReservations = (reservations: Reservation[]) =>
+    reservations?.filter((reservation) => {
+      return (
+        (!filterDateFrom || reservation.start_date >= filterDateFrom) &&
+        (!filterDateTo || reservation.end_date <= filterDateTo) &&
+        (!filterAccommodation ||
+          reservation.accommodation_id === Number(filterAccommodation)) &&
+        (!filterRoom || reservation.room_id === roomId) &&
+        (!filterCustomer || reservation.user_username === customerName) &&
+        (!filterStatus ||
+          reservation.status.toLowerCase() === filterStatus.toLowerCase())
+      );
+    });
 
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -119,6 +138,26 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     setCustomerName(foundRoom?.username ?? null);
   };
 
+  const canCancelReservation = (startDateStr: string): boolean => {
+    const today = new Date();
+    const startDate = new Date(startDateStr);
+    const diffInMs = startDate.getTime() - today.getTime();
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    return diffInDays >= 15;
+  };
+
+  const cancelReservation = async (id: number, reservation: Reservation) => {
+    try {
+      reservation.status = "cancelled";
+      await updateReservation(id, reservation);
+      toast.success("Reserva cancelada correctamente");
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+    } catch (error) {
+      toast.error("Error al cancelar la reserva");
+    }
+  };
+
+  if (isLoading) return <Spinner animation="border" />;
   return (
     <div className="container mt-4">
       <h2 className="text-center my-4">{t("reservations.title")}</h2>
@@ -130,6 +169,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
       >
         {t("reservations.new")}
       </Button>
+
       <Form className="mb-3">
         <Row>
           <Col md={3}>
@@ -226,24 +266,142 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         </Row>
       </Form>
 
-      <Row xs={1} sm={2} md={3} className="g-4">
-        {filteredReservations.map((reservation) => (
-          <Col key={reservation.id}>
-            <ReservationCard
-              key={reservation.id}
-              reservation={reservation}
-              onDelete={handleDeleteReservation}
-            />
-          </Col>
-        ))}
-      </Row>
+      <div className="container py-4">
+        {/* Próximas reservas */}
+        <section className="mb-5">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <h4 className="mb-3">📅 Próximas Reservas</h4>
+            <button
+              className="btn btn-sm btn-light"
+              onClick={() => setShowUpcoming((prev) => !prev)}
+            >
+              {showUpcoming ? "▲" : "▼"}
+            </button>
+          </div>
+          <Row xs={1} sm={2} md={2} className="g-4">
+            {showUpcoming && (
+              <>
+                {filteredReservations(upcoming).length === 0 ? (
+                  <p>No hay reservas próximas.</p>
+                ) : (
+                  filteredReservations(upcoming).map((res: Reservation) => (
+                    <Col key={res.id}>
+                      <ReservationCard
+                        key={res.id}
+                        reservation={res}
+                        onCancel={handleCancelReservation}
+                      />
+                    </Col>
+                  ))
+                )}
+              </>
+            )}
+          </Row>
+        </section>
 
-      <ReservationForm
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        onSave={handleSaveReservation}
-        editingReservation={editingReservation}
-      ></ReservationForm>
+        <section className="mb-5">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <h4 className="mb-3">✅ Reservas Finalizadas</h4>
+            <button
+              className="btn btn-sm btn-light"
+              onClick={() => setShowCompleted((prev) => !prev)}
+            >
+              {showCompleted ? "▲" : "▼"}
+            </button>
+          </div>
+          <Row xs={1} sm={2} md={2} className="g-4">
+            {showCompleted && (
+              <>
+                {filteredReservations(completed).length === 0 ? (
+                  <p>No hay reservas finalizadas.</p>
+                ) : (
+                  filteredReservations(completed).map((res) => (
+                    <Col key={res.id}>
+                      <ReservationCard
+                        key={res.id}
+                        reservation={res}
+                        onCancel={handleCancelReservation}
+                      />
+                    </Col>
+                  ))
+                )}
+              </>
+            )}
+          </Row>
+        </section>
+
+        <section className="mb-5">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <h4 className="mb-3">❌ Reservas Canceladas</h4>
+            <button
+              className="btn btn-sm btn-light"
+              onClick={() => setShowCancelled((prev) => !prev)}
+            >
+              {showCancelled ? "▲" : "▼"}
+            </button>
+          </div>
+
+          <Row xs={1} sm={2} md={2} className="g-4">
+            {showCancelled && (
+              <>
+                {filteredReservations(cancelled).length === 0 ? (
+                  <p>No hay reservas finalizadas.</p>
+                ) : (
+                  filteredReservations(cancelled).map((res) => (
+                    <Col key={res.id}>
+                      <ReservationCard
+                        key={res.id}
+                        reservation={res}
+                        onCancel={handleCancelReservation}
+                      />
+                    </Col>
+                  ))
+                )}
+              </>
+            )}
+          </Row>
+        </section>
+
+        <ReservationForm
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          onSave={handleSaveReservation}
+          editingReservation={editingReservation}
+        ></ReservationForm>
+      </div>
+
+      <Modal
+        show={showCancelModal}
+        onHide={() => setShowCancelModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Cancelación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro que deseas cancelar esta reserva?
+          <br />
+          <strong>Inicio:</strong> {selectedReservation?.start_date}
+          <br />
+          <strong>Cliente:</strong> {selectedReservation?.user_username}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCancelModal(false)}>
+            Cerrar
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              if (selectedReservation) {
+                cancelReservation(selectedReservation.id!, selectedReservation); // Llama tu función de cancelación
+                setShowCancelModal(false);
+              }
+            }}
+          >
+            Confirmar Cancelación
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

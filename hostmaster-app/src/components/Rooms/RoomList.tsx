@@ -51,7 +51,6 @@ const RoomList: React.FC = () => {
   const fetchRooms = async () => {
     const response = await getRooms();
     setRooms(response);
-    console.log(response);
   };
 
   const fetchAccommodations = async () => {
@@ -73,7 +72,6 @@ const RoomList: React.FC = () => {
     try {
       if (room.id) {
         // Actualizar habitación existente
-        console.log(room);
         await updateRoom(room.id, room);
       } else {
         // Crear nueva habitación

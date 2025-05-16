@@ -21,7 +21,9 @@ import { Reservation} from "../interfaces/reservationInterface";
 
   export const updateReservation = async (id: number,reservation: Reservation): Promise<Reservation[]> => {
     try {
+      console.log(reservation)
       const response = await hotelApi.patch(`/reservations/${id}`, reservation);
+      console.log(response)
       return response.data;
     } catch (error) {
       throw error;

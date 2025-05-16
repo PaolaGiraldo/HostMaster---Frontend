@@ -15,11 +15,13 @@ import { FaEdit } from "react-icons/fa";
 interface ReservationCardProps {
   reservation: Reservation;
   onCancel: (reservation: Reservation) => void;
+  onEdit: (reservation: Reservation) => void;
 }
 
 const ReservationCard: React.FC<ReservationCardProps> = ({
   reservation,
   onCancel,
+  onEdit,
 }) => {
   const { t } = useTranslation();
   const { data: clients } = useClients();
@@ -45,7 +47,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       <Card
         className="mb-3 shadow-sm"
         style={{
-          backgroundColor: STATUS_COLORS[reservation.status],
+          backgroundColor: STATUS_COLORS[reservation.status] || "#3a3a3a",
           color: "white",
           padding: "1rem",
           borderRadius: "0.5rem",
@@ -61,7 +63,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
                   variant="ligth"
                   size="lg"
                   className="me-2"
-                  onClick={() => onCancel(reservation)}
+                  onClick={() => onEdit(reservation)}
                 >
                   <FaEdit />
                 </Button>

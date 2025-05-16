@@ -54,7 +54,6 @@ const RoomInventoryModal: React.FC<RoomInventoryModalProps> = ({
   };
 
   const confirmDelete = () => {
-    console.log(selectedInventoryId);
     if (selectedInventoryId !== null) {
       deleteProduct(selectedInventoryId);
     }

@@ -10,7 +10,7 @@ import { useRoomsByAccommodation } from "../../hooks/useRoomsByAccommodation";
 import { useServices } from "../../hooks/useServices";
 import { Service } from "../../interfaces/serviceInterface";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
+import { format, parseISO, set } from "date-fns";
 import { reservationStatuses } from "../../constants/reservationStatusList";
 
 interface ReservationFormProps {
@@ -23,6 +23,12 @@ interface ReservationFormProps {
 interface SelectedService extends Service {
   quantity: number;
 }
+
+type ReservationFormValues = Reservation & {
+  date_range?: [Date | null, Date | null];
+  start_date: string;
+  end_date: string;
+};
 const ReservationForm: React.FC<ReservationFormProps> = ({
   show,
   onHide,
@@ -47,26 +53,35 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     watch,
     setValue,
     formState: { errors },
-    setError,
-  } = useForm<Reservation>();
+  } = useForm<ReservationFormValues>({
+    defaultValues: {
+      accommodation_id: 0,
+      room_id: 0,
+      user_username: "",
+      start_date: "",
+      end_date: "",
+      guest_count: 1,
+      status: "",
+      observations: "",
+      extra_services: [],
+      date_range: [null, null],
+    },
+  });
 
   const handleClose = () => {
     reset();
     onHide();
   };
 
-  const onSubmit = (data: Reservation) => {
-    onSave(data);
+  const onSubmit = (data: ReservationFormValues) => {
+    (data.id = editingReservation?.id), onSave(data);
+
     handleClose();
     reset();
   };
 
   const selectedAccommodation = watch("accommodation_id");
   const { data: rooms } = useRoomsByAccommodation(selectedAccommodation);
-
-  useEffect(() => {
-    if (editingReservation) reset(editingReservation);
-  }, [editingReservation, reset]);
 
   const handleAddService = () => {
     if (!serviceToAdd || quantityToAdd < 1) return;
@@ -94,20 +109,33 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     (s: Service) => !selectedServices.some((sel) => sel.id === s.id)
   );
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  useEffect(() => {
+    if (editingReservation) {
+      reset({
+        accommodation_id: editingReservation.accommodation_id,
+        room_id: editingReservation.room_id,
+        guest_count: editingReservation.guest_count,
+        status: editingReservation.status,
+        observations: editingReservation.observations,
+        user_username: editingReservation.user_username,
+        extra_services: editingReservation.extra_services,
+      });
+      const start = parseISO(editingReservation.start_date); // sin cambio de día
+      const end = parseISO(editingReservation.end_date);
+
+      setValue("date_range", [start, end]);
+      setValue("start_date", format(start, "yyyy-MM-dd"));
+      setValue("end_date", format(end, "yyyy-MM-dd"));
+    } else {
+    }
+  }, [editingReservation, reset]);
 
   useEffect(() => {
-    if (editingReservation?.start_date) {
-      const start = new Date(editingReservation.start_date);
-      const end = new Date(editingReservation.end_date);
-      setStartDate(start);
-      setEndDate(end);
-    } else {
-      setStartDate(null);
-      setEndDate(null);
+    if (!show) {
+      editingReservation === null;
+      reset();
     }
-  }, [editingReservation]);
+  }, [show]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -175,23 +203,30 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
           <Form.Group className="w-100">
             <Form.Label>{t("reservations.date_range")}</Form.Label>
             <div>
-              <DatePicker
-                wrapperClassName="datepicker"
-                selectsRange
-                startDate={startDate}
-                endDate={endDate}
-                onChange={(dates) => {
-                  const [start, end] = dates;
-                  setStartDate(start);
-                  setEndDate(end);
-                  if (start)
-                    setValue("start_date", format(start, "yyyy-MM-dd"));
-                  if (end) setValue("end_date", format(end, "yyyy-MM-dd"));
-                }}
-                isClearable
-                className="form-control w-100"
-                dateFormat="yyyy-MM-dd"
-                placeholderText={t("select")}
+              <Controller
+                name="date_range"
+                control={control}
+                rules={{ required: t("validation.required") }}
+                render={({ field }) => (
+                  <DatePicker
+                    wrapperClassName="datepicker"
+                    selectsRange
+                    startDate={field.value?.[0]}
+                    endDate={field.value?.[1]}
+                    onChange={(dates: [Date | null, Date | null]) => {
+                      field.onChange(dates);
+
+                      const [start, end] = dates;
+                      if (start)
+                        setValue("start_date", format(start, "yyyy-MM-dd"));
+                      if (end) setValue("end_date", format(end, "yyyy-MM-dd"));
+                    }}
+                    isClearable
+                    className="form-control w-100"
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText={t("select")}
+                  />
+                )}
               />
             </div>
             {(errors.start_date || errors.end_date) && (

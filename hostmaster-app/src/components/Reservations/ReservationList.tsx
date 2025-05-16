@@ -64,27 +64,27 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   };
 
   const [loading, setLoading] = useState(false);
+
   const handleSaveReservation = async (reservation: Reservation) => {
     try {
+      console.log(reservation.id);
+      console.log(reservation);
       if (reservation.id) {
-        // Actualizar habitación existente
-        console.log(reservation);
+        await updateReservation(reservation.id, reservation);
+        queryClient.invalidateQueries({ queryKey: ["reservations"] });
+        setShowModal(false);
+        setEditingReservation(null);
       } else {
-        // Crear nueva habitación
-        console.log(reservation);
         await createReservation(reservation);
         queryClient.invalidateQueries({ queryKey: ["reservations"] });
+        setShowModal(false);
       }
 
       // Recargar la lista de reservas después de la actualización/creación
-
-      setShowModal(false);
-      setEditingReservation(null);
     } catch (error: any) {
       console.error("Error en handleSaveRoom:", error);
       const msg = error?.response?.data?.detail || "Error al guardar reserva";
       toast.error(msg);
-      console.log(msg);
     } finally {
       setLoading(false);
     }
@@ -136,6 +136,11 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         .includes(filterCustomer.toLowerCase())
     );
     setCustomerName(foundRoom?.username ?? null);
+  };
+
+  const handleClose = () => {
+    setEditingReservation(null);
+    setShowModal(false);
   };
 
   const canCancelReservation = (startDateStr: string): boolean => {
@@ -290,6 +295,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                         key={res.id}
                         reservation={res}
                         onCancel={handleCancelReservation}
+                        onEdit={handleEditReservation}
                       />
                     </Col>
                   ))
@@ -321,6 +327,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                         key={res.id}
                         reservation={res}
                         onCancel={handleCancelReservation}
+                        onEdit={handleEditReservation}
                       />
                     </Col>
                   ))
@@ -353,6 +360,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                         key={res.id}
                         reservation={res}
                         onCancel={handleCancelReservation}
+                        onEdit={handleEditReservation}
                       />
                     </Col>
                   ))
@@ -364,7 +372,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
         <ReservationForm
           show={showModal}
-          onHide={() => setShowModal(false)}
+          onHide={handleClose}
           onSave={handleSaveReservation}
           editingReservation={editingReservation}
         ></ReservationForm>

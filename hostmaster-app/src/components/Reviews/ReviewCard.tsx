@@ -2,12 +2,15 @@ import React from "react";
 import { Review } from "../../interfaces/reviewInterface";
 import { Card } from "react-bootstrap";
 import { format } from "date-fns";
+import { useClients } from "../../hooks/useUsers";
 
 interface ReviewCardProps {
   review: Review;
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
+  const { data: clients = [] } = useClients();
+
   return (
     <>
       <Card className="h-100 mb-3 shadow-sm review-card" key={review.id}>
@@ -15,7 +18,12 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           <div className="d-flex justify-content-between align-items-center mb-2">
             <div className="d-flex align-items-center gap-2">
               <i className="bi bi-person-circle fs-5 text-secondary" />
-              <strong>{review.user_username}</strong>
+              <strong>
+                {
+                  clients.find((c) => c.username == review.user_username)
+                    ?.full_name
+                }
+              </strong>
             </div>
             <small className="text-muted">
               {format(new Date(review.created_at), "dd MMM yyyy")}

@@ -147,8 +147,10 @@
       "reservationCode":"Insert reservation code",
       "validate":"Validate",
       "commments":"Comments",
-      "addTittle":"¿Te hospedaste con nosotros?",
-      "addText":"¡Tu opinión es muy importante! {br} Ayuda a otros viajeros dejando tu reseña. {br} Comparte tu experiencia y ayuda a mejorar nuestro servicio."
+      "addTittle":"Did you stay with us?",
+      "addText":"Your opinion is very important!<0/>Help other travelers by leaving your review.<0/>Share your experience and help us improve our service.",
+      "fromDate":"From",
+      "toDate":"To"
     },
   "reports":{
     "title":"Reports Dashboard",

@@ -148,7 +148,9 @@
       "validate":"Validar",
       "commments":"Comentarios",
       "addTittle":"¿Te hospedaste con nosotros?",
-      "addText":"¡Tu opinión es muy importante! {br} Ayuda a otros viajeros dejando tu reseña. {br} Comparte tu experiencia y ayuda a mejorar nuestro servicio."
+      "addText":"¡Tu opinión es muy importante!<0/>Ayuda a otros viajeros dejando tu reseña.<0/>Comparte tu experiencia y ayuda a mejorar nuestro servicio.",
+      "fromDate":"Desde",
+      "toDate":"Hasta"
   },
   "reports":{
     "title":"Panel de Reportes",
@@ -180,7 +182,7 @@
     "new":"Nueva Reserva",
     "edit":"Actualizar Reserva",
     "from":"Desde",
-    "until":"Hasta",
+    "to":"Hasta",
     "status":"Estado",
     "date_range":"Rango de Fechas",
     "viewDetails":"Ver Detalles",

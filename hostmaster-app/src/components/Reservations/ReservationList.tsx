@@ -121,14 +121,14 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     const value = e.target.value;
     setFilterCustomer(value);
 
-    const foundRoom = clients?.find((client) =>
+    const foundCustomer = clients?.find((client) =>
       client.full_name
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
         .includes(filterCustomer.toLowerCase())
     );
-    setCustomerName(foundRoom?.username ?? null);
+    setCustomerName(foundCustomer?.username ?? null);
   };
 
   const canCancelReservation = (startDateStr: string): boolean => {

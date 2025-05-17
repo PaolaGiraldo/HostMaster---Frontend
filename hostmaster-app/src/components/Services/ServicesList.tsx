@@ -1,34 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import ServiceForm from "./ServicesForm";
 import { Service } from "../../interfaces/serviceInterface";
 
 import { useTranslation } from "react-i18next";
-import { getServices } from "../../Services/serviceService";
 import { createService } from "../../Services/serviceService";
 import { updateService } from "../../Services/serviceService";
 import { deleteService } from "../../Services/serviceService";
 import ServiceTable from "./ServicesTable";
+import { useServices } from "../../hooks/useServices";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ServiceList: React.FC = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
-  const [services, setServices] = useState<Service[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState<any | null>(null);
 
-  useEffect(() => {
-    fetchServices();
-  }, []);
-
-  const fetchServices = async () => {
-    try {
-      const response = await getServices();
-      setServices(response);
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
-  };
+  const { data: services = [], isLoading, error } = useServices();
 
   const handleAddOrUpdateService = async (service: Service) => {
     try {
@@ -39,8 +29,9 @@ const ServiceList: React.FC = () => {
       }
 
       setShowForm(false);
-      fetchServices();
       setEditingService(null);
+
+      queryClient.invalidateQueries({ queryKey: ["services"] });
     } catch (error) {
       console.error("Error saving service:", error);
     }
@@ -54,11 +45,13 @@ const ServiceList: React.FC = () => {
   const handleDelete = async (id?: number) => {
     if (id === undefined) {
       console.error("Error: El ID de Service es undefined.");
+
       return;
     }
     try {
       await deleteService(id);
-      fetchServices();
+
+      queryClient.invalidateQueries({ queryKey: ["services"] });
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -66,7 +59,8 @@ const ServiceList: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2>{t("services.title")}</h2>
+      <h2 className="text-center my-4">{t("services.title")}</h2>
+
       <Button
         onClick={() => {
           setEditingService(null);
@@ -76,11 +70,22 @@ const ServiceList: React.FC = () => {
       >
         {t("services.newService")}
       </Button>
-      <ServiceTable
-        services={services}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <div className="text-center my-5">
+          <Spinner animation="border" role="status" />
+          <div>{t("loading")}</div>
+        </div>
+      ) : error ? (
+        <div className="text-center text-danger">
+          {t("accommodations.loadError")}
+        </div>
+      ) : (
+        <ServiceTable
+          services={services}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
       {/* Modal para Crear/Editar Servicios */}
       <ServiceForm
         show={showForm}

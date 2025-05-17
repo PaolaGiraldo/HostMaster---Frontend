@@ -109,7 +109,7 @@
       "description": "Description",
       "price": "Price",
       "maxCapacity": "Max Capacity",
-      "actions": "ActionsS",
+      "actions": "Actions",
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this room type?"
     },

@@ -29,17 +29,21 @@ export const useRoomInventory = (roomId: number | null) => {
 
     // Mutación para actualizar la cantidad del producto
     const updateProductMutation = useMutation({
-      mutationFn: (updateInventory: { inventoryId: number, roomInventory: RoomInventory }) => updateRoomInventory(updateInventory.inventoryId, updateInventory.roomInventory),
+      mutationFn: (updateInventory: { inventoryId: number, roomInventory: RoomInventory }) =>
+         updateRoomInventory(updateInventory.inventoryId, updateInventory.roomInventory),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey:['roomInventory', roomId]});
       },
     });
+
+
   
     const updateProductQuantity = (inventoryId: number,roomInventory: RoomInventory, quantity:number, min_quantity: number) => {
       
       roomInventory.min_quantity=min_quantity;
       roomInventory.quantity=quantity
       updateProductMutation.mutate({ inventoryId, roomInventory });
+      queryClient.invalidateQueries({ queryKey:['roomInventory', roomId]});
 
     };
   

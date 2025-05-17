@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Row, Col } from "react-bootstrap";
+import { Container, Button, Form, Row, Col, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import RoomTable from "./RoomTable";
 import RoomForm from "./RoomForm";
 import RoomTypeTable from "./RoomTypeTable";
-import { getAccommodations } from "../../Services/accommodationService";
+import { updateRoom, createRoom, deleteRoom } from "../../Services/roomService";
 import {
-  getRooms,
-  updateRoom,
-  createRoom,
-  deleteRoom,
-} from "../../Services/roomService";
-import {
-  getRoomTypes,
   createRoomType,
   updateRoomType,
   deleteRoomType,
@@ -22,75 +15,33 @@ import { Room } from "../../interfaces/roomInterface";
 import { Product } from "../../interfaces/roomProductInterface";
 import RoomProductTable from "./RoomProductTable";
 import {
-  getProducts,
   createRoomProduct,
   updateRoomProduct,
   deleteRoomProduct,
 } from "../../Services/productsService";
+import { useAccommodations } from "../../hooks/useAccommodations";
+import { useRoomTypes } from "../../hooks/useRoomTypes";
+import { useRooms } from "../../hooks/useRooms";
+import { useAvailableProducts } from "../../hooks/useAvailableProducts";
+import { useQueryClient } from "@tanstack/react-query";
 
 const RoomList: React.FC = () => {
-  const [rooms, setRooms] = useState<any[]>([]);
-  const [accommodations, setAccommodations] = useState<any[]>([]);
-  const [roomTypes, setRoomTypes] = useState<any[]>([]);
-  const [roomProducts, setRoomProducts] = useState<any[]>([]);
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const { data: rooms = [], isLoading: isLoadingRooms } = useRooms();
+  const { data: accommodations = [], isLoading: isLoadingAccommodations } =
+    useAccommodations();
+  const { data: roomTypes = [], isLoading: isLoadingRoomTypes } =
+    useRoomTypes();
+  const { data: roomProducts = [], isLoading: isLoadingRoomProducts } =
+    useAvailableProducts();
+
   const [showForm, setShowForm] = useState(false);
   const [editingRoom, setEditingRoom] = useState<any | null>(null);
   const [filterAccommodation, setFilterAccommodation] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterAvailability, setFilterAvailability] = useState("");
-
-  useEffect(() => {
-    fetchRooms();
-    fetchAccommodations();
-    fetchRoomTypes();
-    fetchProducts();
-  }, []);
-
-  const { t } = useTranslation();
-
-  const fetchRooms = async () => {
-    const response = await getRooms();
-    setRooms(response);
-  };
-
-  const fetchAccommodations = async () => {
-    const response = await getAccommodations();
-    setAccommodations(response);
-  };
-
-  const fetchRoomTypes = async () => {
-    const response = await getRoomTypes();
-    setRoomTypes(response);
-  };
-
-  const fetchProducts = async () => {
-    const response = await getProducts();
-    setRoomProducts(response);
-  };
-
-  const handleSaveRoom = async (room: Room) => {
-    try {
-      if (room.id) {
-        // Actualizar habitación existente
-        await updateRoom(room.id, room);
-      } else {
-        // Crear nueva habitación
-        await createRoom(room);
-      }
-
-      // Recargar la lista de habitaciones después de la actualización/creación
-      fetchRooms();
-      setShowForm(false);
-      setEditingRoom(false);
-    } catch (error) {
-      console.error("Error en handleSaveRoom:", error);
-    }
-  };
-
-  const handleEditRoom = (room: Room) => {
-    setEditingRoom(room);
-    setShowForm(true);
-  };
 
   const filteredRooms = rooms.filter((room) => {
     return (
@@ -104,23 +55,46 @@ const RoomList: React.FC = () => {
     );
   });
 
-  const handleDelete = async (roomId: number) => {
+  // Room
+  const handleSaveRoom = async (room: Room) => {
+    try {
+      if (room.id) {
+        // Actualizar habitación existente
+        await updateRoom(room.id, room);
+      } else {
+        // Crear nueva habitación
+        await createRoom(room);
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+
+      setShowForm(false);
+      setEditingRoom(false);
+    } catch (error) {
+      console.error("Error en handleSaveRoom:", error);
+    }
+  };
+
+  const handleDeleteRoom = async (roomId: number) => {
     try {
       if (roomId === undefined) {
         console.error("Error: El ID de Room es undefined.");
         return;
       }
       await deleteRoom(roomId); // Llamado al backend
-      setRooms(rooms.filter((rt) => rt.id !== roomId));
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
     } catch (error) {
       console.error("Error deleting room", error);
     }
   };
 
+  // RoomType
   const handleAddRoomType = async (newRoomType: RoomType) => {
     try {
-      const createdRoomType = await createRoomType(newRoomType); // Llamado al backend
-      setRoomTypes([...roomTypes, createdRoomType]); // Actualiza el estado con la respuesta del backend
+      await createRoomType(newRoomType); // Llamado al backend
+      queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
+      setShowForm(false);
+      setEditingRoom(false);
     } catch (error) {
       console.error("Error adding room type", error);
     }
@@ -133,11 +107,7 @@ const RoomList: React.FC = () => {
         return;
       }
       await updateRoomType(updatedRoomType.id, updatedRoomType);
-      setRoomTypes(
-        roomTypes.map((rt) =>
-          rt.id === updatedRoomType.id ? updatedRoomType : rt
-        )
-      );
+      queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
     } catch (error) {
       console.error("Error updating room type", error);
     }
@@ -150,16 +120,17 @@ const RoomList: React.FC = () => {
         return;
       }
       await deleteRoomType(id); // Llamado al backend
-      setRoomTypes(roomTypes.filter((rt) => rt.id !== id));
+      queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
     } catch (error) {
       console.error("Error deleting room type", error);
     }
   };
 
+  // RoomProduct
   const handleAddRoomProduct = async (newRoomProduct: Product) => {
     try {
-      const createdRoomType = await createRoomProduct(newRoomProduct); // Llamado al backend
-      setRoomProducts([...roomProducts, createdRoomType]); // Actualiza el estado con la respuesta del backend
+      await createRoomProduct(newRoomProduct); // Llamado al backend
+      queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
     } catch (error) {
       console.error("Error adding room type", error);
     }
@@ -172,11 +143,7 @@ const RoomList: React.FC = () => {
         return;
       }
       await updateRoomProduct(updatedRoomProduct.id, updatedRoomProduct);
-      setRoomProducts(
-        roomProducts.map((rp) =>
-          rp.id === updatedRoomProduct.id ? updatedRoomProduct : rp
-        )
-      );
+      queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
     } catch (error) {
       console.error("Error updating room product", error);
     }
@@ -189,11 +156,26 @@ const RoomList: React.FC = () => {
         return;
       }
       await deleteRoomProduct(id); // Llamado al backend
-      setRoomProducts(roomProducts.filter((rt) => rt.id !== id));
+      queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
     } catch (error) {
       console.error("Error deleting room product", error);
     }
   };
+
+  if (
+    isLoadingRooms ||
+    isLoadingAccommodations ||
+    isLoadingRoomTypes ||
+    isLoadingRoomProducts
+  ) {
+    return (
+      <div className="text-center my-5">
+        <h2 className="text-center my-4">{t("rooms.title")}</h2>
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
+  }
 
   return (
     <Container>
@@ -269,8 +251,11 @@ const RoomList: React.FC = () => {
         rooms={filteredRooms}
         accommodations={accommodations}
         roomTypes={roomTypes}
-        onEdit={handleEditRoom}
-        onDelete={handleDelete}
+        onEdit={(room) => {
+          setEditingRoom(room);
+          setShowForm(true);
+        }}
+        onDelete={handleDeleteRoom}
       />
       <div className="mb-5"></div>
 

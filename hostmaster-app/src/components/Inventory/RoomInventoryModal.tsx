@@ -125,7 +125,7 @@ const RoomInventoryModal: React.FC<RoomInventoryModalProps> = ({
                         variant="danger"
                         onClick={() => handleDelete(item.id!)}
                       >
-                        Eliminar
+                        {t("delete")}
                       </Button>
                     </td>
                   </tr>

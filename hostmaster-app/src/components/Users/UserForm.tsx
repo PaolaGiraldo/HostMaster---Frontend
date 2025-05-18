@@ -147,7 +147,7 @@ const UserForm: React.FC<UserFormProps> = ({
                 onChange={handleChange}
                 required
               >
-                <option value={formData.lastname}>{t("select")}</option>
+                <option value="">{t("select")}</option>
                 {userRoleList.map((role) => (
                   <option key={role.value} value={role.value}>
                     {t(role.labelKey)}

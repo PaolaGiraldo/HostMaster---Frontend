@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Spinner } from "react-bootstrap";
 import { useClients } from "../../hooks/useUsers";
 import { useTranslation } from "react-i18next";
 import CustomerTable from "./CustomerTable";
@@ -19,7 +19,7 @@ const ClientsList: React.FC = () => {
   }, []);
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const { data: clients = [], isLoading } = useClients();
+  const { data: clients = [], isLoading, error } = useClients();
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [editingClient, seteditingClient] = useState<User | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -28,10 +28,6 @@ const ClientsList: React.FC = () => {
     const response = await getAccommodations();
     setAccommodations(response);
   };
-
-  if (isLoading) {
-    return <div>Cargando clientes...</div>;
-  }
 
   const handleEditClient = async (client: User) => {
     try {
@@ -93,13 +89,23 @@ const ClientsList: React.FC = () => {
       >
         {t("clients.new")}
       </Button>
-
-      <CustomerTable
-        clients={clients}
-        accommodations={accommodations}
-        onEdit={handleEditClient}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <div className="text-center my-5">
+          <Spinner animation="border" role="status" />
+          <div>{t("loading")}</div>
+        </div>
+      ) : error ? (
+        <div className="text-center text-danger">
+          {t("accommodations.loadError")}
+        </div>
+      ) : (
+        <CustomerTable
+          clients={clients}
+          accommodations={accommodations}
+          onEdit={handleEditClient}
+          onDelete={handleDelete}
+        />
+      )}
 
       {/* Modal para Crear/Editar Servicios */}
       <CustomerForm

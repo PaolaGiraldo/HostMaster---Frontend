@@ -48,6 +48,7 @@ const CustomerTable: React.FC<ClientTableProps> = ({
               <th>{t("clients.document")}</th>
               <th>{t("clients.email")}</th>
               <th>{t("clients.reviews")}</th>
+              <th>{t("clients.bookings")}</th>
               <th>{t("actions")}</th>
             </tr>
           </thead>
@@ -65,23 +66,27 @@ const CustomerTable: React.FC<ClientTableProps> = ({
                       placement="left"
                       overlay={
                         <Popover>
-                          <Popover.Header as="h3">Reseñas</Popover.Header>
+                          <Popover.Header as="h3">
+                            {t("clients.reviews")}
+                          </Popover.Header>
                           <Popover.Body>
                             {client.reviews.map((r) => (
                               <div
                                 key={r.id}
                                 style={{ marginBottom: "0.5rem" }}
                               >
-                                <strong>Alojamiento:</strong>{" "}
+                                <strong>{t("accommodation")}:</strong>{" "}
                                 {
                                   accommodations.find(
                                     (a) => a.id === r.accommodation_id
                                   )?.name
                                 }
                                 <br />
-                                <strong>Rating:</strong> {r.rating}/5
+                                <strong>{t("reviews.rating")}:</strong>{" "}
+                                {r.rating}/5
                                 <br />
-                                <strong>Comentario:</strong> {r.comment}
+                                <strong>{t("reviews.commments")}:</strong>{" "}
+                                {r.comment}
                               </div>
                             ))}
                           </Popover.Body>
@@ -96,6 +101,7 @@ const CustomerTable: React.FC<ClientTableProps> = ({
                     "Sin reseñas"
                   )}
                 </td>
+                <td></td>
                 <td>
                   <div className="d-flex flex-column flex-md-row gap-2">
                     <Button

@@ -150,7 +150,8 @@
       "addTittle":"¿Te hospedaste con nosotros?",
       "addText":"¡Tu opinión es muy importante!<0/>Ayuda a otros viajeros dejando tu reseña.<0/>Comparte tu experiencia y ayuda a mejorar nuestro servicio.",
       "fromDate":"Desde",
-      "toDate":"Hasta"
+      "toDate":"Hasta",
+      "send": "Enviar reseña"
   },
   "reports":{
     "title":"Panel de Reportes",
@@ -175,7 +176,8 @@
     "reviews":"Reseñas",
     "username":"Nombre de Usuario",
     "firstname":"Nombre",
-    "lastname":"Apellidos"
+    "lastname":"Apellidos",
+    "bookings":"Reservas"
   },
   "reservations":{
     "title":"Reservas",

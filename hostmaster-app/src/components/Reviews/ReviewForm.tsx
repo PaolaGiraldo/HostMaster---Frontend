@@ -25,14 +25,9 @@ export const ReviewForm = ({
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [error, setError] = useState("");
 
-  const { control, handleSubmit: handleRatingSubmit } = useForm();
   const [selectedRating, setSelectedRating] = useState(0);
 
-  const handleStarClick = (value: number) => {
-    setSelectedRating(value);
-  };
-
-  const { register, handleSubmit, reset } = useForm<Review>();
+  const { control, register, handleSubmit, reset } = useForm<Review>();
 
   const validateReservation = async () => {
     try {
@@ -143,10 +138,10 @@ export const ReviewForm = ({
 
             <div className="d-flex justify-content-end">
               <Button variant="secondary" onClick={onClose} className="me-2">
-                Cancelar
+                {t("cancel")}
               </Button>
               <Button type="submit" variant="primary">
-                Enviar reseña
+                {t("cancel")}
               </Button>
             </div>
           </Form>

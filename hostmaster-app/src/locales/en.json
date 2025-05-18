@@ -150,7 +150,8 @@
       "addTittle":"Did you stay with us?",
       "addText":"Your opinion is very important!<0/>Help other travelers by leaving your review.<0/>Share your experience and help us improve our service.",
       "fromDate":"From",
-      "toDate":"To"
+      "toDate":"To",
+      "send": "Send Review"
     },
   "reports":{
     "title":"Reports Dashboard",
@@ -174,6 +175,7 @@
     "reviews":"Reviews",
     "username":"Username",
     "firstname":"First Name",
-    "lastname":"Last Name"
+    "lastname":"Last Name",
+    "bookings":"Bookings"
   }
 }

@@ -204,7 +204,9 @@ const RoomTable: React.FC<RoomTableProps> = ({
               {selectedImages.map((image, index) => (
                 <img
                   key={index}
-                  src={image}
+                  src={
+                    "http://3.85.88.149:8000/static/images/habitacion_sencilla_0.jpg"
+                  }
                   alt={`Room image ${index + 1}`}
                   className="modal-image"
                 />

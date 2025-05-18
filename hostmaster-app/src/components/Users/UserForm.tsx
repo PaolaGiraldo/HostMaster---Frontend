@@ -52,7 +52,9 @@ const UserForm: React.FC<UserFormProps> = ({
   }, [editingUser]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -104,18 +106,6 @@ const UserForm: React.FC<UserFormProps> = ({
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            {editingUser && (
-              <Form.Group controlId="username">
-                <Form.Label>{t("users.username")}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  disabled
-                  readOnly
-                />
-              </Form.Group>
-            )}
             <Form.Group controlId="firstname">
               <Form.Label>{t("users.firstname")}</Form.Label>
               <Form.Control

@@ -275,6 +275,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
               name="status"
               render={({ field }) => (
                 <Form.Select {...field} required>
+                  <option value="">{t("select")}</option>
                   {reservationStatuses.map((status) => (
                     <option key={status.value} value={status.value}>
                       {t(status.labelKey)}

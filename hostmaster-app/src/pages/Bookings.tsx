@@ -1,7 +1,7 @@
-import ReservationsPage from "../components/Reservations/ReservationsPage";
+import ReservationList from "../components/Reservations/ReservationList";
 
 const Bookings: React.FC = () => {
-  return <ReservationsPage />;
+  return <ReservationList />;
 };
 
 export default Bookings;

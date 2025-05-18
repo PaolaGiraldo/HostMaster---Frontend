@@ -189,21 +189,33 @@
     "from":"Desde",
     "to":"Hasta",
     "status":"Estado",
+    "email":"Correo",
     "date_range":"Rango de Fechas",
     "viewDetails":"Ver Detalles",
     "start_date": "Fecha inicio",
     "end_date":"Fecha fin",
     "guest_count": "Número de huéspedes",
+    "customer": "Cliente",
     "extraservices": "Servicios Adicionales",
     "observations":"Observaciones",
+    "upcoming":"Próximas Reservas",
+    "noUpcoming":"No hay Próximas Reservas",
+    "cancelled":"Reservas Canceladas",
+    "noCancelled":"No hay Reservas Canceladas",
+    "completed":"Reservas Finalizadas",
+    "noCompleted":"No hay Reservas Finalizadas",
+    "confirmCancel":"Confirmar Cancelación",
+    "confirmCancel1":"¿Estás seguro que deseas cancelar esta reserva?",
+    "cancel": "Cancelar",
     "statusOptions": {
       "pending": "Pendiente",
       "confirmed": "Confirmada",
       "cancelled": "Cancelada",
       "checkedIn": "Ingresada",
-      "checkedOut": "Finalizada",
-      "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
-    }
+      "checkedOut": "Finalizada"
+    },
+    "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
+
   },
   "users":{
     "title":"Usuarios",

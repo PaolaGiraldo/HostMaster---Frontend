@@ -84,16 +84,17 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           <Card.Title>
             <div className="d-flex justify-content-between align-items-center mb-2">
               {accommodation?.name} {room?.number}
-              {reservation.status !== "cancelled" && (
-                <Button
-                  variant="ligth"
-                  size="lg"
-                  className="me-2"
-                  onClick={() => onEdit(reservation)}
-                >
-                  <FaEdit />
-                </Button>
-              )}
+              {reservation.status !== "cancelled" &&
+                reservation.status !== "checkedOut  " && (
+                  <Button
+                    variant="ligth"
+                    size="lg"
+                    className="me-2"
+                    onClick={() => onEdit(reservation)}
+                  >
+                    <FaEdit />
+                  </Button>
+                )}
             </div>
           </Card.Title>
 
@@ -103,42 +104,48 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             {client?.full_name}
           </Card.Subtitle>
           <Card.Text>
-            <strong>Estado:</strong>{" "}
+            <strong>{t("reservations.status")}:</strong>{" "}
             {reservationStatuses
               .filter((status) => status.value === reservation.status)
               .map((status) => t(status.labelKey))}{" "}
             <br />
-            <strong>Email:</strong> {client?.email}
+            <strong>{t("reservations.email")}:</strong> {client?.email}
             <br />
           </Card.Text>
 
           <Button variant="primary" onClick={() => setShowModal(true)}>
-            Ver Detalles
+            {t("reservations.details")}
           </Button>
 
-          {reservation.status !== "cancelled" && (
-            <Button
-              variant="danger"
-              className="ms-2"
-              onClick={() => onCancel(reservation)}
-            >
-              Cancelar Reserva
-            </Button>
-          )}
+          {reservation.status !== "cancelled" &&
+            reservation.status !== "checkedOut" && (
+              <Button
+                variant="danger"
+                className="ms-2"
+                onClick={() => onCancel(reservation)}
+              >
+                {t("reservations.cancel")}
+              </Button>
+            )}
 
-          <Button
-            className="ms-2"
-            variant={reservation.status === "checkedIn" ? "warning" : "success"}
-            onClick={handleCheckInOut}
-            disabled={
-              !isTodayStartDate ||
-              !["confirmed", "checkedIn"].includes(reservation.status)
-            }
-          >
-            {reservation.status === "checkedIn"
-              ? t("Check-Out")
-              : t("Check-In")}
-          </Button>
+          {reservation.status !== "cancelled" &&
+            reservation.status !== "checkedOut" && (
+              <Button
+                className="ms-2"
+                variant={
+                  reservation.status === "checkedIn" ? "warning" : "success"
+                }
+                onClick={handleCheckInOut}
+                disabled={
+                  !isTodayStartDate ||
+                  !["confirmed", "checkedIn"].includes(reservation.status)
+                }
+              >
+                {reservation.status === "checkedIn"
+                  ? t("Check-Out")
+                  : t("Check-In")}
+              </Button>
+            )}
         </Card.Body>
       </Card>
 

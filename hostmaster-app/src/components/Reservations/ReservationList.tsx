@@ -9,7 +9,7 @@ import {
   createReservation,
   updateReservation,
 } from "../../Services/reservationService";
-import { useReservations } from "../../hooks/useReservations";
+import { useReservationsOrdered } from "../../hooks/useReservationsOrdered";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { reservationStatuses } from "../../constants/reservationStatusList";
@@ -17,15 +17,14 @@ import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRooms } from "../../hooks/useRooms";
 import { useClients } from "../../hooks/useCustomers";
 
-interface ReservationListProps {
-  reservations: Reservation[];
-}
+interface ReservationListProps {}
 
 const ReservationList: React.FC<ReservationListProps> = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: accommodations } = useAccommodations();
-  const { upcoming, completed, cancelled, isLoading } = useReservations();
+  const { upcoming, completed, cancelled, isLoading } =
+    useReservationsOrdered();
 
   const { data: rooms = [] } = useRooms();
   const { data: clients } = useClients();
@@ -189,7 +188,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
           <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("reservations.until")}
+                {t("reservations.to")}
               </Form.Label>
               <Form.Control
                 type="date"
@@ -198,7 +197,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={2}>
+          <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
                 {t("accommodation")}
@@ -216,7 +215,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
               </Form.Select>
             </Form.Group>
           </Col>
-          <Col md={2}>
+          <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>{t("room")}</Form.Label>
               <Form.Control
@@ -227,7 +226,9 @@ const ReservationList: React.FC<ReservationListProps> = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={2}>
+        </Row>
+        <Row>
+          <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
                 {t("customer")}
@@ -240,7 +241,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={2}>
+          <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
                 {t("reservations.status")}
@@ -272,7 +273,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         {/* Próximas reservas */}
         <section className="mb-5">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">📅 Próximas Reservas</h4>
+            <h4 className="mb-3">📅 {t("reservations.upcoming")}</h4>
             <button
               className="btn btn-sm btn-light"
               onClick={() => setShowUpcoming((prev) => !prev)}
@@ -284,7 +285,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
             {showUpcoming && (
               <>
                 {filteredReservations(upcoming).length === 0 ? (
-                  <p>No hay reservas próximas.</p>
+                  <p>{t("reservations.noUpcoming")}</p>
                 ) : (
                   filteredReservations(upcoming).map((res: Reservation) => (
                     <Col key={res.id}>
@@ -304,7 +305,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
         <section className="mb-5">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">✅ Reservas Finalizadas</h4>
+            <h4 className="mb-3">✅ {t("reservations.ended")}</h4>
             <button
               className="btn btn-sm btn-light"
               onClick={() => setShowCompleted((prev) => !prev)}
@@ -316,7 +317,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
             {showCompleted && (
               <>
                 {filteredReservations(completed).length === 0 ? (
-                  <p>No hay reservas finalizadas.</p>
+                  <p>{t("reservations.noCompleted")}</p>
                 ) : (
                   filteredReservations(completed).map((res) => (
                     <Col key={res.id}>
@@ -336,7 +337,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
         <section className="mb-5">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">❌ Reservas Canceladas</h4>
+            <h4 className="mb-3">❌ {t("reservations.cancelled")}</h4>
             <button
               className="btn btn-sm btn-light"
               onClick={() => setShowCancelled((prev) => !prev)}
@@ -349,7 +350,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
             {showCancelled && (
               <>
                 {filteredReservations(cancelled).length === 0 ? (
-                  <p>No hay reservas finalizadas.</p>
+                  <p>{t("reservations.noCancelled")}</p>
                 ) : (
                   filteredReservations(cancelled).map((res) => (
                     <Col key={res.id}>
@@ -381,18 +382,20 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Confirmar Cancelación</Modal.Title>
+          <Modal.Title>{t("reservations.confirmCancel")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro que deseas cancelar esta reserva?
+          {t("reservations.confirmCancel1")}
           <br />
-          <strong>Inicio:</strong> {selectedReservation?.start_date}
+          <strong>{t("reservations.start_date")}:</strong>{" "}
+          {selectedReservation?.start_date}
           <br />
-          <strong>Cliente:</strong> {selectedReservation?.user_username}
+          <strong>{t("reservations.customer")}:</strong>{" "}
+          {selectedReservation?.user_username}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowCancelModal(false)}>
-            Cerrar
+            {t("close")}
           </Button>
           <Button
             variant="danger"
@@ -403,7 +406,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
               }
             }}
           >
-            Confirmar Cancelación
+            {t("reservations.confirmCancel")}
           </Button>
         </Modal.Footer>
       </Modal>

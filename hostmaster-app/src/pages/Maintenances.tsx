@@ -1,5 +1,7 @@
+import ReservationList from "../components/Reservations/ReservationList";
+
 const Maintenances: React.FC = () => {
-  return <h1>Bienvenido al Panel de Mantenimiento</h1>;
+  return <ReservationList />;
 };
 
 export default Maintenances;

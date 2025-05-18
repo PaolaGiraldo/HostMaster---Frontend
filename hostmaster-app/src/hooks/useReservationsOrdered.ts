@@ -4,7 +4,7 @@ import { Reservation } from "../interfaces/reservationInterface";
 import { isAfter, parseISO, isBefore } from "date-fns";
 import { useMemo } from "react";
 
-export const useReservations = () => {
+export const useReservationsOrdered = () => {
   const { data: reservations = [], ...rest } = useQuery<Reservation[]>({
     queryKey: ['reservations'],
     queryFn: getReservations,
@@ -17,7 +17,7 @@ export const useReservations = () => {
     () =>
       reservations.filter(
         (r) =>
-          r.status !== 'cancelled' &&
+          r.status !== 'cancelled' && r.status !== "checkedOut" &&
           isAfter(parseISO(r.end_date), today)
       ),
     [reservations]
@@ -27,8 +27,8 @@ export const useReservations = () => {
     () =>
       reservations.filter(
         (r) =>
-          r.status !== 'cancelled' &&
-          isBefore(parseISO(r.end_date), today)
+        (r.status !== 'cancelled' && r.status == "checkedOut" ) ||
+        (r.status !== 'cancelled' &&  isBefore(parseISO(r.end_date), today))
       ),
     [reservations]
   );

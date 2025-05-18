@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
 import { getReservations } from "../../Services/reservationService";
@@ -32,9 +32,9 @@ export const ReviewForm = ({
   const validateReservation = async () => {
     try {
       const allReservations = await getReservations();
-      const found = allReservations.find(
-        (r) => r.id === Number(reservationCode)
-      );
+      const match = reservationCode.match(/^HR(\d+)TR$/i);
+      const reservationId = match ? parseInt(match[1], 10) : null;
+      const found = allReservations.find((r) => r.id === Number(reservationId));
       if (found) {
         setReservation(found);
         setError("");
@@ -61,6 +61,15 @@ export const ReviewForm = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (show) {
+      reset();
+      setReservation(null);
+      setSelectedRating(0);
+      setReservationCode("");
+    }
+  }, [show]);
+
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
@@ -72,7 +81,7 @@ export const ReviewForm = ({
             <Form.Group className="mb-3">
               <Form.Label>{t("reviews.reservationCode")}</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 value={reservationCode}
                 onChange={(e) => setReservationCode(e.target.value)}
               />
@@ -141,7 +150,7 @@ export const ReviewForm = ({
                 {t("cancel")}
               </Button>
               <Button type="submit" variant="primary">
-                {t("cancel")}
+                {t("save")}
               </Button>
             </div>
           </Form>

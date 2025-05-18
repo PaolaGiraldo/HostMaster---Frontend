@@ -4,7 +4,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import { Reservation } from "../../interfaces/reservationInterface";
-import { useClients } from "../../hooks/useUsers";
+import { useClients } from "../../hooks/useCustomers";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRoomsByAccommodation } from "../../hooks/useRoomsByAccommodation";
 import { useServices } from "../../hooks/useServices";

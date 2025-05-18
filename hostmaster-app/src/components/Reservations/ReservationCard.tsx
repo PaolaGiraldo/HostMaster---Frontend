@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Button } from "react-bootstrap";
 import { Reservation } from "../../interfaces/reservationInterface";
-import { useClients } from "../../hooks/useUsers";
+import { useClients } from "../../hooks/useCustomers";
 import { useRooms } from "../../hooks/useRooms";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import ReservationDetailModal from "./ReservationDetailModal";

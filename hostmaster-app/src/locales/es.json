@@ -204,6 +204,25 @@
       "checkedOut": "Finalizada",
       "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
     }
+  },
+  "users":{
+    "title":"Usuarios",
+    "name":"Nombre",
+    "new":"Nuevo Usuario",
+    "edit":"Editar Usuario",
+    "document":"Documento",
+    "email":"Correo Electrónico",
+    "phone":"Telefono",
+    "username":"Nombre de Usuario",
+    "firstname":"Nombre",
+    "lastname":"Apellidos",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar este usuario?",
+    "role":"Rol",
+    "roles":{
+      "admin":"Administrador",
+      "employee":"Empleado",
+      "client":"Cliente"
+    }
   }
 
 

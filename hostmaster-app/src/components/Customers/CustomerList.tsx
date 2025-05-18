@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Button, Spinner } from "react-bootstrap";
-import { useClients } from "../../hooks/useUsers";
+import { useClients } from "../../hooks/useCustomers";
 import { useTranslation } from "react-i18next";
 import CustomerTable from "./CustomerTable";
 import { User } from "../../interfaces/userInterface";
-import { getAccommodations } from "../../Services/accommodationService";
-import {
-  createClient,
-  deleteClient,
-  updateClient,
-} from "../../Services/customerService";
+import { createUser, deleteUser, updateUser } from "../../Services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
+import { useAccommodations } from "../../hooks/useAccommodations";
 
 const ClientsList: React.FC = () => {
-  useEffect(() => {
-    fetchAccommodations();
-  }, []);
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: clients = [], isLoading, error } = useClients();
-  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const { data: accommodations = [] } = useAccommodations();
+
   const [editingClient, seteditingClient] = useState<User | null>(null);
   const [showForm, setShowForm] = useState(false);
-
-  const fetchAccommodations = async () => {
-    const response = await getAccommodations();
-    setAccommodations(response);
-  };
 
   const handleEditClient = async (client: User) => {
     seteditingClient(client);
@@ -37,11 +26,10 @@ const ClientsList: React.FC = () => {
   const handleDelete = async (username: string) => {
     try {
       if (username === undefined) {
-        console.error("Error: El ID de Room es undefined.");
+        console.error("Error: El ID de Cliente es undefined.");
         return;
       }
-      console.log(username);
-      await deleteClient(username); // Llamado al backend
+      await deleteUser(username); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["clients"] });
     } catch (error) {
       console.error("Error deleting room", error);
@@ -50,16 +38,14 @@ const ClientsList: React.FC = () => {
 
   const handleAddOrUpdateClient = async (client: User) => {
     try {
-      if (client.username) {
-        await updateClient(client.username, client);
+      if (editingClient) {
+        await updateUser(client.username, client);
       } else {
-        console.log(client);
+        await createUser(client);
       }
-
       setShowForm(false);
-
-      queryClient.invalidateQueries({ queryKey: ["clients"] });
       seteditingClient(null);
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
     } catch (error) {
       console.error("Error saving service:", error);
     }

@@ -21,6 +21,7 @@ import {
   FaUsers,
   FaSignInAlt,
   FaSignOutAlt,
+  FaHouseUser,
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import logo from "../assets/hotel.svg";
@@ -89,6 +90,12 @@ const NavigationBar: React.FC = () => {
     {
       path: "/customers",
       label: "navbar.customers",
+      icon: <FaHouseUser size={30} />,
+      roles: ["admin", "manager"],
+    },
+    {
+      path: "/users",
+      label: "navbar.users",
       icon: <FaUsers size={30} />,
       roles: ["admin"],
     },

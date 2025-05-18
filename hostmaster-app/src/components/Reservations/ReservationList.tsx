@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import { reservationStatuses } from "../../constants/reservationStatusList";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRooms } from "../../hooks/useRooms";
-import { useClients } from "../../hooks/useUsers";
+import { useClients } from "../../hooks/useCustomers";
 
 interface ReservationListProps {
   reservations: Reservation[];
@@ -121,7 +121,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     const value = e.target.value;
     setFilterCustomer(value);
 
-    const foundCustomer = clients?.find((client) =>
+    const foundCustomer = clients?.find((client: { full_name: string }) =>
       client.full_name
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")

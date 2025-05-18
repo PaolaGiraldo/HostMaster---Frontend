@@ -2,7 +2,7 @@ import React from "react";
 import { Review } from "../../interfaces/reviewInterface";
 import { Card } from "react-bootstrap";
 import { format } from "date-fns";
-import { useClients } from "../../hooks/useUsers";
+import { useClients } from "../../hooks/useCustomers";
 
 interface ReviewCardProps {
   review: Review;

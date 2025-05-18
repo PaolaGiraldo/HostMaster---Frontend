@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { User } from "../../interfaces/userInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
+import { useReservationsByCustomer } from "../../hooks/useReservationsByCustomer";
 
 interface ClientTableProps {
   clients: User[];
@@ -24,6 +25,8 @@ const CustomerTable: React.FC<ClientTableProps> = ({
   const [selectedUsername, setSelectedselectedUsername] = useState<
     string | null
   >(null);
+
+  const { counts, isLoading } = useReservationsByCustomer(clients);
 
   const handleDeleteClick = (username?: string) => {
     setSelectedselectedUsername(username ?? null);
@@ -47,6 +50,7 @@ const CustomerTable: React.FC<ClientTableProps> = ({
               <th>{t("clients.name")}</th>
               <th>{t("clients.document")}</th>
               <th>{t("clients.email")}</th>
+              <th>{t("clients.phone")}</th>
               <th>{t("clients.reviews")}</th>
               <th>{t("clients.bookings")}</th>
               <th>{t("actions")}</th>
@@ -56,9 +60,9 @@ const CustomerTable: React.FC<ClientTableProps> = ({
             {clients.map((client) => (
               <tr key={client.username}>
                 <td>{client.full_name}</td>
-
                 <td>{client.document_number}</td>
                 <td>{client.email}</td>
+                <td>{client.phone_number}</td>
                 <td>
                   {client.reviews.length > 0 ? (
                     <OverlayTrigger
@@ -101,7 +105,9 @@ const CustomerTable: React.FC<ClientTableProps> = ({
                     "Sin reseñas"
                   )}
                 </td>
-                <td></td>
+                <td>
+                  {counts[client.username] ?? 0} {t("clients.bookings")}
+                </td>
                 <td>
                   <div className="d-flex flex-column flex-md-row gap-2">
                     <Button

@@ -171,13 +171,16 @@
     "title":"Clientes",
     "name":"Nombre",
     "new":"Nuevo Cliente",
+    "edit":"Editar Cliente",
     "document":"Documento",
     "email":"Correo Electrónico",
+    "phone":"Telefono",
     "reviews":"Reseñas",
     "username":"Nombre de Usuario",
     "firstname":"Nombre",
     "lastname":"Apellidos",
-    "bookings":"Reservas"
+    "bookings":"Reservas",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar este cliente?"
   },
   "reservations":{
     "title":"Reservas",

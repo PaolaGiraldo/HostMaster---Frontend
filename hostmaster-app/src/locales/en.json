@@ -169,13 +169,16 @@
   "clients":{
     "title":"Customers",
     "name":"Name",
-    "new":"New",
+    "new":"New Customer",
+    "edit":"Edit Customer",
     "document":"Document",
     "email":"Email",
+    "phone":"Phone",
     "reviews":"Reviews",
     "username":"Username",
     "firstname":"First Name",
     "lastname":"Last Name",
-    "bookings":"Bookings"
+    "bookings":"Bookings",
+    "confirmDelete": "Are you sure you want to delete this customer?"
   }
 }

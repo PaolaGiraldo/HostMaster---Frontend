@@ -10,6 +10,7 @@ export interface User {
     lastname: string
     full_name: string
     document_number: string
+    phone_number: string
     image?: string | null
     reviews: Review[]
     accommodation_ids?: number[]

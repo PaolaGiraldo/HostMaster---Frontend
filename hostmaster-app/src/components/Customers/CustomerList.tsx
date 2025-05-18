@@ -9,7 +9,7 @@ import {
   createClient,
   deleteClient,
   updateClient,
-} from "../../Services/userService";
+} from "../../Services/customerService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 
@@ -30,18 +30,8 @@ const ClientsList: React.FC = () => {
   };
 
   const handleEditClient = async (client: User) => {
-    try {
-      if (client.username === undefined) {
-        console.error("Error: El username es undefined.");
-        return;
-      }
-      console.log(client);
-      await updateClient(client.username, client);
-      seteditingClient(client);
-      setShowForm(true);
-    } catch (error) {
-      console.error("Error updating room type", error);
-    }
+    seteditingClient(client);
+    setShowForm(true);
   };
 
   const handleDelete = async (username: string) => {
@@ -61,8 +51,7 @@ const ClientsList: React.FC = () => {
   const handleAddOrUpdateClient = async (client: User) => {
     try {
       if (client.username) {
-        console.log(client);
-        await createClient(client);
+        await updateClient(client.username, client);
       } else {
         console.log(client);
       }

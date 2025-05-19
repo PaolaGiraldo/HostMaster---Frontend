@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Button, Spinner } from "react-bootstrap";
+import { Button, Spinner, Col, Form, Row } from "react-bootstrap";
 import { useClients } from "../../hooks/useCustomers";
 import { useTranslation } from "react-i18next";
 import CustomerTable from "./CustomerTable";
@@ -8,6 +8,7 @@ import { createUser, deleteUser, updateUser } from "../../Services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 import { useAccommodations } from "../../hooks/useAccommodations";
+import { userRoleList } from "../../constants/userRolesList";
 
 const CustomersList: React.FC = () => {
   const { t } = useTranslation();
@@ -17,6 +18,16 @@ const CustomersList: React.FC = () => {
 
   const [editingClient, seteditingClient] = useState<User | null>(null);
   const [showForm, setShowForm] = useState(false);
+
+  const [filterName, setFilterName] = useState("");
+  const [filterDocument, setFilterDocument] = useState("");
+  const [filterEmail, setFilterEmail] = useState("");
+
+  const handleClearFilters = () => {
+    setFilterName("");
+    setFilterDocument("");
+    setFilterEmail("");
+  };
 
   const handleEditClient = async (client: User) => {
     seteditingClient(client);
@@ -51,8 +62,21 @@ const CustomersList: React.FC = () => {
     }
   };
 
+  const filteredClients = clients?.filter((client) => {
+    return (
+      (!filterName ||
+        client.full_name
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .includes(filterName.toLowerCase())) &&
+      (!filterDocument || client.document_number.startsWith(filterDocument)) &&
+      (!filterEmail || client.email.startsWith(filterEmail))
+    );
+  });
+
   return (
-    <Container>
+    <div className="container mt-4">
       <h2 className="text-center my-4">{t("clients.title")}</h2>
 
       <Button
@@ -64,23 +88,75 @@ const CustomersList: React.FC = () => {
       >
         {t("clients.new")}
       </Button>
-      {isLoading ? (
-        <div className="text-center my-5">
-          <Spinner animation="border" role="status" />
-          <div>{t("loading")}</div>
-        </div>
-      ) : error ? (
-        <div className="text-center text-danger">
-          {t("accommodations.loadError")}
-        </div>
-      ) : (
-        <CustomerTable
-          clients={clients}
-          accommodations={accommodations}
-          onEdit={handleEditClient}
-          onDelete={handleDelete}
-        />
-      )}
+
+      <Form>
+        <Row>
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("clients.name")}
+              </Form.Label>
+              <Form.Control
+                type="text"
+                value={filterName}
+                onChange={(e) => setFilterName(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("clients.document")}
+              </Form.Label>
+              <Form.Control
+                type="number"
+                value={filterDocument}
+                onChange={(e) => setFilterDocument(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("clients.email")}
+              </Form.Label>
+              <Form.Control
+                type="text"
+                value={filterEmail}
+                onChange={(e) => setFilterEmail(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+
+          <Col className="text-end">
+            <Button variant="secondary" onClick={handleClearFilters}>
+              {t("clearFilters")}
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+
+      <div className="container py-4">
+        {isLoading ? (
+          <div className="text-center my-5">
+            <Spinner animation="border" role="status" />
+            <div>{t("loading")}</div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-danger">
+            {t("accommodations.loadError")}
+          </div>
+        ) : (
+          <CustomerTable
+            clients={filteredClients}
+            accommodations={accommodations}
+            onEdit={handleEditClient}
+            onDelete={handleDelete}
+          />
+        )}
+      </div>
 
       {/* Modal para Crear/Editar Servicios */}
       <CustomerForm
@@ -89,7 +165,7 @@ const CustomersList: React.FC = () => {
         onSave={handleAddOrUpdateClient}
         editingClient={editingClient}
       />
-    </Container>
+    </div>
   );
 };
 

@@ -93,7 +93,7 @@ const UsersList: React.FC = () => {
           <Col md={3}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("reservations.status")}
+                {t("users.role")}
               </Form.Label>
               <Form.Select
                 value={filterRole}
@@ -111,11 +111,10 @@ const UsersList: React.FC = () => {
           <Col md={4}>
             <Form.Group>
               <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("Usuario")}
+                {t("clients.name")}
               </Form.Label>
               <Form.Control
                 type="text"
-                placeholder={t("clients.name")}
                 value={filterName}
                 onChange={(e) => setFilterName(e.target.value)}
               />

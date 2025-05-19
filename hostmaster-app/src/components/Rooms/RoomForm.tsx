@@ -22,13 +22,16 @@ const RoomForm: React.FC<RoomFormProps> = ({
   roomTypes,
   editingRoom,
 }) => {
+  const { t } = useTranslation();
   const [number, setRoomNumber] = useState("");
   const [accommodation_id, setAccommodationId] = useState(0);
   const [type_id, setType] = useState(0);
   const [isAvailable, setIsAvailable] = useState(true);
-  const [images, setImages] = useState<string | null>(null);
   const [price, setPrice] = useState(0);
   const [info, setInfo] = useState("");
+
+  const [images, setImages] = useState<File[] | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[] | null>(null);
 
   useEffect(() => {
     if (editingRoom) {
@@ -50,17 +53,22 @@ const RoomForm: React.FC<RoomFormProps> = ({
   }, [editingRoom]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      setImages(filesArray);
+
+      const previews = filesArray.map((file) => URL.createObjectURL(file));
+      setImagePreviews(previews);
     }
   };
 
   const handleSubmit = () => {
+    const formData = new FormData();
+
+    images?.forEach((img, index) => {
+      formData.append("images[]", img);
+    });
+
     onSave({
       id: editingRoom?.id,
       number,
@@ -69,13 +77,10 @@ const RoomForm: React.FC<RoomFormProps> = ({
       price,
       info,
       isAvailable,
-      images: [],
       inventory_items: [],
     });
     onHide();
   };
-
-  const { t } = useTranslation();
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -149,20 +154,25 @@ const RoomForm: React.FC<RoomFormProps> = ({
           <Form.Group>
             <Form.Label>{t("image")}</Form.Label>
             <Form.Control
-              placeholder="Mobile number or email address"
+              placeholder="Room Images"
               type="file"
               accept="image/*"
+              multiple
               onChange={handleImageChange}
             />
-            {images && (
-              <img
-                src={images}
-                alt={t("availability")}
-                width={100}
-                height={100}
-                className="mt-2"
-              />
-            )}
+            <div className="d-flex flex-wrap gap-2 mt-2">
+              {imagePreviews?.map((src, index) => (
+                <img
+                  key={index}
+                  src={src}
+                  alt={t("images")}
+                  width={100}
+                  height={100}
+                  className="mt-2"
+                  style={{ objectFit: "cover" }}
+                />
+              ))}
+            </div>
           </Form.Group>
         </Form>
       </Modal.Body>

@@ -8,7 +8,7 @@ export interface Room {
     number: string;
     price: number;
     info: string;
-    images: Image[];
+    images?: Image[];
     isAvailable: boolean;
     inventory_items: RoomInventory[];
   }

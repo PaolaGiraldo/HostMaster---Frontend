@@ -69,11 +69,7 @@ const ReportDashboard: React.FC = ({}) => {
                     <p className="mb-4">
                       {t("reports.availabilityDescription")}
                     </p>
-                    <div className="my-4">
-                      <AvailabilityHeatmap
-                        accommodationId={selectedAccommodationId}
-                      />
-                    </div>
+                    <div className="my-4"></div>
                   </Accordion.Body>
                 </Accordion.Item>
 

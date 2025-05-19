@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Card, Container, Row, Col, Form, Accordion } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OccupancyChart from "./OccupancyChart";
-import AvailabilityHeatmap from "./AvailabilityHeatmap";
 import InventoryPieChart from "./InventoryPieChart";
-import RevenueLineChart from "./RevenueLineChart";
 import ReviewSummary from "./ReviewSummary";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { DateRangeSelector } from "./DateRangeSelector";
 import { DateRangeProvider } from "../../context/DateRangeContext";
+import RevenueByWeekDayChart from "./RevenueByWeekDayChart";
 
 const ReportDashboard: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -91,7 +90,7 @@ const ReportDashboard: React.FC = ({}) => {
                   <Accordion.Body>
                     <p className="mb-4">{t("reports.revenueDescription")}</p>
                     <div className="my-4">
-                      <RevenueLineChart
+                      <RevenueByWeekDayChart
                         accommodationId={selectedAccommodationId}
                       />
                     </div>

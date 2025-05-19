@@ -1,4 +1,4 @@
-import { Bar, Chart } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   BarElement,
@@ -8,7 +8,6 @@ import {
   Legend,
   LineElement,
   PointElement,
-  Interaction,
 } from "chart.js";
 import { useOccupancyReport } from "../../hooks/useOccupancyReport";
 import { useDateRange } from "../../context/DateRangeContext";
@@ -25,23 +24,23 @@ ChartJS.register(
 
 const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
   const { range } = useDateRange();
-  const { data, isLoading } = useOccupancyReport(
+  const { data: occupancy, isLoading } = useOccupancyReport(
     accommodationId,
     range.startDate,
     range.endDate
   );
 
   if (isLoading) return <p className="text-muted">Cargando reservas...</p>;
-  if (!data)
+  if (!occupancy)
     return <p className="text-danger">No se pudo cargar el reporte.</p>;
 
   const chartData = {
-    labels: data.occupancy_data.map((item) => item.date),
+    labels: occupancy.occupancy_data.map((item) => item.date),
     datasets: [
       {
         type: "bar",
         label: "Habitaciones Ocupadas",
-        data: data.occupancy_data.map((item) => item.occupied_rooms),
+        data: occupancy.occupancy_data.map((item) => item.occupied_rooms),
         backgroundColor: "#60c4ab",
         borderRadius: 5,
       },
@@ -49,7 +48,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
       {
         type: "line",
         label: "Tasa de ocupación",
-        data: data.occupancy_data.map((item) => item.occupancy_rate),
+        data: occupancy.occupancy_data.map((item) => item.occupancy_rate),
         borderColor: "#ff6384",
         borderWidth: 2,
         fill: false,

@@ -197,6 +197,7 @@
     "guest_count": "Número de huéspedes",
     "customer": "Cliente",
     "extraservices": "Servicios Adicionales",
+    "details":"Detalles",
     "observations":"Observaciones",
     "upcoming":"Próximas Reservas",
     "noUpcoming":"No hay Próximas Reservas",
@@ -236,6 +237,30 @@
       "admin":"Administrador",
       "employee":"Empleado",
       "client":"Cliente"
+    }
+  },
+  "maintenances":{
+    "title":"Mantenimientos",
+    "new":"Programar Mantenimiento",    
+    "edit":"Editar Mantenimiento",
+    "roomNumber": "Número de Habitación",
+    "responsible":"Responsable",
+    "created":"Creado",
+    "from":"Desde",
+    "to":"Hasta",
+    "updated":"Actualizado",
+    "description":"Descripción",
+    "priority":"Prioridad",
+    "status":"Estado",
+    "statusOptions": {
+      "pending": "Pendiente",
+      "inProgress": "En Progreso",
+      "completed": "Completado"
+    },
+    "priorityOptions": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta"
     }
   }
 

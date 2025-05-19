@@ -270,6 +270,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
             </Col>
           </Row>
         </Form>
+
         {isLoading ? (
           <div className="text-center my-5">
             <Spinner animation="border" role="status" />

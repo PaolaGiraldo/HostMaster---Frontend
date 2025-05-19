@@ -19,6 +19,15 @@ export const getClients = async () => {
       }
   };
 
+  export const getStaff = async () => {
+    try {
+    const response = await adminApi.get("/users");
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
 export const createUser = async (user: User): Promise<User> => {
   const formData = new FormData()
   formData.append("username", user.username);

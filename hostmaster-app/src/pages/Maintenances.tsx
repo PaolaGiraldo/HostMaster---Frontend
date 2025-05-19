@@ -1,7 +1,7 @@
-import ReservationList from "../components/Reservations/ReservationList";
+import MaintenanceList from "../components/Maintenances/MaintenancesList";
 
 const Maintenances: React.FC = () => {
-  return <ReservationList />;
+  return <MaintenanceList />;
 };
 
 export default Maintenances;

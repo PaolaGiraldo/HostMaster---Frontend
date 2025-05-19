@@ -5,8 +5,6 @@ import { useTranslation } from "react-i18next";
 import { RoomType } from "../../interfaces/roomTypeInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { Room } from "../../interfaces/roomInterface";
-import { uploadRoomImages } from "./UploadImages";
-import { createRoom, updateRoom } from "../../Services/roomService";
 
 interface RoomFormProps {
   show: boolean;

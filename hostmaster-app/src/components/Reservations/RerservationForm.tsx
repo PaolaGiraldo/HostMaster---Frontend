@@ -12,16 +12,13 @@ import { Service } from "../../interfaces/serviceInterface";
 import DatePicker from "react-datepicker";
 import { format, parseISO } from "date-fns";
 import { reservationStatuses } from "../../constants/reservationStatusList";
+import { unlinkService } from "../../Services/reservationExtraServicesService";
 
 interface ReservationFormProps {
   show: boolean;
   onHide: () => void;
   onSave: (data: Reservation) => void;
   editingReservation?: Reservation | null;
-}
-
-interface SelectedService extends Service {
-  quantity: number;
 }
 
 type ReservationFormValues = Reservation & {
@@ -40,11 +37,8 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   const { data: clients } = useClients();
   const { data: accommodations } = useAccommodations();
   const { data: services } = useServices();
-  const [selectedServices, setSelectedServices] = useState<SelectedService[]>(
-    []
-  );
+  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [serviceToAdd, setServiceToAdd] = useState<number | "">("");
-  const [quantityToAdd, setQuantityToAdd] = useState<number>(1);
 
   const {
     control,
@@ -84,7 +78,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
       });
       setSelectedServices([]);
       setServiceToAdd("");
-      setQuantityToAdd(1);
     }
   }, [show, reset]);
 
@@ -94,7 +87,13 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   };
 
   const onSubmit = (data: ReservationFormValues) => {
-    (data.id = editingReservation?.id), onSave(data);
+    const newServices = getNewServices(
+      selectedServices,
+      editingReservation?.extra_services || []
+    );
+    (data.id = editingReservation?.id), (data.extra_services = newServices);
+
+    onSave(data);
 
     handleClose();
   };
@@ -103,22 +102,32 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   const { data: rooms } = useRoomsByAccommodation(selectedAccommodation);
 
   const handleAddService = () => {
-    if (!serviceToAdd || quantityToAdd < 1) return;
+    if (!serviceToAdd) return;
 
-    const found = services?.find((s: Service) => s.id === serviceToAdd);
-    if (found && !selectedServices.some((s) => s.id === serviceToAdd)) {
-      const updated = [
-        ...selectedServices,
-        { ...found, quantity: quantityToAdd },
-      ];
-      setSelectedServices(updated);
-      setValue("extra_services", updated);
-      setServiceToAdd("");
-      setQuantityToAdd(1);
+    const service = services?.find((s) => s.id === serviceToAdd);
+    const alreadySelected = selectedServices.some((s) => s.id === serviceToAdd);
+
+    if (!service) {
+      console.warn("Servicio no encontrado");
+      return;
     }
+
+    if (alreadySelected) {
+      console.info("El servicio ya está seleccionado");
+      return;
+    }
+
+    const updatedServices = [...selectedServices, service];
+    setSelectedServices(updatedServices);
+    setValue("extra_services", updatedServices); // react-hook-form
+    setServiceToAdd("");
   };
 
-  const handleRemoveService = (id: number) => {
+  const handleRemoveService = async (id: number) => {
+    if (editingReservation) {
+      await unlinkService(editingReservation.id!, id);
+    }
+
     const updated = selectedServices.filter((s) => s.id !== id);
     setSelectedServices(updated);
     setValue("extra_services", updated);
@@ -127,6 +136,14 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
   const availableServices = services?.filter(
     (s: Service) => !selectedServices.some((sel) => sel.id === s.id)
   );
+
+  const getNewServices = (
+    selected: Service[],
+    existing: Service[]
+  ): Service[] => {
+    const existingIds = new Set(existing.map((s) => s.id));
+    return selected.filter((s) => !existingIds.has(s.id));
+  };
 
   useEffect(() => {
     if (editingReservation) {
@@ -137,15 +154,14 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         status: editingReservation.status,
         observations: editingReservation.observations,
         user_username: editingReservation.user_username,
-        extra_services: editingReservation.extra_services,
       });
+      setSelectedServices(editingReservation.extra_services || []);
       const start = parseISO(editingReservation.start_date); // sin cambio de día
       const end = parseISO(editingReservation.end_date);
 
       setValue("date_range", [start, end]);
       setValue("start_date", format(start, "yyyy-MM-dd"));
       setValue("end_date", format(end, "yyyy-MM-dd"));
-    } else {
     }
   }, [editingReservation, reset]);
 
@@ -285,38 +301,23 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             />
           </Form.Group>
 
-          <Form.Group>
-            <Form.Label>{t("reservations.extraservices")}</Form.Label>
-          </Form.Group>
-
-          <Button variant={"outline-primary"} size="sm">
-            <span className="d-none d-md-inline"> servicios adicionales</span>
-          </Button>
-
           <Form.Group className="mt-3">
-            <Form.Label>Servicios adicionales</Form.Label>
+            <Form.Label>{t("reservations.extraservices")}</Form.Label>
             <div className="d-flex gap-2 mb-2">
               <Form.Select
                 value={serviceToAdd}
                 onChange={(e) => setServiceToAdd(Number(e.target.value))}
               >
-                <option value="">Selecciona un servicio</option>
+                <option value="">{t("reservations.selectService")}</option>
                 {availableServices?.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>
                 ))}
               </Form.Select>
-              <Form.Control
-                type="number"
-                min={1}
-                value={quantityToAdd}
-                onChange={(e) => setQuantityToAdd(Number(e.target.value))}
-                placeholder="Cantidad"
-                style={{ maxWidth: "100px" }}
-              />
+
               <Button variant="success" onClick={handleAddService}>
-                Agregar
+                {t("reservations.add")}
               </Button>
             </div>
 
@@ -326,15 +327,13 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
                   key={s.id}
                   className="d-flex justify-content-between align-items-center border p-2 mb-1"
                 >
-                  <span>
-                    {s.name} - <strong>{s.quantity} unidad(es)</strong>
-                  </span>
+                  <span>{s.name}</span>
                   <Button
                     variant="danger"
                     size="sm"
                     onClick={() => handleRemoveService(s.id!)}
                   >
-                    Eliminar
+                    {t("delete")}
                   </Button>
                 </div>
               ))}

@@ -9,7 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 import { useAccommodations } from "../../hooks/useAccommodations";
 
-const ClientsList: React.FC = () => {
+const CustomersList: React.FC = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: clients = [], isLoading, error } = useClients();
@@ -93,4 +93,4 @@ const ClientsList: React.FC = () => {
   );
 };
 
-export default ClientsList;
+export default CustomersList;

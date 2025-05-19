@@ -4,7 +4,7 @@ import { FaCheck, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { User } from "../../interfaces/userInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
-import { useReservationsByCustomer } from "../../hooks/useReservationsByCustomer";
+import { userRoleList } from "../../constants/userRolesList";
 
 interface UserTableProps {
   users: User[];
@@ -63,7 +63,11 @@ const CustomerTable: React.FC<UserTableProps> = ({
                 <td>{user.document_number}</td>
                 <td>{user.email}</td>
                 <td>{user.phone_number}</td>
-                <td>{user.role}</td>
+                <td>
+                  {userRoleList
+                    .filter((role) => role.value === user.role)
+                    .map((role) => t(role.labelKey))}
+                </td>
                 <td>
                   {!user.disabled ? (
                     <FaCheck color="green" />

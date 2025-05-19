@@ -207,6 +207,8 @@
     "confirmCancel":"Confirmar Cancelación",
     "confirmCancel1":"¿Estás seguro que deseas cancelar esta reserva?",
     "cancel": "Cancelar",
+    "add": "Agregaar",
+    "selectService":"Selecciona un servicio",
     "statusOptions": {
       "pending": "Pendiente",
       "confirmed": "Confirmada",

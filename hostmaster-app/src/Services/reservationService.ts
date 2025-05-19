@@ -10,7 +10,7 @@ import { Reservation} from "../interfaces/reservationInterface";
     }
   };
 
-  export const createReservation = async (reservation: Reservation): Promise<Reservation[]> => {
+  export const createReservation = async (reservation: Reservation): Promise<Reservation> => {
     try {
       const response = await hotelApi.post("/reservations", reservation);
       return response.data;
@@ -19,10 +19,9 @@ import { Reservation} from "../interfaces/reservationInterface";
     }
   };
 
-  export const updateReservation = async (id: number,reservation: Reservation): Promise<Reservation[]> => {
+  export const updateReservation = async (id: number,reservation: Reservation): Promise<Reservation> => {
     try {
       const response = await hotelApi.patch(`/reservations/${id}`, reservation);
-      console.log(response)
       return response.data;
     } catch (error) {
       throw error;

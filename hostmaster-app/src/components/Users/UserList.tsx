@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Container, Button, Spinner, Form, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Spinner, Form, Col, Row } from "react-bootstrap";
 
 import { useTranslation } from "react-i18next";
 import CustomerTable from "./UserTable";
@@ -20,7 +20,6 @@ const UsersList: React.FC = () => {
 
   const [filterRole, setFilterRole] = useState("");
   const [filterName, setFilterName] = useState("");
-  const [userName, setUserName] = useState<string | null>(null);
 
   const handleClearFilters = () => {
     setFilterName("");
@@ -40,7 +39,6 @@ const UsersList: React.FC = () => {
         console.error("Error: El ID de Room es undefined.");
         return;
       }
-      console.log(username);
       await deleteUser(username); // Llamado al backend
       queryUser.invalidateQueries({ queryKey: ["users"] });
     } catch (error) {
@@ -49,7 +47,6 @@ const UsersList: React.FC = () => {
   };
 
   const handleAddOrUpdateUser = async (user: User) => {
-    console.log(user.role);
     try {
       if (editingUser) {
         await updateUser(user.username, user);

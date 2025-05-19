@@ -39,7 +39,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
       {accommodation.images.length > 0 && (
         <Card.Img
           variant="top"
-          src={`${serverUrl}/${accommodation.images[0].url}`}
+          src={`${serverUrl}${accommodation.images[0].url}`}
           alt={accommodation.name}
           style={{ cursor: "pointer", height: "200px", objectFit: "cover" }}
           onClick={() => setShowModal(true)}
@@ -115,7 +115,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
             {accommodation.images.map((image, index) => (
               <Carousel.Item key={index}>
                 <img
-                  src={`${serverUrl}/${image.url}`}
+                  src={`${serverUrl}${image.url}`}
                   alt={`${t("image")} ${index + 1}`}
                   style={{ width: "100%" }}
                 />

@@ -16,6 +16,7 @@ import { reservationStatuses } from "../../constants/reservationStatusList";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRooms } from "../../hooks/useRooms";
 import { useClients } from "../../hooks/useCustomers";
+import { linkMultipleServices } from "../../Services/reservationExtraServicesService";
 
 interface ReservationListProps {}
 
@@ -23,7 +24,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data: accommodations } = useAccommodations();
-  const { upcoming, completed, cancelled, isLoading } =
+  const { upcoming, completed, cancelled, isLoading, error } =
     useReservationsOrdered();
 
   const { data: rooms = [] } = useRooms();
@@ -60,28 +61,27 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     setShowReservationForm(true);
   };
 
-  const [loading, setLoading] = useState(false);
-
   const handleSaveReservation = async (reservation: Reservation) => {
     try {
-      if (reservation.id) {
-        await updateReservation(reservation.id, reservation);
-        queryClient.invalidateQueries({ queryKey: ["reservations"] });
-        setShowReservationForm(false);
-        setEditingReservation(null);
-      } else {
-        await createReservation(reservation);
-        queryClient.invalidateQueries({ queryKey: ["reservations"] });
-        setShowReservationForm(false);
+      const savedReservation = reservation.id
+        ? await updateReservation(reservation.id!, reservation)
+        : await createReservation(reservation);
+
+      if (reservation.extra_services.length > 0) {
+        await linkMultipleServices(
+          savedReservation.id!,
+          reservation.extra_services
+        );
       }
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
+      setShowReservationForm(false);
+      setEditingReservation(null);
 
       // Recargar la lista de reservas después de la actualización/creación
     } catch (error: any) {
       console.error("Error en handleSaveRoom:", error);
       const msg = error?.response?.data?.detail || "Error al guardar reserva";
       toast.error(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -158,216 +158,228 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     setEditingReservation(null); // ✅ Limpiar la reserva en edición
   };
 
-  if (isLoading) return <Spinner animation="border" />;
   return (
-    <div className="container mt-4">
-      <h2 className="text-center my-4">{t("reservations.title")}</h2>
+    <>
+      <div className="container mt-4">
+        <h2 className="text-center my-4">{t("reservations.title")}</h2>
 
-      <Button
-        variant="primary"
-        className="mb-3"
-        onClick={() => setShowReservationForm(true)}
-      >
-        {t("reservations.new")}
-      </Button>
+        <Button
+          variant="primary"
+          className="mb-3"
+          onClick={() => setShowReservationForm(true)}
+        >
+          {t("reservations.new")}
+        </Button>
 
-      <Form className="mb-3">
-        <Row>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("reservations.from")}
-              </Form.Label>
-              <Form.Control
-                type="date"
-                value={filterDateFrom}
-                onChange={(e) => setFilterDateFrom(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("reservations.to")}
-              </Form.Label>
-              <Form.Control
-                type="date"
-                value={filterDateTo}
-                onChange={(e) => setFilterDateTo(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("accommodation")}
-              </Form.Label>
-              <Form.Select
-                value={filterAccommodation}
-                onChange={(e) => setFilterAccommodation(e.target.value)}
-              >
-                <option value="">{t("all1")}</option>
-                {accommodations?.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>{t("room")}</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={t("rooms.roomNumber")}
-                value={filterRoom}
-                onChange={handleRoomChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("customer")}
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={t("clients.name")}
-                value={filterCustomer}
-                onChange={handleClientChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={3}>
-            <Form.Group>
-              <Form.Label style={{ color: "#FFFFFF" }}>
-                {t("reservations.status")}
-              </Form.Label>
-              <Form.Select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-              >
-                <option value="">{t("all1")}</option>
-                {reservationStatuses.map((status) => (
-                  <option key={status.value} value={status.value}>
-                    {t(status.labelKey)}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col className="text-end">
-            <Button variant="secondary" onClick={handleClearFilters}>
-              {t("clearFilters")}
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-
-      <div className="container py-4">
-        {/* Próximas reservas */}
-        <section className="mb-5">
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">📅 {t("reservations.upcoming")}</h4>
-            <button
-              className="btn btn-sm btn-light"
-              onClick={() => setShowUpcoming((prev) => !prev)}
-            >
-              {showUpcoming ? "▲" : "▼"}
-            </button>
-          </div>
-          <Row xs={1} sm={2} md={2} className="g-4">
-            {showUpcoming && (
-              <>
-                {filteredReservations(upcoming).length === 0 ? (
-                  <p>{t("reservations.noUpcoming")}</p>
-                ) : (
-                  filteredReservations(upcoming).map((res: Reservation) => (
-                    <Col key={res.id}>
-                      <ReservationCard
-                        key={res.id}
-                        reservation={res}
-                        onCancel={handleCancelReservation}
-                        onEdit={handleEditReservation}
-                      />
-                    </Col>
-                  ))
-                )}
-              </>
-            )}
+        <Form className="mb-3">
+          <Row>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("reservations.from")}
+                </Form.Label>
+                <Form.Control
+                  type="date"
+                  value={filterDateFrom}
+                  onChange={(e) => setFilterDateFrom(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("reservations.to")}
+                </Form.Label>
+                <Form.Control
+                  type="date"
+                  value={filterDateTo}
+                  onChange={(e) => setFilterDateTo(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("accommodation")}
+                </Form.Label>
+                <Form.Select
+                  value={filterAccommodation}
+                  onChange={(e) => setFilterAccommodation(e.target.value)}
+                >
+                  <option value="">{t("all1")}</option>
+                  {accommodations?.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("room")}
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={t("rooms.roomNumber")}
+                  value={filterRoom}
+                  onChange={handleRoomChange}
+                />
+              </Form.Group>
+            </Col>
           </Row>
-        </section>
-
-        <section className="mb-5">
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">✅ {t("reservations.ended")}</h4>
-            <button
-              className="btn btn-sm btn-light"
-              onClick={() => setShowCompleted((prev) => !prev)}
-            >
-              {showCompleted ? "▲" : "▼"}
-            </button>
-          </div>
-          <Row xs={1} sm={2} md={2} className="g-4">
-            {showCompleted && (
-              <>
-                {filteredReservations(completed).length === 0 ? (
-                  <p>{t("reservations.noCompleted")}</p>
-                ) : (
-                  filteredReservations(completed).map((res) => (
-                    <Col key={res.id}>
-                      <ReservationCard
-                        key={res.id}
-                        reservation={res}
-                        onCancel={handleCancelReservation}
-                        onEdit={handleEditReservation}
-                      />
-                    </Col>
-                  ))
-                )}
-              </>
-            )}
+          <Row>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("customer")}
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={t("clients.name")}
+                  value={filterCustomer}
+                  onChange={handleClientChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={3}>
+              <Form.Group>
+                <Form.Label style={{ color: "#FFFFFF" }}>
+                  {t("reservations.status")}
+                </Form.Label>
+                <Form.Select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="">{t("all1")}</option>
+                  {reservationStatuses.map((status) => (
+                    <option key={status.value} value={status.value}>
+                      {t(status.labelKey)}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
           </Row>
-        </section>
-
-        <section className="mb-5">
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <h4 className="mb-3">❌ {t("reservations.cancelled")}</h4>
-            <button
-              className="btn btn-sm btn-light"
-              onClick={() => setShowCancelled((prev) => !prev)}
-            >
-              {showCancelled ? "▲" : "▼"}
-            </button>
-          </div>
-
-          <Row xs={1} sm={2} md={2} className="g-4">
-            {showCancelled && (
-              <>
-                {filteredReservations(cancelled).length === 0 ? (
-                  <p>{t("reservations.noCancelled")}</p>
-                ) : (
-                  filteredReservations(cancelled).map((res) => (
-                    <Col key={res.id}>
-                      <ReservationCard
-                        key={res.id}
-                        reservation={res}
-                        onCancel={handleCancelReservation}
-                        onEdit={handleEditReservation}
-                      />
-                    </Col>
-                  ))
-                )}
-              </>
-            )}
+          <Row className="mt-3">
+            <Col className="text-end">
+              <Button variant="secondary" onClick={handleClearFilters}>
+                {t("clearFilters")}
+              </Button>
+            </Col>
           </Row>
-        </section>
+        </Form>
+        {isLoading ? (
+          <div className="text-center my-5">
+            <Spinner animation="border" role="status" />
+            <div>{t("loading")}</div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-danger">
+            {t("accommodations.loadError")}
+          </div>
+        ) : (
+          <div className="container py-4">
+            {/* Próximas reservas */}
+            <section className="mb-5">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h4 className="mb-3">📅 {t("reservations.upcoming")}</h4>
+                <button
+                  className="btn btn-sm btn-light"
+                  onClick={() => setShowUpcoming((prev) => !prev)}
+                >
+                  {showUpcoming ? "▲" : "▼"}
+                </button>
+              </div>
+              <Row xs={1} sm={2} md={2} className="g-4">
+                {showUpcoming && (
+                  <>
+                    {filteredReservations(upcoming).length === 0 ? (
+                      <p>{t("reservations.noUpcoming")}</p>
+                    ) : (
+                      filteredReservations(upcoming).map((res: Reservation) => (
+                        <Col key={res.id}>
+                          <ReservationCard
+                            key={res.id}
+                            reservation={res}
+                            onCancel={handleCancelReservation}
+                            onEdit={handleEditReservation}
+                          />
+                        </Col>
+                      ))
+                    )}
+                  </>
+                )}
+              </Row>
+            </section>
 
+            <section className="mb-5">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h4 className="mb-3">✅ {t("reservations.ended")}</h4>
+                <button
+                  className="btn btn-sm btn-light"
+                  onClick={() => setShowCompleted((prev) => !prev)}
+                >
+                  {showCompleted ? "▲" : "▼"}
+                </button>
+              </div>
+              <Row xs={1} sm={2} md={2} className="g-4">
+                {showCompleted && (
+                  <>
+                    {filteredReservations(completed).length === 0 ? (
+                      <p>{t("reservations.noCompleted")}</p>
+                    ) : (
+                      filteredReservations(completed).map((res) => (
+                        <Col key={res.id}>
+                          <ReservationCard
+                            key={res.id}
+                            reservation={res}
+                            onCancel={handleCancelReservation}
+                            onEdit={handleEditReservation}
+                          />
+                        </Col>
+                      ))
+                    )}
+                  </>
+                )}
+              </Row>
+            </section>
+
+            <section className="mb-5">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h4 className="mb-3">❌ {t("reservations.cancelled")}</h4>
+                <button
+                  className="btn btn-sm btn-light"
+                  onClick={() => setShowCancelled((prev) => !prev)}
+                >
+                  {showCancelled ? "▲" : "▼"}
+                </button>
+              </div>
+
+              <Row xs={1} sm={2} md={2} className="g-4">
+                {showCancelled && (
+                  <>
+                    {filteredReservations(cancelled).length === 0 ? (
+                      <p>{t("reservations.noCancelled")}</p>
+                    ) : (
+                      filteredReservations(cancelled).map((res) => (
+                        <Col key={res.id}>
+                          <ReservationCard
+                            key={res.id}
+                            reservation={res}
+                            onCancel={handleCancelReservation}
+                            onEdit={handleEditReservation}
+                          />
+                        </Col>
+                      ))
+                    )}
+                  </>
+                )}
+              </Row>
+            </section>
+          </div>
+        )}
         <ReservationForm
           show={showReservationForm}
           onHide={handleCloseReservationForm}
@@ -410,7 +422,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 export default ReservationList;

@@ -1,7 +1,7 @@
-import ClientsList from "../components/Customers/CustomerList";
+import CustomersList from "../components/Customers/CustomerList";
 
 const Customers: React.FC = () => {
-  return <ClientsList />;
+  return <CustomersList />;
 };
 
 export default Customers;

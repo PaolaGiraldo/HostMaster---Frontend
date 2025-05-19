@@ -191,7 +191,10 @@ export default ClientForm;
 
 function generateUsername(firstname: string, lastname: string): string {
   const random = Math.floor(Math.random() * 1000);
-  return `${firstname.charAt(0)}${lastname}`.toLowerCase() + random;
+  return (
+    `${firstname.split(" ")[0]}_${lastname.split(" ")[0]}`.toLowerCase() +
+    random
+  );
 }
 
 function generatePassword(length = 10): string {

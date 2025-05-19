@@ -46,11 +46,22 @@ const RoomForm: React.FC<RoomFormProps> = ({
         price: editingRoom.price,
         //setImages(editingRoom.images[0].url || null);
       });
-    } else {
-      reset();
-      setImagePreviews([]);
     }
   }, [editingRoom, reset]);
+
+  useEffect(() => {
+    if (!show) {
+      reset({
+        number: "",
+        accommodation_id: 0,
+        type_id: 0,
+        isAvailable: true,
+        price: 0,
+        //setImages(editingRoom.images[0].url || null);
+      });
+      setImagePreviews([]);
+    }
+  }, [show, reset]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -60,7 +71,8 @@ const RoomForm: React.FC<RoomFormProps> = ({
     setImagePreviews(previewArray);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (data: Room) => {
+    console.log(data);
     const formData = new FormData();
 
     images?.forEach((img, index) => {
@@ -76,14 +88,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={() => {
-        onHide();
-        reset();
-        setImagePreviews([]);
-      }}
-    >
+    <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>
           {editingRoom ? t("rooms.editRoom") : t("rooms.newRoom")}
@@ -150,60 +155,47 @@ const RoomForm: React.FC<RoomFormProps> = ({
           </Form.Group>
 
           <Form.Group>
-            <Form.Label>{t("availability")}</Form.Label>
             <Controller
               control={control}
-              name="availability"
+              name="isAvailable"
               render={({ field }) => (
-                <Form.Control
+                <Form.Check
                   type="checkbox"
+                  label={t("available")}
                   defaultChecked
+                  checked={field.value}
                   {...field}
                   required
                 />
               )}
             />
           </Form.Group>
-          {/* 
-
 
           <Form.Group>
-            <Form.Label>{t("availability")}</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label={t("available")}
-              {...register("isAvailable")}
-              defaultChecked
+            <Form.Label>{t("images")}</Form.Label>
+            <Controller
+              control={control}
+              name="images"
+              defaultValue={[]}
+              render={({ field, fieldState }) => (
+                <>
+                  <Form.Control
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    isInvalid={!!fieldState.error}
+                  />
+                  {fieldState.error && (
+                    <Form.Control.Feedback type="invalid">
+                      {fieldState.error.message}
+                    </Form.Control.Feedback>
+                  )}
+                </>
+              )}
             />
           </Form.Group>
 
-          <Form.Group>
-            <Form.Label>{t("image")}</Form.Label>
-            <Form.Control
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-            />
-            <div className="d-flex flex-wrap gap-2 mt-2">
-              {imagePreviews.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`Preview ${i}`}
-                  width={100}
-                  height={100}
-                  style={{ objectFit: "cover" }}
-                />
-              ))}
-            </div>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>{t("info")}</Form.Label>
-            <Form.Control as="textarea" {...register("info")} rows={3} />
-          </Form.Group>
- */}
           <Modal.Footer>
             <Button
               variant="secondary"

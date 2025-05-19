@@ -9,5 +9,5 @@ export interface Room {
     price: number;
     images?: Image[];
     isAvailable: boolean;
-    inventory_items: RoomInventory[];
+    inventory_items?: RoomInventory[];
   }

@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import { RoomType } from "../../interfaces/roomTypeInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { Room } from "../../interfaces/roomInterface";
+import { uploadRoomImages } from "./UploadImages";
+import { createRoom, updateRoom } from "../../Services/roomService";
 
 interface RoomFormProps {
   show: boolean;
@@ -23,6 +25,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
   roomTypes,
   editingRoom,
 }) => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const { t } = useTranslation();
 
   const [images, setImages] = useState<File[]>([]);
@@ -44,9 +47,16 @@ const RoomForm: React.FC<RoomFormProps> = ({
         type_id: editingRoom.type_id,
         isAvailable: editingRoom.isAvailable,
         price: editingRoom.price,
-        //setImages(editingRoom.images[0].url || null);
       });
     }
+
+    // Cargar URLs de imágenes existentes
+    if (editingRoom?.images && editingRoom.images.length > 0) {
+      const existingPreviews = editingRoom.images.map((img) => img.url);
+      setImagePreviews(existingPreviews);
+    } // Limpiar imágenes nuevas
+
+    setImages([]);
   }, [editingRoom, reset]);
 
   useEffect(() => {
@@ -57,7 +67,6 @@ const RoomForm: React.FC<RoomFormProps> = ({
         type_id: 0,
         isAvailable: true,
         price: 0,
-        //setImages(editingRoom.images[0].url || null);
       });
       setImagePreviews([]);
     }
@@ -65,20 +74,42 @@ const RoomForm: React.FC<RoomFormProps> = ({
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setValue("images", files);
+    setImages((prev) => [...prev, ...files]); // acumula imágenes nuevas
 
-    const previewArray = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews(previewArray);
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prev) => [...prev, ...newPreviews]); // acumula vistas previas
   };
 
-  const onSubmit = (data: Room) => {
-    console.log(data);
-    const formData = new FormData();
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imagePreviews]);
 
-    images?.forEach((img, index) => {
-      formData.append("images[]", img);
-    });
-    handleClose();
+  const onSubmit = async (data: any) => {
+    const roomData: Room = {
+      number: data.number,
+      accommodation_id: data.accommodation_id,
+      type_id: data.type_id,
+      isAvailable: data.isAvailable,
+      price: data.price,
+      id: editingRoom?.id,
+    };
+
+    try {
+      const savedRoom = editingRoom
+        ? await updateRoom(editingRoom.id!, roomData)
+        : await createRoom(roomData);
+
+      if (images.length > 0) {
+        await uploadRoomImages(savedRoom.id!, images);
+      }
+
+      onSave(savedRoom);
+      handleClose();
+    } catch (error) {
+      console.error("Error al guardar o actualizar la habitación:", error);
+    }
   };
 
   const handleClose = () => {
@@ -100,7 +131,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
             <Form.Label>{t("rooms.roomNumber")}</Form.Label>
             <Controller
               control={control}
-              name="roomNumber"
+              name="number"
               render={({ field }) => (
                 <Form.Control type="text" {...field} required />
               )}
@@ -113,7 +144,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
               control={control}
               name="accommodation_id"
               render={({ field }) => (
-                <Form.Select {...field} required disabled={!!editingRoom}>
+                <Form.Select {...field} required>
                   <option value="">{t("select")}</option>
                   {accommodations?.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -163,7 +194,6 @@ const RoomForm: React.FC<RoomFormProps> = ({
                   type="checkbox"
                   label={t("available")}
                   defaultChecked
-                  checked={field.value}
                   {...field}
                   required
                 />
@@ -176,7 +206,6 @@ const RoomForm: React.FC<RoomFormProps> = ({
             <Controller
               control={control}
               name="images"
-              defaultValue={[]}
               render={({ field, fieldState }) => (
                 <>
                   <Form.Control
@@ -186,10 +215,24 @@ const RoomForm: React.FC<RoomFormProps> = ({
                     onChange={handleImageChange}
                     isInvalid={!!fieldState.error}
                   />
-                  {fieldState.error && (
-                    <Form.Control.Feedback type="invalid">
-                      {fieldState.error.message}
-                    </Form.Control.Feedback>
+
+                  {imagePreviews.length > 0 && (
+                    <div className="mt-2 d-flex flex-wrap gap-2">
+                      {" "}
+                      {imagePreviews.map((src, index) => (
+                        <img
+                          key={index}
+                          src={`${serverUrl}${src}`}
+                          alt={`preview-${index}`}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ))}
+                       {" "}
+                    </div>
                   )}
                 </>
               )}
@@ -197,14 +240,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
           </Form.Group>
 
           <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                onHide();
-                reset();
-                setImagePreviews([]);
-              }}
-            >
+            <Button variant="secondary" onClick={handleClose}>
               {t("cancel")}
             </Button>
             <Button variant="primary" type="submit">

@@ -3,6 +3,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { useLocation } from "../../context/LocationContext";
+import { createAccommodation } from "../../Services/accommodationService";
+import { uploadAccommodationImages } from "./UploadImages";
 
 interface AccommodationFormProps {
   show: boolean;
@@ -17,11 +19,15 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
   onSave,
   editingAccommodation,
 }) => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const { t } = useTranslation();
   const { countries, states, cities } = useLocation();
 
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null);
   const [selectedState, setSelectedState] = useState<number | null>(null);
+
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [formState, setFormState] = useState<Accommodation>({
     name: "",
@@ -51,6 +57,19 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
         if (selectedStateObj) {
           setSelectedCountry(selectedStateObj.country_id);
         }
+
+        if (
+          editingAccommodation.images &&
+          editingAccommodation.images.length > 0
+        ) {
+          const existingPreviews = editingAccommodation.images.map(
+            (img: { url: any }) => img.url
+          );
+          setImagePreviews(existingPreviews);
+        }
+
+        // Limpiar imágenes nuevas
+        setImages([]);
       }
     } else {
       setFormState({
@@ -62,6 +81,8 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
         rooms: [],
       });
       setSelectedCountry(null);
+      setImages([]);
+      setImagePreviews([]);
     }
   }, [editingAccommodation, cities]);
 
@@ -88,20 +109,41 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
     setFormState({ ...formState, city_id: Number(e.target.value) });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setImages((prev) => [...prev, ...files]);
+
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formState);
-    onHide();
-    setFormState({
-      name: "",
-      address: "",
-      city_id: 0,
-      information: "",
-      images: [],
-      rooms: [],
-    });
-    setSelectedState(null);
-    setSelectedCountry(null);
+
+    try {
+      const createdAccommodation = await createAccommodation(formState); // tu función API
+
+      if (images.length > 0) {
+        await uploadAccommodationImages(createdAccommodation.id!, images);
+      }
+
+      onSave(createdAccommodation);
+      onHide();
+      setFormState({
+        name: "",
+        address: "",
+        city_id: 0,
+        information: "",
+        images: [],
+        rooms: [],
+      });
+      setSelectedState(null);
+      setSelectedCountry(null);
+      setImages([]);
+      setImagePreviews([]);
+    } catch (error) {
+      console.error("Error al guardar el alojamiento:", error);
+    }
   };
 
   return (
@@ -206,6 +248,34 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
               required
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>{t("accommodations.images")}</Form.Label>
+            <Form.Control
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </Form.Group>
+
+          {imagePreviews.length > 0 && (
+            <div className="mt-2 d-flex flex-wrap gap-2">
+              {" "}
+              {imagePreviews.map((src, index) => (
+                <img
+                  key={index}
+                  src={`${serverUrl}${src}`}
+                  alt={`preview-${index}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ))}{" "}
+            </div>
+          )}
 
           <div className="d-flex justify-content-end mt-3">
             <Button variant="secondary" onClick={onHide}>

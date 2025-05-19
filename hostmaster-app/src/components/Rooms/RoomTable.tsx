@@ -128,11 +128,11 @@ const RoomTable: React.FC<RoomTableProps> = ({
                     "N/A"}
                 </td>
                 <td>
-                  {room.images.length > 0 ? (
+                  {room.images!.length > 0 ? (
                     <Button
                       variant="primary"
                       size="sm"
-                      onClick={() => openImageModal(room.images)}
+                      onClick={() => openImageModal(room.images!)}
                     >
                       {t("showImages")}
                     </Button>
@@ -205,7 +205,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
               {selectedImages.map((image, index) => (
                 <img
                   key={index}
-                  src={`${serverUrl}/${image}`}
+                  src={`${serverUrl}${image}`}
                   alt={`Room image ${index + 1}`}
                   className="modal-image"
                 />

@@ -9,7 +9,7 @@ import { uploadAccommodationImages } from "./UploadImages";
 interface AccommodationFormProps {
   show: boolean;
   onHide: () => void;
-  onSave: (accommodation: Accommodation) => void;
+  onSave: (accommodation: Accommodation, images: File[]) => void;
   editingAccommodation?: any;
 }
 
@@ -120,30 +120,20 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const createdAccommodation = await createAccommodation(formState); // tu función API
-
-      if (images.length > 0) {
-        await uploadAccommodationImages(createdAccommodation.id!, images);
-      }
-
-      onSave(createdAccommodation);
-      onHide();
-      setFormState({
-        name: "",
-        address: "",
-        city_id: 0,
-        information: "",
-        images: [],
-        rooms: [],
-      });
-      setSelectedState(null);
-      setSelectedCountry(null);
-      setImages([]);
-      setImagePreviews([]);
-    } catch (error) {
-      console.error("Error al guardar el alojamiento:", error);
-    }
+    onSave(formState, images);
+    onHide();
+    setFormState({
+      name: "",
+      address: "",
+      city_id: 0,
+      information: "",
+      images: [],
+      rooms: [],
+    });
+    setSelectedState(null);
+    setSelectedCountry(null);
+    setImages([]);
+    setImagePreviews([]);
   };
 
   return (

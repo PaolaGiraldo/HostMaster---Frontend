@@ -24,6 +24,7 @@ import { useRoomTypes } from "../../hooks/useRoomTypes";
 import { useRooms } from "../../hooks/useRooms";
 import { useAvailableProducts } from "../../hooks/useAvailableProducts";
 import { useQueryClient } from "@tanstack/react-query";
+import { uploadRoomImages } from "./UploadImages";
 
 const RoomList: React.FC = () => {
   const { t } = useTranslation();
@@ -56,14 +57,14 @@ const RoomList: React.FC = () => {
   });
 
   // Room
-  const handleSaveRoom = async (room: Room) => {
+  const handleSaveRoom = async (room: Room, images: File[]) => {
     try {
-      if (room.id) {
-        // Actualizar habitación existente
-        await updateRoom(room.id, room);
-      } else {
-        // Crear nueva habitación
-        await createRoom(room);
+      const savedRoom = room.id
+        ? await updateRoom(editingRoom.id!, room)
+        : await createRoom(room);
+
+      if (images.length > 0) {
+        await uploadRoomImages(savedRoom.id!, images);
       }
 
       queryClient.invalidateQueries({ queryKey: ["rooms"] });

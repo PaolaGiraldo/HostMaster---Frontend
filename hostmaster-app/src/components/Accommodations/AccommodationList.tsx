@@ -11,6 +11,8 @@ import {
   updateAccommodation,
 } from "../../Services/accommodationService";
 import { useAccommodationsComplete } from "../../hooks/useAccommodationsComplete";
+import { uploadAccommodationImages } from "./UploadImages";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AccommodationList: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -26,19 +28,26 @@ const AccommodationList: React.FC = () => {
   } = useAccommodationsComplete();
 
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const handleEditAccommodation = (accommodation: any) => {
     setEditingAccommodation(accommodation);
     setShowForm(true);
   };
 
-  const handleSaveAccommodation = async (accommodation: Accommodation) => {
+  const handleSaveAccommodation = async (
+    accommodation: Accommodation,
+    images: File[]
+  ) => {
     try {
-      if (accommodation.id) {
-        await updateAccommodation(accommodation.id, accommodation);
-      } else {
-        await createAccommodation(accommodation);
+      const savedAccommodation = accommodation.id
+        ? await updateAccommodation(accommodation.id!, accommodation)
+        : await createAccommodation(accommodation);
+
+      if (images.length > 0) {
+        await uploadAccommodationImages(savedAccommodation.id!, images);
       }
+      queryClient.invalidateQueries({ queryKey: ["accommodationsComplete"] });
       setShowForm(false);
       setEditingAccommodation(null);
       refetch();

@@ -11,7 +11,7 @@ import { createRoom, updateRoom } from "../../Services/roomService";
 interface RoomFormProps {
   show: boolean;
   onHide: () => void;
-  onSave: (room: Room) => void;
+  onSave: (room: Room, images: File[]) => void;
   accommodations: Accommodation[];
   roomTypes: RoomType[];
   editingRoom?: Room;
@@ -96,20 +96,8 @@ const RoomForm: React.FC<RoomFormProps> = ({
       id: editingRoom?.id,
     };
 
-    try {
-      const savedRoom = editingRoom
-        ? await updateRoom(editingRoom.id!, roomData)
-        : await createRoom(roomData);
-
-      if (images.length > 0) {
-        await uploadRoomImages(savedRoom.id!, images);
-      }
-
-      onSave(savedRoom);
-      handleClose();
-    } catch (error) {
-      console.error("Error al guardar o actualizar la habitación:", error);
-    }
+    onSave(roomData, images);
+    handleClose();
   };
 
   const handleClose = () => {

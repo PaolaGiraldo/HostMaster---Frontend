@@ -97,7 +97,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     (data.id = editingReservation?.id), onSave(data);
 
     handleClose();
-    reset();
   };
 
   const selectedAccommodation = watch("accommodation_id");

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RoomType } from "../../interfaces/roomTypeInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
@@ -23,180 +24,203 @@ const RoomForm: React.FC<RoomFormProps> = ({
   editingRoom,
 }) => {
   const { t } = useTranslation();
-  const [number, setRoomNumber] = useState("");
-  const [accommodation_id, setAccommodationId] = useState(0);
-  const [type_id, setType] = useState(0);
-  const [isAvailable, setIsAvailable] = useState(true);
-  const [price, setPrice] = useState(0);
-  const [info, setInfo] = useState("");
 
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
   useEffect(() => {
     if (editingRoom) {
-      setRoomNumber(editingRoom.number);
-      setAccommodationId(editingRoom.accommodation_id);
-      setType(editingRoom.type_id);
-      setIsAvailable(editingRoom.isAvailable);
-      setPrice(editingRoom.price);
-      //setImages(editingRoom.images[0].url || null);
-      setInfo(editingRoom.info);
+      reset({
+        number: editingRoom.number,
+        accommodation_id: editingRoom.accommodation_id,
+        type_id: editingRoom.type_id,
+        isAvailable: editingRoom.isAvailable,
+        price: editingRoom.price,
+        //setImages(editingRoom.images[0].url || null);
+      });
     } else {
-      setRoomNumber("");
-      setAccommodationId(0);
-      setType(0);
-      setPrice(0);
-      //setIsAvailable(true);
-      setImages([]);
+      reset();
       setImagePreviews([]);
     }
-  }, [editingRoom]);
+  }, [editingRoom, reset]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const filesArray = Array.from(files);
-      setImages(filesArray);
+    const files = Array.from(e.target.files || []);
+    setValue("images", files);
 
-      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
-      setImagePreviews(previewArray);
-    }
+    const previewArray = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(previewArray);
   };
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
     const formData = new FormData();
 
     images?.forEach((img, index) => {
       formData.append("images[]", img);
     });
-
-    onSave({
-      id: editingRoom?.id,
-      number,
-      accommodation_id,
-      type_id,
-      price,
-      info,
-      isAvailable,
-      inventory_items: [],
-    });
-    onHide();
+    handleClose();
   };
 
   const handleClose = () => {
-    setRoomNumber("");
-    setAccommodationId(0);
-    setType(0);
-    setPrice(0);
-    setIsAvailable(false);
-    setImages([]);
     setImagePreviews([]);
+    reset();
     onHide();
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal
+      show={show}
+      onHide={() => {
+        onHide();
+        reset();
+        setImagePreviews([]);
+      }}
+    >
       <Modal.Header closeButton>
         <Modal.Title>
           {editingRoom ? t("rooms.editRoom") : t("rooms.newRoom")}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Form.Group>
             <Form.Label>{t("rooms.roomNumber")}</Form.Label>
-            <Form.Control
-              type="text"
-              value={number}
-              onChange={(e) => setRoomNumber(e.target.value)}
-              required
+            <Controller
+              control={control}
+              name="roomNumber"
+              render={({ field }) => (
+                <Form.Control type="text" {...field} required />
+              )}
             />
           </Form.Group>
+
           <Form.Group>
             <Form.Label>{t("accommodation")}</Form.Label>
-            <Form.Select
-              value={accommodation_id}
-              onChange={(e) => setAccommodationId(Number(e.target.value))}
-              required
-            >
-              <option value="">{t("select")}</option>
-              {accommodations.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>{t("type")}</Form.Label>
-            <Form.Select
-              value={type_id}
-              onChange={(e) => setType(Number(e.target.value))}
-              required
-            >
-              <option value="">{t("select")}</option>
-              {roomTypes.map((rt) => (
-                <option key={rt.name} value={rt.id}>
-                  {rt.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group controlId="price">
-            <Form.Label>{t("price")}</Form.Label>
-            <Form.Control
-              type="number"
-              name="price"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              required
-              min="0"
+            <Controller
+              control={control}
+              name="accommodation_id"
+              render={({ field }) => (
+                <Form.Select {...field} required disabled={!!editingRoom}>
+                  <option value="">{t("select")}</option>
+                  {accommodations?.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              )}
             />
           </Form.Group>
+
+          <Form.Group>
+            <Form.Label>{t("type")}</Form.Label>
+            <Controller
+              control={control}
+              name="type_id"
+              render={({ field }) => (
+                <Form.Select {...field} required>
+                  <option value="">{t("select")}</option>
+                  {roomTypes.map((rt) => (
+                    <option key={rt.id} value={rt.id}>
+                      {rt.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              )}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>{t("price")}</Form.Label>
+            <Controller
+              control={control}
+              name="price"
+              render={({ field }) => (
+                <Form.Control type="number" min={0} {...field} required />
+              )}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>{t("availability")}</Form.Label>
+            <Controller
+              control={control}
+              name="availability"
+              render={({ field }) => (
+                <Form.Control
+                  type="checkbox"
+                  defaultChecked
+                  {...field}
+                  required
+                />
+              )}
+            />
+          </Form.Group>
+          {/* 
+
 
           <Form.Group>
             <Form.Label>{t("availability")}</Form.Label>
             <Form.Check
               type="checkbox"
               label={t("available")}
-              checked={isAvailable}
-              onChange={(e) => setIsAvailable(e.target.checked)}
+              {...register("isAvailable")}
+              defaultChecked
             />
           </Form.Group>
+
           <Form.Group>
             <Form.Label>{t("image")}</Form.Label>
             <Form.Control
-              placeholder="Room Images"
               type="file"
               accept="image/*"
               multiple
               onChange={handleImageChange}
             />
             <div className="d-flex flex-wrap gap-2 mt-2">
-              {imagePreviews?.map((src, index) => (
+              {imagePreviews.map((src, i) => (
                 <img
-                  key={index}
+                  key={i}
                   src={src}
-                  alt={t("images")}
+                  alt={`Preview ${i}`}
                   width={100}
                   height={100}
-                  className="mt-2"
                   style={{ objectFit: "cover" }}
                 />
               ))}
             </div>
           </Form.Group>
+
+          <Form.Group>
+            <Form.Label>{t("info")}</Form.Label>
+            <Form.Control as="textarea" {...register("info")} rows={3} />
+          </Form.Group>
+ */}
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                onHide();
+                reset();
+                setImagePreviews([]);
+              }}
+            >
+              {t("cancel")}
+            </Button>
+            <Button variant="primary" type="submit">
+              {editingRoom ? t("update") : t("save")}
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          {t("cancel")}
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          {editingRoom ? t("update") : t("save")}
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };

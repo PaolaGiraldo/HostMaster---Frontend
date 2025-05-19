@@ -10,7 +10,7 @@ import { useRoomsByAccommodation } from "../../hooks/useRoomsByAccommodation";
 import { useServices } from "../../hooks/useServices";
 import { Service } from "../../interfaces/serviceInterface";
 import DatePicker from "react-datepicker";
-import { format, parseISO, set } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { reservationStatuses } from "../../constants/reservationStatusList";
 
 interface ReservationFormProps {

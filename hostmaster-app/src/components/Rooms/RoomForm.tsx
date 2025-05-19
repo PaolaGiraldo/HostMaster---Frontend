@@ -30,8 +30,8 @@ const RoomForm: React.FC<RoomFormProps> = ({
   const [price, setPrice] = useState(0);
   const [info, setInfo] = useState("");
 
-  const [images, setImages] = useState<File[] | null>(null);
-  const [imagePreviews, setImagePreviews] = useState<string[] | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     if (editingRoom) {
@@ -48,17 +48,19 @@ const RoomForm: React.FC<RoomFormProps> = ({
       setType(0);
       setPrice(0);
       //setIsAvailable(true);
-      setImages(null);
+      setImages([]);
+      setImagePreviews([]);
     }
   }, [editingRoom]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const filesArray = Array.from(files);
       setImages(filesArray);
 
-      const previews = filesArray.map((file) => URL.createObjectURL(file));
-      setImagePreviews(previews);
+      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
+      setImagePreviews(previewArray);
     }
   };
 
@@ -82,8 +84,19 @@ const RoomForm: React.FC<RoomFormProps> = ({
     onHide();
   };
 
+  const handleClose = () => {
+    setRoomNumber("");
+    setAccommodationId(0);
+    setType(0);
+    setPrice(0);
+    setIsAvailable(false);
+    setImages([]);
+    setImagePreviews([]);
+    onHide();
+  };
+
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           {editingRoom ? t("rooms.editRoom") : t("rooms.newRoom")}
@@ -177,7 +190,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={handleClose}>
           {t("cancel")}
         </Button>
         <Button variant="primary" onClick={handleSubmit}>

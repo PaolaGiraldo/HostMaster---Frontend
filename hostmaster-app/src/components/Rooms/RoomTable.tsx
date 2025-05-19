@@ -24,6 +24,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
   const [filterAvailability] = useState<string>("");
@@ -204,9 +205,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
               {selectedImages.map((image, index) => (
                 <img
                   key={index}
-                  src={
-                    "http://3.85.88.149:8000/static/images/habitacion_sencilla_0.jpg"
-                  }
+                  src={`${serverUrl}/${image}`}
                   alt={`Room image ${index + 1}`}
                   className="modal-image"
                 />

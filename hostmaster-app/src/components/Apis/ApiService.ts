@@ -1,15 +1,15 @@
 import axios from "axios";
 
 // URL base del backend
-const BASE_API_URL = "http://3.85.88.149:8000"; // o usar variable de entorno
+const baseUrl = import.meta.env.VITE_SERVER_URL; 
 
 // Token (puedes cargarlo desde localStorage o variables de entorno si es dinámico)
-const AUTH_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0NzY3NjcxMX0.k_-2rA1s-wAZPjmICA_Agx3REw1CuEZj_DRVW71y3dI";
+const AUTH_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0NzcwMDk0N30.tei23TJR-BWSgygq0HNCltU8N4-3KOacXlrsB9oGAcI";
 
 // Crear una función que genere instancias de Axios
 const createApiService = (prefix: "admin" | "hotel") => {
   const instance = axios.create({
-    baseURL: `${BASE_API_URL}/${prefix}`,
+    baseURL: `${baseUrl}/${prefix}`,
     headers: {
       "Content-Type": "application/json",
       "Authorization": AUTH_TOKEN,

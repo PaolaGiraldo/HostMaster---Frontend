@@ -111,7 +111,10 @@
       "maxCapacity": "Capacidad máxima",
       "actions": "Acciones",
       "save": "Guardar",
-      "confirmDelete": "¿Estás seguro de que deseas eliminar este tipo de habitación?"
+      "confirmDelete": "¿Estás seguro de que deseas eliminar este tipo de habitación?",
+      "sencilla": "Sencilla",
+      "doble": "Doble",
+      "familiar": "Familiar"
    },
   "services": {
       "title": "Servicios Adicionales",
@@ -170,6 +173,7 @@
     "bookedRooms": "Habitaciones Reservadas",
     "occupancyRate": "Tasa de Ocupación",
     "estimatedRevenue": "Ingresos Estimados",
+    "summary": "Resumen de Gestión",
     "occupancyDescription":"Este reporte muestra el número de habitaciones ocupadas por día en el rango de fechas seleccionado. Permite identificar picos de ocupación, temporadas altas y días con baja demanda.",
     "availabilityDescription":"Este reporte muestra la disponibilidad diaria de habitaciones en el alojamiento seleccionado durante el rango de fechas indicado. Permite identificar rápidamente los días con mayor o menor disponibilidad, ayudando a optimizar la gestión de reservas y anticipar períodos de alta demanda.",
     "inventoryDescription":"Visualiza el estado actual del inventario por habitación, incluyendo productos disponibles y aquellos que han alcanzado su mínimo permitido. Es útil para mantener el control logístico del alojamiento.",
@@ -177,7 +181,20 @@
     "revenueDescription":"Este reporte presenta los ingresos promedio estimados para un alojamiento dentro del rango de fechas seleccionado. La gráfica permite visualizar tendencias de facturación, identificar picos de ingresos y evaluar el rendimiento económico del alojamiento en períodos específicos.",
     "reviewsDescription":"Este reporte ofrece un resumen de las reseñas realizadas  por los huéspedes, incluyendo el promedio de calificaciones, distribución de puntuaciones y comentarios  destacados. Permite evaluar la satisfacción del cliente y detectar oportunidades de mejora en la experiencia del alojamiento.",
     "maintenancesDescription":"Este reporte ofrece un resumen de las tareas de mantenimiento pendientes o en progreso para un alojamiento.",
-    "performanceDescription":"Este reporte ofrece un resumen de las tareas de mantenimiento pendientes o en progreso para un alojamiento."
+    "performanceDescription":"Este reporte ofrece un resumen de las tareas de mantenimiento pendientes o en progreso para un alojamiento.",
+    "summaryDescription": "Presenta un resumen de métricas como ocupación, ingresos por tipo de habitación, servicios adicionales, reservas y mantenimientos para el alojamiento seleccionado durante el rango de fechas indicado.",
+    "summaryTitle": "Resumen de Gestión",
+    "avgOccupiedRooms": "Habitaciones ocupadas (promedio)",
+    "byRoomType": "Ocupación por tipo de habitación",
+    "totalRevenue": "Ingreso total",
+    "dailyRevenue": "Ingreso diario promedio",
+    "revenueByRoomType": "Ingreso por tipo de habitación",
+    "extraServicesPerRoom": "Servicios extra por habitación",
+    "extraServiceRevenue": "Ingreso por servicios extra",
+    "reservationsAndMaintenance": "Reservas y Mantenimiento",
+    "confirmedReservations": "Reservas confirmadas",
+    "cancelledReservations": "Reservas canceladas",
+    "maintenanceIncidents": "Incidentes de mantenimiento" 
   },
   "clients":{
     "title":"Clientes",

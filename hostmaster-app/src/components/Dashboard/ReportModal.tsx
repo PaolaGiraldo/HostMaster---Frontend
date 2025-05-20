@@ -16,7 +16,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
   children,
 }) => {
   return (
-    <Modal show={show} onHide={onHide} size="xl" centered backdrop="static">
+    <Modal show={show} onHide={onHide} size="xl" centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

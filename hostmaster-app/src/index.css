@@ -358,11 +358,10 @@ button:hover {
 
 .chart-container{
   background-color: #ffffff;
-  padding: 7px;
+  padding: 5px;
   height: "100%";
   width: "100%";
   color: #3a3a3a;
-  overflow-y: auto;
 
 }
 

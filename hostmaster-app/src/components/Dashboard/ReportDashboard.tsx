@@ -10,6 +10,7 @@ import RevenueChart from "./Charts/RevenueChart";
 import PerformanceChart from "./Charts/PerformanceChart";
 import MaintenanceStackedChart from "./Charts/MaintenanceStackedChart ";
 import ReportModal from "./ReportModal";
+import ReviewSummary from "./ReviewSummary";
 
 const ReportDashboard: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -169,7 +170,11 @@ const ReportDashboard: React.FC = ({}) => {
                   )
                 }
               >
-                <Card.Body>
+                <Card.Body
+                  style={{
+                    overflowX: "auto",
+                  }}
+                >
                   <Card.Title>{t("reports.revenue")}</Card.Title>
                   <Card.Text>{t("reports.revenueDescription")}</Card.Text>
                   <div className="my-4">
@@ -179,11 +184,25 @@ const ReportDashboard: React.FC = ({}) => {
               </Card>
             </Col>
             <Col>
-              <Card className="mb-4 shadow-sm report-card">
-                <Card.Body>
-                  <Card.Title> {t("reports.maintenances")}</Card.Title>
-                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
-                  <div className="my-4"></div>
+              <Card
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.revenue"),
+                    <ReviewSummary accommodationId={selectedAccommodationId} />
+                  )
+                }
+              >
+                <Card.Body
+                  style={{
+                    overflowX: "auto",
+                  }}
+                >
+                  <Card.Title> {t("reports.summary")}</Card.Title>
+                  <Card.Text>{t("reports.summaryDescription")}</Card.Text>
+                  <div className="my-4">
+                    <ReviewSummary accommodationId={selectedAccommodationId} />
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

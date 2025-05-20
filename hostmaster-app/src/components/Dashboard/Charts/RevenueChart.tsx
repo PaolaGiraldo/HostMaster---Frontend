@@ -9,7 +9,6 @@ import {
   LineElement,
   PointElement,
   ArcElement,
-  Chart,
 } from "chart.js";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useRevenueReport } from "../../../hooks/Reports/useRevenueReport";
@@ -59,7 +58,7 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
       className="d-flex justify-content-center align-items-center"
       style={{
         width: "100%",
-        height: "310px",
+        height: "300px",
         background: " #ffffff",
       }}
     >

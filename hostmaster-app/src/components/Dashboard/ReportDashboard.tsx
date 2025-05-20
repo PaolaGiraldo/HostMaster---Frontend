@@ -148,12 +148,12 @@ const ReportDashboard: React.FC = ({}) => {
                   }}
                 >
                   <Card.Title> {t("reports.maintenances")}</Card.Title>
-                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                   <div className="my-4">
                     <MaintenanceStackedChart
                       accommodationId={selectedAccommodationId}
                     />
                   </div>
+                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -176,13 +176,17 @@ const ReportDashboard: React.FC = ({}) => {
                   }}
                 >
                   <Card.Title>{t("reports.revenue")}</Card.Title>
-                  <Card.Text>{t("reports.revenueDescription")}</Card.Text>
                   <div className="my-4">
                     <RevenueChart accommodationId={selectedAccommodationId} />
                   </div>
+
+                  <Card.Text>{t("reports.revenueDescription")}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
+          </Row>
+
+          <Row>
             <Col>
               <Card
                 className="mb-4 shadow-sm report-card"

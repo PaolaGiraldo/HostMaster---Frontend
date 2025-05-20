@@ -360,8 +360,8 @@ button:hover {
   background-color: #ffffff;
   padding: 5px;
   height: "100%";
-  width: "100%";
+  width: "100%";font-size: 0.95rem;
   color: #3a3a3a;
-
+  font-size: 0.95rem;
 }
 

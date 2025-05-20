@@ -317,7 +317,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
             <section className="mb-5">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <h4 className="mb-3">✅ {t("reservations.ended")}</h4>
+                <h4 className="mb-3">✅ {t("reservations.completed")}</h4>
                 <button
                   className="btn btn-sm btn-light"
                   onClick={() => setShowCompleted((prev) => !prev)}

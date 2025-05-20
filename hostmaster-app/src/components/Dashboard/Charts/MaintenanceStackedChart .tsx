@@ -5,6 +5,7 @@ import {
   LinearScale,
   Tooltip,
   Legend,
+  ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import { Spinner, Table } from "react-bootstrap";
@@ -42,6 +43,14 @@ const MaintenanceStackedChart = ({
       </div>
     );
 
+  if (!data.pending_maintenances || data.pending_maintenances.length === 0) {
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
+  }
+
   const priorities: Priority[] = ["high", "medium", "low"];
   const statuses: Status[] = ["pending", "in_progress"];
 
@@ -64,18 +73,32 @@ const MaintenanceStackedChart = ({
     })),
   };
 
-  const options = {
+  const options: ChartOptions<"bar"> = {
     maintainAspectRatio: false,
     responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+
     plugins: {
-      tooltip: { mode: "index" as const, intersect: false },
+      legend: {
+        position: "top",
+      },
     },
     scales: {
-      x: { stacked: true },
+      x: {
+        stacked: true, // <-- Esto es lo que falta
+      },
       y: {
-        stacked: true,
+        type: "linear",
         beginAtZero: true,
-        ticks: { stepSize: 1 },
+        position: "left",
+        ticks: {
+          padding: 10,
+        },
+        stacked: true,
+        grace: "10%",
       },
     },
   };
@@ -96,7 +119,14 @@ const MaintenanceStackedChart = ({
       <div className="chart-container mb-4">
         <Chart type="bar" data={chartData} options={options} />
 
-        <h6 className="mt-4">{t("reports.taskDetails")}</h6>
+        <h6
+          className="mt-4"
+          style={{
+            color: "#ffffff",
+          }}
+        >
+          {t("reports.taskDetails")}
+        </h6>
         <Table striped bordered hover responsive style={{ fontSize: "0.9rem" }}>
           <thead>
             <tr>

@@ -101,19 +101,12 @@ h4{
 }
 
 .accommodation-card {
-  transition: transform 0.3s ease-in-out;
-}
-
-.accommodation-card:hover {
-  transform: scale(1.05);
-}
-
-.accommodation-card {
   background-color: #d9d9d9; /* Usa un gris claro */
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
+  height: 600px;
 }
 
 .accommodation-card:hover {
@@ -158,6 +151,12 @@ form label {
   vertical-align: middle;
 }
 
+
+.scrollable-table {
+  max-height: 700px; /* o la altura que necesites */
+  overflow-y: auto;
+  }
+  
 .filter-section {
   background-color: #ffffff;
   padding: 15px;
@@ -226,6 +225,8 @@ button:hover {
   background-color: #ffffff; /* Azul oscuro */
   padding: 2rem;
   border-radius: 8px;
+  max-height: 700px; /* o la altura que necesites */
+  overflow-y: auto;
 }
 
 
@@ -315,12 +316,14 @@ button:hover {
 }
 
 .filters-container {
-  /* background: rgba(96, 196, 171, 0.3); */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #60c4ab;
   color: #ffffff;
   padding: 15px 0;
   font-size: 1.1rem;
   font-weight: 500;
   border-radius: 8px;
+  padding: 10px;
 }
 
 .report-card {
@@ -330,7 +333,7 @@ button:hover {
   border-radius: 10px;
   padding: 1rem;  
   font-size: 0.95rem;
-  height: auto;
+  height: 550px;
 }
 
 .report-card {

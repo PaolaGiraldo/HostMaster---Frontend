@@ -30,7 +30,7 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
 
   return (
     <>
-      <div className="table-responsive">
+      <div className="table-responsive scrollable-table">
         <Table striped bordered hover className="room-table">
           <thead>
             <tr>

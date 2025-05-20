@@ -35,38 +35,40 @@ const ServiceTable: React.FC<ServiceTableProps> = ({
 
   return (
     <>
-      <Table striped bordered hover className="room-table">
-        <thead>
-          <tr>
-            <th>{t("Id")}</th>
-            <th>{t("services.service")}</th>
-            <th>{t("description")}</th>
-            <th>{t("price")}</th>
-            <th>{t("actions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {services.map((service) => (
-            <tr key={service.id}>
-              <td>{service.id}</td>
-              <td>{service.name}</td>
-              <td>{service.description}</td>
-              <td>${service.price}</td>
-              <td>
-                <Button variant="warning" onClick={() => onEdit(service)}>
-                  <FaEdit />
-                </Button>{" "}
-                <Button
-                  variant="danger"
-                  onClick={() => handleDeleteClick(service.id)}
-                >
-                  <FaTrash />
-                </Button>
-              </td>
+      <div className="table-responsive scrollable-table">
+        <Table striped bordered hover className="room-table">
+          <thead>
+            <tr>
+              <th>{t("Id")}</th>
+              <th>{t("services.service")}</th>
+              <th>{t("description")}</th>
+              <th>{t("price")}</th>
+              <th>{t("actions")}</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {services.map((service) => (
+              <tr key={service.id}>
+                <td>{service.id}</td>
+                <td>{service.name}</td>
+                <td>{service.description}</td>
+                <td>${service.price}</td>
+                <td>
+                  <Button variant="warning" onClick={() => onEdit(service)}>
+                    <FaEdit />
+                  </Button>{" "}
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDeleteClick(service.id)}
+                  >
+                    <FaTrash />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       {/* Modal de confirmación de eliminación */}
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)}>

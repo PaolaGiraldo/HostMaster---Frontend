@@ -194,7 +194,8 @@
     "reservationsAndMaintenance": "Reservas y Mantenimiento",
     "confirmedReservations": "Reservas confirmadas",
     "cancelledReservations": "Reservas canceladas",
-    "maintenanceIncidents": "Incidentes de mantenimiento" 
+    "maintenanceIncidents": "Incidentes de mantenimiento",
+    "noDataAvailable": "No hay información para mostar"
   },
   "clients":{
     "title":"Clientes",

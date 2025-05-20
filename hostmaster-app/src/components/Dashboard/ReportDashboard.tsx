@@ -35,7 +35,12 @@ const ReportDashboard: React.FC = ({}) => {
         <Container className="py-4">
           <h2 className="text-center my-4">{t("reports.title")}</h2>
           <div className="filters-container d-flex flex-column flex-md-row justify-content-center gap-3 mb-4">
-            <div className="mb-3">
+            <div
+              className="mb-3"
+              style={{
+                padding: "50px",
+              }}
+            >
               <Form.Label className="fw-bold">
                 Seleccionar un alojamiento
               </Form.Label>
@@ -148,12 +153,12 @@ const ReportDashboard: React.FC = ({}) => {
                   }}
                 >
                   <Card.Title> {t("reports.maintenances")}</Card.Title>
+                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                   <div className="my-4">
                     <MaintenanceStackedChart
                       accommodationId={selectedAccommodationId}
                     />
                   </div>
-                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -170,17 +175,13 @@ const ReportDashboard: React.FC = ({}) => {
                   )
                 }
               >
-                <Card.Body
-                  style={{
-                    overflowX: "auto",
-                  }}
-                >
+                <Card.Body>
                   <Card.Title>{t("reports.revenue")}</Card.Title>
+
+                  <Card.Text>{t("reports.revenueDescription")}</Card.Text>
                   <div className="my-4">
                     <RevenueChart accommodationId={selectedAccommodationId} />
                   </div>
-
-                  <Card.Text>{t("reports.revenueDescription")}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>

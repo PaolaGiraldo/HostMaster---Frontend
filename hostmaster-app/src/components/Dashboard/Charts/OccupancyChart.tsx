@@ -42,6 +42,17 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
 
+  if (
+    occupancy.accommodation_id === 0 ||
+    occupancy.occupancy_data.length === 0
+  ) {
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
+  }
+
   const chartData: ChartData<"bar" | "line", number[], string> = {
     labels: occupancy.occupancy_data?.map((item) => item.date),
     datasets: [

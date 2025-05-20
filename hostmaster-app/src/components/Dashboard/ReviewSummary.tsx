@@ -27,8 +27,21 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
 
+  console.log(data);
+
+  if (data.accommodation_id === 0) {
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
+  }
+
   return (
-    <div className="chart-container">
+    <div
+      className="chart-container"
+      style={{ height: "550px", padding: "30px" }}
+    >
       {/* Ocupación */}
       <h6 className="mb-3">
         <FaBed className="me-2" />
@@ -36,11 +49,11 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
       </h6>
       <Row>
         <Col md={4}>
-          <strong>{t("reports.occupancyRate")}:</strong>{" "}
+          <strong>{t("reports.occupancyRate")}:</strong> <br />
           {data.summary.occupancy_rate.toFixed(2)}%
         </Col>
         <Col md={4}>
-          <strong>{t("reports.avgOccupiedRooms")}:</strong>{" "}
+          <strong>{t("reports.avgOccupiedRooms")}:</strong> <br />
           {data.summary.avg_occupied_rooms.toFixed(2)}
         </Col>
         <Col md={4}>
@@ -71,26 +84,26 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
       </h6>
       <Row>
         <Col md={4}>
-          <strong>{t("reports.totalRevenue")}:</strong> $
+          <strong>{t("reports.totalRevenue")}:</strong> <br />${" "}
           {data.summary.total_revenue.toLocaleString()}
         </Col>
         <Col md={4}>
-          <strong>{t("reports.dailyRevenue")}:</strong> $
+          <strong>{t("reports.dailyRevenue")}:</strong> <br />${" "}
           {data.summary.avg_daily_revenue.toLocaleString()}
         </Col>
         <Col md={4}>
           <strong>{t("reports.revenueByRoomType")}</strong>
           <ul className="mb-0 ps-3">
             <li>
-              {t("roomTypes.sencilla")}: $
+              {t("roomTypes.sencilla")}: ${" "}
               {data.summary.avg_revenue_sencilla.toLocaleString()}
             </li>
             <li>
-              {t("roomTypes.doble")}: $
+              {t("roomTypes.doble")}: ${" "}
               {data.summary.avg_revenue_doble.toLocaleString()}
             </li>
             <li>
-              {t("roomTypes.familiar")}: $
+              {t("roomTypes.familiar")}: ${" "}
               {data.summary.avg_revenue_familiar.toLocaleString()}
             </li>
           </ul>
@@ -101,12 +114,12 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
         <Col md={4}>
           <strong>
             <FaConciergeBell className="me-1" />
-            {t("reports.extraServicesPerRoom")}:
+            {t("reports.extraServicesPerRoom")}:<br />
           </strong>{" "}
           {data.summary.avg_extra_services_per_room}
         </Col>
         <Col md={4}>
-          <strong>{t("reports.extraServiceRevenue")}:</strong> $
+          <strong>{t("reports.extraServiceRevenue")}:</strong> <br />${" "}
           {data.summary.extra_service_revenue.toLocaleString()}
         </Col>
       </Row>
@@ -120,17 +133,19 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
       </h6>
       <Row>
         <Col md={4}>
-          <strong>{t("reports.confirmedReservations")}:</strong>{" "}
+          <strong>
+            {t("reports.confirmedReservations")}:<br />
+          </strong>{" "}
           {data.summary.confirmed_reservations}
         </Col>
         <Col md={4}>
-          <strong>{t("reports.cancelledReservations")}:</strong>{" "}
-          {data.summary.cancelled_reservations}
+          <strong>{t("reports.cancelledReservations")}:</strong>
+          <br /> {data.summary.cancelled_reservations}
         </Col>
         <Col md={4}>
           <strong>
             <FaTools className="me-1" />
-            {t("reports.maintenanceIncidents")}:
+            {t("reports.maintenanceIncidents")}:<br />
           </strong>{" "}
           {data.summary.maintenance_incidents}
         </Col>

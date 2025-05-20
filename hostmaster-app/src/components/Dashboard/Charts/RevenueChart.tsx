@@ -43,6 +43,13 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
 
+  if (revenueTotal.accommodation_id === 0) {
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
+  }
   const chartData = {
     labels: [t("reports.estimatedRevenue")],
     datasets: [

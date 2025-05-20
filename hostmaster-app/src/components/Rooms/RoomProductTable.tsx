@@ -83,11 +83,10 @@ const RoomProductTable: React.FC<RoomProductProps> = ({
       >
         {t("roomProducts.addNew")}
       </Button>
-      <div className="table-responsive">
+      <div className="table-responsive  scrollable-table">
         <Table striped bordered hover className="room-type-table">
           <thead>
             <tr>
-              <th>#</th>
               <th>{t("roomProducts.product")}</th>
               <th>{t("description")}</th>
               <th>{t("price")}</th>
@@ -97,7 +96,6 @@ const RoomProductTable: React.FC<RoomProductProps> = ({
           <tbody>
             {roomProducts.map((product, index) => (
               <tr key={product.id}>
-                <td>{index + 1}</td>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>{product.price}</td>

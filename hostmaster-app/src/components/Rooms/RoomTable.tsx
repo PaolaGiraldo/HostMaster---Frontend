@@ -98,11 +98,10 @@ const RoomTable: React.FC<RoomTableProps> = ({
       </Row>
 
       {/* Tabla de habitaciones */}
-      <div className="table-responsive">
+      <div className="table-responsive scrollable-table">
         <Table striped bordered hover className="room-table">
           <thead>
             <tr>
-              <th>#</th>
               <th>{t("accommodation")}</th>
               <th>{t("number")}</th>
               <th>{t("type")}</th>
@@ -116,7 +115,6 @@ const RoomTable: React.FC<RoomTableProps> = ({
           <tbody>
             {filteredRooms.map((room) => (
               <tr key={room.id}>
-                <td>{room.id}</td>
                 <td>
                   {accommodations.find((a) => a.id === room.accommodation_id)
                     ?.name || "N/A"}

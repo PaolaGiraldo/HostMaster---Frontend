@@ -43,6 +43,14 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
     );
   }
 
+  if (!performance || performance.room_bookings.length === 0) {
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
+  }
+
   const options: ChartOptions<"bar"> = {
     maintainAspectRatio: false,
     responsive: true,

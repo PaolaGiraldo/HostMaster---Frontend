@@ -81,7 +81,8 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
             right: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           events={filteredEvents}
-          height="auto"
+          dayMaxEventRows={3} // Muestra máximo 3 eventos por día
+          dayMaxEvents={true}
           eventContent={(arg) => {
             return {
               html: `

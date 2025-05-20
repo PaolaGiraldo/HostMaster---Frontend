@@ -45,7 +45,11 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
           onClick={() => setShowModal(true)}
         />
       )}
-      <Card.Body>
+      <Card.Body
+        style={{
+          overflowX: "auto",
+        }}
+      >
         <Card.Title>{accommodation.name}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
           {accommodation.address} - {accommodation.cityName}
@@ -67,12 +71,10 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
             {accommodation.rooms.map((room: any) => (
               <ListGroup.Item
                 key={room.id}
-                className={room.isAvailable ? "" : "text-danger"} // Aplica la clase si no está disponible
+                className={room.isAvailable ? "" : "text-danger"}
               >
-                <li key={room.id}>
-                  {room.isAvailable ? "🟢" : "🔴"} {t("room")} {room.number} -{" "}
-                  {room.roomType.name}
-                </li>
+                {room.isAvailable ? "🟢" : "🔴"} {t("room")} {room.number} -{" "}
+                {room.roomType.name}
               </ListGroup.Item>
             ))}
           </ListGroup>

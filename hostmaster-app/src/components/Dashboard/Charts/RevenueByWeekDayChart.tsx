@@ -48,7 +48,11 @@ const RevenueByWeekDayChart = ({
   }
 
   if (!data.top_revenue_days || data.top_revenue_days.length === 0) {
-    return <div>{t("reports.noDataAvailable")}</div>;
+    return (
+      <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>
+        <strong>{t("reports.noDataAvailable")}</strong>
+      </div>
+    );
   }
 
   const options = {

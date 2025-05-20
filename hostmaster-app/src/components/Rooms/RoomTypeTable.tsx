@@ -81,11 +81,10 @@ const RoomTypeTable: React.FC<RoomTypeTableProps> = ({
       >
         {t("roomTypes.addNew")}
       </Button>
-      <div className="table-responsive">
+      <div className="table-responsive scrollable-table">
         <Table striped bordered hover className="room-type-table">
           <thead>
             <tr>
-              <th>#</th>
               <th>{t("roomTypes.type")}</th>
               <th>{t("roomTypes.description")}</th>
               <th>{t("roomTypes.maxCapacity")}</th>
@@ -95,7 +94,6 @@ const RoomTypeTable: React.FC<RoomTypeTableProps> = ({
           <tbody>
             {roomTypes.map((roomType, index) => (
               <tr key={roomType.id}>
-                <td>{index + 1}</td>
                 <td>{roomType.name}</td>
                 <td>{roomType.description}</td>
                 <td>{roomType.max_guests}</td>

@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useRevenueReport } from "../../../hooks/Reports/useRevenueReport";
+import { Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -26,6 +28,7 @@ ChartJS.register(
 );
 
 const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
+  const { t } = useTranslation();
   const { range } = useDateRange();
   const { data: revenueTotal, isLoading } = useRevenueReport(
     accommodationId,
@@ -33,12 +36,16 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
     range.endDate
   );
 
-  if (isLoading) return <p className="text-muted">Cargando reservas...</p>;
-  if (!revenueTotal)
-    return <p className="text-danger">No se pudo cargar el reporte.</p>;
+  if (isLoading)
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
 
   const chartData = {
-    labels: ["Ingresos Estimados"],
+    labels: [t("reports.estimatedRevenue")],
     datasets: [
       {
         data: [revenueTotal.estimated_revenue],
@@ -49,14 +56,7 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
 
   return (
     <>
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "400px",
-          height: "auto",
-          justifyContent: "center",
-        }}
-      >
+      <div className="chart-container">
         <Doughnut data={chartData} options={{ responsive: true }} />
       </div>
     </>

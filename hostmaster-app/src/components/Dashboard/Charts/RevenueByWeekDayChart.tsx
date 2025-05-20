@@ -45,6 +45,7 @@ const RevenueByWeekDayChart = ({
       </div>
     );
   const options = {
+    maintainAspectRadio: false,
     responsive: true,
     interaction: {
       mode: "index",

@@ -169,6 +169,7 @@
     "selectRange": "Seleccionar rango de fechas",
     "bookedRooms": "Habitaciones Reservadas",
     "occupancyRate": "Tasa de Ocupación",
+    "estimatedRevenue": "Ingresos Estimados",
     "occupancyDescription":"Este reporte muestra el número de habitaciones ocupadas por día en el rango de fechas seleccionado. Permite identificar picos de ocupación, temporadas altas y días con baja demanda.",
     "availabilityDescription":"Este reporte muestra la disponibilidad diaria de habitaciones en el alojamiento seleccionado durante el rango de fechas indicado. Permite identificar rápidamente los días con mayor o menor disponibilidad, ayudando a optimizar la gestión de reservas y anticipar períodos de alta demanda.",
     "inventoryDescription":"Visualiza el estado actual del inventario por habitación, incluyendo productos disponibles y aquellos que han alcanzado su mínimo permitido. Es útil para mantener el control logístico del alojamiento.",

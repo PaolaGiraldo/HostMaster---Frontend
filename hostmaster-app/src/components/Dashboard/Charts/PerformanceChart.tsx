@@ -41,6 +41,7 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
   const options = {
+    maintainAspectRadio: false,
     responsive: true,
     interaction: {
       mode: "index",

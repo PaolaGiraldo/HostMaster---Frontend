@@ -67,6 +67,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
   };
 
   const options = {
+    maintainAspectRadio: false,
     responsive: true,
     interaction: {
       mode: "index",
@@ -98,7 +99,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
   return (
     <>
       <div className="chart-container">
-        <Chart type="bar" data={chartData} options={options} />;
+        <Chart type="bar" data={chartData} options={options} />
       </div>
     </>
   );

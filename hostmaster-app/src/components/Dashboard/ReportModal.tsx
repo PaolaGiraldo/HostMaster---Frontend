@@ -20,7 +20,18 @@ const ReportModal: React.FC<ReportModalProps> = ({
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bg-dark text-white">{children}</Modal.Body>
+      <Modal.Body className=" text-white p-0" style={{ height: "80hv" }}>
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            padding: "1rem",
+            color: "#3a3a3a ",
+          }}
+        >
+          {children}
+        </div>
+      </Modal.Body>
     </Modal>
   );
 };

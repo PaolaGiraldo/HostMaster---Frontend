@@ -77,8 +77,19 @@ const ReportDashboard: React.FC = ({}) => {
                 </Card.Body>
               </Card>
             </Col>
+
             <Col>
-              <Card className="mb-4 shadow-sm report-card">
+              <Card
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.performance"),
+                    <PerformanceChart
+                      accommodationId={selectedAccommodationId}
+                    />
+                  )
+                }
+              >
                 <Card.Body>
                   <Card.Title>{t("reports.performance")}</Card.Title>
                   <Card.Text>{t("reports.performanceDescription")}</Card.Text>
@@ -94,7 +105,17 @@ const ReportDashboard: React.FC = ({}) => {
 
           <Row xs={1} sm={2} md={2} className="g-4">
             <Col>
-              <Card className="mb-4 shadow-sm report-card">
+              <Card
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.revenue"),
+                    <RevenueByWeekDayChart
+                      accommodationId={selectedAccommodationId}
+                    />
+                  )
+                }
+              >
                 <Card.Body>
                   <Card.Title>{t("reports.revenue")}</Card.Title>
                   <Card.Text>
@@ -109,7 +130,17 @@ const ReportDashboard: React.FC = ({}) => {
               </Card>
             </Col>
             <Col>
-              <Card className="mb-4 shadow-sm report-card">
+              <Card
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.maintenances"),
+                    <MaintenanceStackedChart
+                      accommodationId={selectedAccommodationId}
+                    />
+                  )
+                }
+              >
                 <Card.Body>
                   <Card.Title> {t("reports.maintenances")}</Card.Title>
                   <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
@@ -127,11 +158,11 @@ const ReportDashboard: React.FC = ({}) => {
             <Col>
               <Card className="mb-4 shadow-sm report-card">
                 <Card.Body>
-                  <Card.Title>{t("reports.revenuebyWeekDay")}</Card.Title>
-                  <Card.Text>
-                    {t("reports.revenuebyWeekDayDescription")}
-                  </Card.Text>
-                  <div className="my-4"></div>
+                  <Card.Title>{t("reports.revenue")}</Card.Title>
+                  <Card.Text>{t("reports.revenueDescription")}</Card.Text>
+                  <div className="my-4">
+                    <RevenueChart accommodationId={selectedAccommodationId} />
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

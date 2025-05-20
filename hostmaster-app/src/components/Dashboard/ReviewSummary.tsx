@@ -27,8 +27,6 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
 
-  console.log(data);
-
   if (data.accommodation_id === 0) {
     return (
       <div style={{ background: "#ffffff ", color: "#1a2a6c" }}>

@@ -38,6 +38,7 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
               <th>{t("accommodation")}</th>
               <th>{t("maintenances.roomNumber")}</th>
               <th>{t("maintenances.created")}</th>
+              <th>{t("maintenances.description")}</th>
               <th>{t("maintenances.responsible")}</th>
               <th>{t("maintenances.priority")}</th>
               <th>{t("maintenances.status")}</th>
@@ -60,6 +61,7 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
                     "N/A"}
                 </td>
                 <td>{maintenance.created_at}</td>
+                <td>{maintenance.description}</td>
                 <td>
                   {staff.find((a) => a.username === maintenance.assigned_to)
                     ?.full_name || "N/A"}

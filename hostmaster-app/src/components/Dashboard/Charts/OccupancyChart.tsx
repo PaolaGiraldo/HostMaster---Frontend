@@ -60,7 +60,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
         type: "bar" as const,
         label: t("reports.bookedRooms"),
         data: occupancy.occupancy_data.map((item) => item.occupied_rooms),
-        backgroundColor: "#60c4ab",
+        backgroundColor: "rgba(96, 196, 171, 0.5)",
         borderRadius: 5,
         yAxisID: "y",
       },
@@ -73,6 +73,8 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
         borderWidth: 2,
         fill: false,
         yAxisID: "y1",
+        tension: 0.3,
+        pointRadius: 3,
       },
     ],
   };

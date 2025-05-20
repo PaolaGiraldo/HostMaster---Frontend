@@ -83,6 +83,20 @@ export const getOccupancy = async ({
       }
   };
 
+  export const getDailyMetrics = async ({
+    params,
+    }: {
+    params: queryParams;
+    }) => {
+    try {
+    const response = await adminApi.get(`/dashboard/daily-metrics`,{params});
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
+
 
 
   

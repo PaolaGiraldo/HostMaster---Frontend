@@ -195,7 +195,12 @@
     "confirmedReservations": "Reservas confirmadas",
     "cancelledReservations": "Reservas canceladas",
     "maintenanceIncidents": "Incidentes de mantenimiento",
-    "noDataAvailable": "No hay información para mostar"
+    "noDataAvailable": "No hay información para mostar",
+    "date": "Fecha",
+    "occupiedRooms": "Habitaciones ocupadas",
+    "reservations": "Reservas",
+    "maintenanceIssues": "Incidentes de mantenimiento",
+    "noIncidents": "Sin incidentes"
   },
   "clients":{
     "title":"Clientes",

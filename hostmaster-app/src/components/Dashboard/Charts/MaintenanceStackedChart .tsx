@@ -7,12 +7,24 @@ import {
   Legend,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { Spinner, Table } from "react-bootstrap"; // asegúrate de tener react-bootstrap instalado
+import { Spinner, Table } from "react-bootstrap";
 import { usePendingMaintenanceReport } from "../../../hooks/Reports/usePendingManteinanceReport";
 import { useTranslation } from "react-i18next";
-import { relative } from "path";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+
+// Tipos seguros
+type Status = "pending" | "in_progress";
+type Priority = "high" | "medium" | "low";
+
+interface MaintenanceTask {
+  id: number;
+  room_number: string;
+  description: string;
+  priority: Priority;
+  status: Status;
+  assigned_to: string;
+}
 
 const MaintenanceStackedChart = ({
   accommodationId,
@@ -30,46 +42,33 @@ const MaintenanceStackedChart = ({
       </div>
     );
 
-  const priorities = ["high", "medium", "low"];
-  const statuses = ["pending", "in_progress"];
+  const priorities: Priority[] = ["high", "medium", "low"];
+  const statuses: Status[] = ["pending", "in_progress"];
 
-  const counts = {
+  const counts: Record<Status, Record<Priority, number>> = {
     pending: { high: 0, medium: 0, low: 0 },
     in_progress: { high: 0, medium: 0, low: 0 },
   };
 
-  data.pending_maintenances.forEach((task) => {
+  (data.pending_maintenances as MaintenanceTask[]).forEach((task) => {
     const { status, priority } = task;
-    if (counts[status] && counts[status][priority] !== undefined) {
-      counts[status][priority]++;
-    }
+    counts[status][priority]++;
   });
 
   const chartData = {
-    labels: [
-      t("maintenances.priorityOptions.high"),
-      t("maintenances.priorityOptions.medium"),
-      t("maintenances.priorityOptions.low"),
-    ],
-    datasets: [
-      {
-        label: t("maintenances.statusOptions.pending"),
-        data: priorities.map((p) => counts.pending[p]),
-        backgroundColor: "#ffc107",
-      },
-      {
-        label: t("maintenances.statusOptions.inProgress"),
-        data: priorities.map((p) => counts.in_progress[p]),
-        backgroundColor: "#60c4ab",
-      },
-    ],
+    labels: priorities.map((p) => t(`maintenances.priorityOptions.${p}`)),
+    datasets: statuses.map((status) => ({
+      label: t(`maintenances.statusOptions.${status}`),
+      data: priorities.map((p) => counts[status][p]),
+      backgroundColor: status === "pending" ? "#ffc107" : "#60c4ab",
+    })),
   };
 
   const options = {
-    maintainAspectRadio: false,
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
-      tooltip: { mode: "index", intersect: false },
+      tooltip: { mode: "index" as const, intersect: false },
     },
     scales: {
       x: { stacked: true },
@@ -81,13 +80,13 @@ const MaintenanceStackedChart = ({
     },
   };
 
-  const priorityLabels = {
+  const priorityLabels: Record<Priority, string> = {
     high: t("maintenances.priorityOptions.high"),
     medium: t("maintenances.priorityOptions.medium"),
     low: t("maintenances.priorityOptions.low"),
   };
 
-  const statusLabels = {
+  const statusLabels: Record<Status, string> = {
     pending: t("maintenances.statusOptions.pending"),
     in_progress: t("maintenances.statusOptions.inProgress"),
   };
@@ -97,8 +96,8 @@ const MaintenanceStackedChart = ({
       <div className="chart-container mb-4">
         <Chart type="bar" data={chartData} options={options} />
 
-        <h5 className="mt-4">{t("reports.taskDetails")}</h5>
-        <Table striped bordered hover responsive>
+        <h6 className="mt-4">{t("reports.taskDetails")}</h6>
+        <Table striped bordered hover responsive style={{ fontSize: "0.9rem" }}>
           <thead>
             <tr>
               <th>{t("room")}</th>
@@ -109,7 +108,7 @@ const MaintenanceStackedChart = ({
             </tr>
           </thead>
           <tbody>
-            {data.pending_maintenances.map((task) => (
+            {(data.pending_maintenances as MaintenanceTask[]).map((task) => (
               <tr key={task.id}>
                 <td>{task.room_number}</td>
                 <td>{task.description}</td>

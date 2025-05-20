@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getOccupancy } from "../../Services/reportsService";
 import { format } from "date-fns";
+import { OccupancyResponse } from "../../interfaces/Reports/occupancyrResponseInterface";
 
 export const useOccupancyReport = (
   accommodationId: number,
@@ -11,7 +12,7 @@ export const useOccupancyReport = (
   const formattedStart = format(startDate, "yyyy-MM-dd");
   const formattedEnd = format(endDate, "yyyy-MM-dd");
 
-  return useQuery({
+  return useQuery<OccupancyResponse>({
     queryKey: ["occupancy", formattedStart, formattedEnd, accommodationId],
     queryFn: async () => {
       const params: any = {

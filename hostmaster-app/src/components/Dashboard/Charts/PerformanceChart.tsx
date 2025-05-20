@@ -8,6 +8,7 @@ import {
   Legend,
   LineElement,
   PointElement,
+  ChartOptions,
 } from "chart.js";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { usePerformanceReport } from "../../../hooks/Reports/usePerformanceReport";
@@ -33,21 +34,23 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
     range.endDate
   );
 
-  if (isLoading)
+  if (isLoading || !performance) {
     return (
       <div className="text-center my-5">
         <Spinner animation="border" role="status" />
         <div>{t("loading")}</div>
       </div>
     );
-  const options = {
-    maintainAspectRadio: false,
+  }
+
+  const options: ChartOptions<"bar"> = {
+    maintainAspectRatio: false,
     responsive: true,
     interaction: {
       mode: "index",
       intersect: false,
     },
-    stacked: false,
+
     plugins: {
       legend: {
         position: "top",
@@ -57,9 +60,11 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
       y: {
         type: "linear",
         beginAtZero: true,
-        display: true,
-        positon: "left",
-        margin: 20,
+        position: "left",
+        ticks: {
+          padding: 10,
+        },
+        stacked: false,
       },
     },
   };
@@ -74,11 +79,15 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
       <div className="chart-container">
         <Bar
           data={{
-            labels: performance.room_bookings.map((item) => item.room_number),
+            labels: performance.room_bookings.map(
+              (item: { room_number: number }) => item.room_number
+            ),
             datasets: [
               {
                 label: t("reservations.title"),
-                data: performance.room_bookings.map((item) => item.bookings),
+                data: performance.room_bookings.map(
+                  (item: { bookings: number }) => item.bookings
+                ),
                 backgroundColor: "#60c4ab",
                 borderRadius: 5,
                 yAxisID: "y",

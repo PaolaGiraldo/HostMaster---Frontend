@@ -1,4 +1,3 @@
-import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   BarElement,
@@ -9,10 +8,12 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
+import { Chart as ReactChart } from "react-chartjs-2";
 import { useOccupancyReport } from "../../../hooks/Reports/useOccupancyReport";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import type { ChartData, ChartOptions } from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
     range.endDate
   );
 
-  if (isLoading)
+  if (isLoading || !occupancy)
     return (
       <div className="text-center my-5">
         <Spinner animation="border" role="status" />
@@ -41,23 +42,22 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
       </div>
     );
 
-  const chartData = {
-    labels: occupancy.occupancy_data.map((item) => item.date),
+  const chartData: ChartData<"bar" | "line", number[], string> = {
+    labels: occupancy.occupancy_data?.map((item) => item.date),
     datasets: [
       {
-        type: "bar",
+        type: "bar" as const,
         label: t("reports.bookedRooms"),
         data: occupancy.occupancy_data.map((item) => item.occupied_rooms),
         backgroundColor: "#60c4ab",
         borderRadius: 5,
         yAxisID: "y",
       },
-
       {
-        type: "line",
+        type: "line" as const,
         label: t("reports.occupancyRate"),
         data: occupancy.occupancy_data.map((item) => item.occupancy_rate),
-        backgounrColor: "#1a2a6c",
+        backgroundColor: "#1a2a6c",
         borderColor: "#1a2a6c",
         borderWidth: 2,
         fill: false,
@@ -66,14 +66,13 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
     ],
   };
 
-  const options = {
-    maintainAspectRadio: false,
+  const options: ChartOptions<"bar" | "line"> = {
+    maintainAspectRatio: false,
     responsive: true,
     interaction: {
       mode: "index",
       intersect: false,
     },
-    stacked: false,
     plugins: {
       legend: {
         position: "top",
@@ -83,14 +82,16 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
       y: {
         type: "linear",
         display: true,
-        positon: "left",
+        position: "left",
+        stacked: false,
       },
       y1: {
         type: "linear",
         display: true,
-        positon: "right",
+        position: "right",
+        stacked: false,
         grid: {
-          drawnOnChartArea: false,
+          drawOnChartArea: false,
         },
       },
     },
@@ -99,7 +100,11 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
   return (
     <>
       <div className="chart-container">
-        <Chart type="bar" data={chartData} options={options} />
+        <ReactChart
+          type={"bar" as "bar" | "line"}
+          data={chartData}
+          options={options}
+        />
       </div>
     </>
   );

@@ -13,7 +13,7 @@ export const usePerformanceReport = (
   return useQuery({
     queryKey: ["performance", formattedStart, formattedEnd, accommodationId],
     queryFn: async () => {
-      const params: any = {
+      const params: queryParams = {
         start_date: formattedStart,
         end_date: formattedEnd,
         accommodation_id: accommodationId,

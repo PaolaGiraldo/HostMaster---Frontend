@@ -1,25 +1,15 @@
 import React, { useState } from "react";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  Form,
-  Accordion,
-  CardTitle,
-} from "react-bootstrap";
+import { Card, Container, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OccupancyChart from "./Charts/OccupancyChart";
-import InventoryPieChart from "./InventoryPieChart";
-import ReviewSummary from "./ReviewSummary";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { DateRangeSelector } from "./DateRangeSelector";
 import { DateRangeProvider } from "../../context/DateRangeContext";
 import RevenueByWeekDayChart from "./Charts/RevenueByWeekDayChart";
 import RevenueChart from "./Charts/RevenueChart";
 import PerformanceChart from "./Charts/PerformanceChart";
-import PendingMaintenanceChart from "./Charts/PendingMaintenanceChart";
 import MaintenanceStackedChart from "./Charts/MaintenanceStackedChart ";
+import ReportModal from "./ReportModal";
 
 const ReportDashboard: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -27,6 +17,16 @@ const ReportDashboard: React.FC = ({}) => {
   const { data: accommodations } = useAccommodations();
   const [selectedAccommodationId, setSelectedAccommodationId] =
     useState<number>(0);
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+
+  const openModal = (title: string, content: React.ReactNode) => {
+    setModalTitle(title);
+    setModalContent(content);
+    setShowModal(true);
+  };
 
   return (
     <div className="report-dashboard">
@@ -58,165 +58,103 @@ const ReportDashboard: React.FC = ({}) => {
           </div>
 
           <Row xs={1} sm={2} md={2} className="g-4">
-            <Card
-              className="mb-3 shadow-sm"
-              style={{
-                //backgroundColor: STATUS_COLORS[reservation.status] || "#3a3a3a",
-                //color: "white",
-                padding: "1rem",
-                borderRadius: "0.5rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <Card.Body>
-                <Card.Title>{t("reports.occupancy")}</Card.Title>
-
-                <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-                <Card.Text>
-                  {t("reports.occupancyDescription")}
-                  <br />
-                  <div className="my-4">
-                    <OccupancyChart accommodationId={selectedAccommodationId} />
-                  </div>{" "}
-                </Card.Text>
-              </Card.Body>
-            </Card>
             <Col>
               <Card
-                className="mb-3 shadow-sm"
-                style={{
-                  //backgroundColor: STATUS_COLORS[reservation.status] || "#3a3a3a",
-                  //color: "white",
-                  padding: "1rem",
-                  borderRadius: "0.5rem",
-                  marginBottom: "1rem",
-                }}
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.occupancy"),
+                    <OccupancyChart accommodationId={selectedAccommodationId} />
+                  )
+                }
               >
                 <Card.Body>
+                  <Card.Title>{t("reports.occupancy")}</Card.Title>
+                  <Card.Text>{t("reports.occupancyDescription")}</Card.Text>
+                  <div className="my-4">
+                    <OccupancyChart accommodationId={selectedAccommodationId} />
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-4 shadow-sm report-card">
+                <Card.Body>
+                  <Card.Title>{t("reports.performance")}</Card.Title>
+                  <Card.Text>{t("reports.performanceDescription")}</Card.Text>
+                  <div className="my-4">
+                    <PerformanceChart
+                      accommodationId={selectedAccommodationId}
+                    />
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row xs={1} sm={2} md={2} className="g-4">
+            <Col>
+              <Card className="mb-4 shadow-sm report-card">
+                <Card.Body>
                   <Card.Title>{t("reports.revenue")}</Card.Title>
-
-                  <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                   <Card.Text>
-                    {t("reports.revenueDescription")}
-                    <br />
-                    <div className="my-4">
-                      <RevenueChart accommodationId={selectedAccommodationId} />
-                    </div>
+                    {t("reports.revenuebyWeekDayDescription")}
                   </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <p className="mb-4">{t("reports.revenueDescription")}</p>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col>
-              <Card>
-                <Card.Body>
-                  <p className="mb-4">{t("reports.revenueDescription")}</p>
                   <div className="my-4">
-                    <RevenueChart accommodationId={selectedAccommodationId} />
+                    <RevenueByWeekDayChart
+                      accommodationId={selectedAccommodationId}
+                    />
                   </div>
                 </Card.Body>
               </Card>
             </Col>
             <Col>
-              <Card>
+              <Card className="mb-4 shadow-sm report-card">
                 <Card.Body>
-                  <p className="mb-4">{t("reports.revenueDescription")}</p>
+                  <Card.Title> {t("reports.maintenances")}</Card.Title>
+                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                   <div className="my-4">
-                    <RevenueChart accommodationId={selectedAccommodationId} />
+                    <MaintenanceStackedChart
+                      accommodationId={selectedAccommodationId}
+                    />
                   </div>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
 
-          <Card className="shadow report-card">
-            <Card.Body>
-              <Accordion defaultActiveKey="0" className="my-4">
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>{t("reports.occupancy")}</Accordion.Header>
-                  <Accordion.Body>
-                    <p className="mb-4">{t("reports.occupancyDescription")}</p>
-                    <div className="my-4">
-                      <OccupancyChart
-                        accommodationId={selectedAccommodationId}
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="1">
-                  <Accordion.Header>{t("reports.revenue")}</Accordion.Header>
-                  <Accordion.Body>
-                    <p className="mb-4">{t("reports.revenueDescription")}</p>
-                    <div className="my-4">
-                      <RevenueChart accommodationId={selectedAccommodationId} />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="2">
-                  <Accordion.Header>
-                    {t("reports.performance")}
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <p className="mb-4">
-                      {t("reports.performanceDescription")}
-                    </p>
-
-                    <div className="my-4">
-                      <PerformanceChart
-                        accommodationId={selectedAccommodationId}
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="3">
-                  <Accordion.Header>
-                    {t("reports.revenuebyWeekDay")}
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <p className="mb-4">
-                      {t("reports.revenuebyWeekDayDescription")}
-                    </p>
-                    <div className="my-4">
-                      <RevenueByWeekDayChart
-                        accommodationId={selectedAccommodationId}
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="4">
-                  <Accordion.Header>
-                    {t("reports.maintenances")}
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <p className="mb-4">
-                      {t("reports.maintenancesDescription")}
-                    </p>
-                    <div className="my-4">
-                      <MaintenanceStackedChart
-                        accommodationId={selectedAccommodationId}
-                      />
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                {/* Agregar más secciones según los reportes */}
-              </Accordion>
-            </Card.Body>
-          </Card>
+          <Row xs={1} sm={2} md={2} className="g-4">
+            <Col>
+              <Card className="mb-4 shadow-sm report-card">
+                <Card.Body>
+                  <Card.Title>{t("reports.revenuebyWeekDay")}</Card.Title>
+                  <Card.Text>
+                    {t("reports.revenuebyWeekDayDescription")}
+                  </Card.Text>
+                  <div className="my-4"></div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card className="mb-4 shadow-sm report-card">
+                <Card.Body>
+                  <Card.Title> {t("reports.maintenances")}</Card.Title>
+                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
+                  <div className="my-4"></div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </Container>
       </DateRangeProvider>
+
+      <ReportModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title={modalTitle}
+      >
+        {modalContent}
+      </ReportModal>
     </div>
   );
 };

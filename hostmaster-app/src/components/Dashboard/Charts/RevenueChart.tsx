@@ -49,7 +49,16 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
 
   return (
     <>
-      <Doughnut data={chartData} options={{ responsive: true }} />
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          height: "auto",
+          justifyContent: "center",
+        }}
+      >
+        <Doughnut data={chartData} options={{ responsive: true }} />
+      </div>
     </>
   );
 };

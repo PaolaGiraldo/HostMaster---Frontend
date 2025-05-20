@@ -324,28 +324,22 @@ button:hover {
 }
 
 .report-card {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid #60c4ab;
-  border-radius: 10px;
-  padding: 1rem;
-}
-
-.accordion-button {
-  background-color: #1a2a6c;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #60c4ab;
   color: #ffffff;
-  font-weight: 600;
-}
-
-.accordion-button:not(.collapsed) {
-  background-color: #60c4ab;
-  color: #1a2a6c;
-}
-
-.accordion-body {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #3a3a3a;
+  border-radius: 10px;
+  padding: 1rem;  
   font-size: 0.95rem;
-  margin-bottom: 1rem;
+  height: 500px;
+}
+
+.report-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+}
+
+.report-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .my-4 {
@@ -358,106 +352,14 @@ button:hover {
   text-align: center;
 }
 
-.availability-heatmap {
-  display: flex;
-  flex-direction: column;
-  overflow-x: auto;
-}
-
-.grid-header,
-.grid-row {
-  display: grid;
-  grid-template-columns: 150px repeat(auto-fit, 40px);
-  align-items: center;
-}
-
-.grid-cell {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
-
-.header {
-  font-weight: bold;
-  background-color: #f0f0f0;
-}
-
-.room-name {
-  font-weight: 600;
-  background-color: #d9d9d9;
-}
-
-.status-available {
-  background-color: #60c4ab;
-}
-
-.status-reserved {
-  background-color: #1a2a6c;
-  color: white;
-}
-
-.status-maintenance {
-  background-color: #ffcc00;
-}
-
-.heatmap {
-  overflow-x: auto;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.heatmap-header,
-.heatmap-row {
-  display: flex;
-}
-
-.heatmap-cell {
-  padding: 8px;
-  text-align: center;
-  min-width: 80px;
-  border: 1px solid #ddd;
-}
-
-.header-room,
-.room-label {
-  font-weight: bold;
-  background-color: #f0f0f0;
-}
-
-.header-date {
-  background-color: #f9f9f9;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.available {
-  background-color: #60c4ab; /* verde menta */
-}
-
-.unavailable {
-  background-color: #d9534f; /* rojo */
-}
-
-.heatmap-legend {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #3a3a3a;
-}
-
-.legend-box {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-}
-
-.legend-box.available {
-  background-color: #60c4ab;
-}
-
-.legend-box.unavailable {
-  background-color: #d9534f;
-}
-
 .datepicker {
   width: 100%;
 }
+
+.chart-container{
+  background-color: #ffffff;
+  padding: 5px;
+  height: 250px;
+  margin-top: 20px;
+}
+

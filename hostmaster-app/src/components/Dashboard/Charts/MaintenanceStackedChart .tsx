@@ -7,8 +7,9 @@ import {
   Legend,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { Table } from "react-bootstrap"; // asegúrate de tener react-bootstrap instalado
+import { Spinner, Table } from "react-bootstrap"; // asegúrate de tener react-bootstrap instalado
 import { usePendingMaintenanceReport } from "../../../hooks/Reports/usePendingManteinanceReport";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -17,10 +18,16 @@ const MaintenanceStackedChart = ({
 }: {
   accommodationId: number;
 }) => {
+  const { t } = useTranslation();
   const { data, isLoading } = usePendingMaintenanceReport(accommodationId);
 
-  if (isLoading) return <p>Cargando tareas...</p>;
-  if (!data) return <p>No se pudo cargar el reporte.</p>;
+  if (isLoading)
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
 
   const priorities = ["high", "medium", "low"];
   const statuses = ["pending", "in_progress"];
@@ -38,15 +45,19 @@ const MaintenanceStackedChart = ({
   });
 
   const chartData = {
-    labels: ["Alta", "Media", "Baja"],
+    labels: [
+      t("maintenances.priorityOptions.high"),
+      t("maintenances.priorityOptions.medium"),
+      t("maintenances.priorityOptions.low"),
+    ],
     datasets: [
       {
-        label: "Pendientes",
+        label: t("maintenances.statusOptions.pending"),
         data: priorities.map((p) => counts.pending[p]),
         backgroundColor: "#ffc107",
       },
       {
-        label: "En progreso",
+        label: t("maintenances.statusOptions.inProgress"),
         data: priorities.map((p) => counts.in_progress[p]),
         backgroundColor: "#60c4ab",
       },
@@ -69,51 +80,47 @@ const MaintenanceStackedChart = ({
   };
 
   const priorityLabels = {
-    high: "Alta",
-    medium: "Media",
-    low: "Baja",
+    high: t("maintenances.priorityOptions.high"),
+    medium: t("maintenances.priorityOptions.medium"),
+    low: t("maintenances.priorityOptions.low"),
   };
 
   const statusLabels = {
-    pending: "Pendiente",
-    in_progress: "En progreso",
+    pending: t("maintenances.statusOptions.pending"),
+    in_progress: t("maintenances.statusOptions.inProgress"),
   };
 
   return (
     <div>
-      <Chart type="bar" data={chartData} options={options} />
+      <div className="chart-container ">
+        <Chart type="bar" data={chartData} options={options} />
 
-      <h5 className="mt-4">Detalle de tareas</h5>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Habitación</th>
-            <th>Descripción</th>
-            <th>Prioridad</th>
-            <th>Estado</th>
-            <th>Asignado a</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.pending_maintenances.map((task) => (
-            <tr key={task.id}>
-              <td>{task.room_number}</td>
-              <td>{task.description}</td>
-              <td>{priorityLabels[task.priority]}</td>
-              <td>{statusLabels[task.status]}</td>
-              <td>{task.assigned_to}</td>
+        <h5 className="mt-4">{t("reports.taskDetails")}</h5>
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>{t("room")}</th>
+              <th>{t("description")}</th>
+              <th>{t("maintenances.priority")}</th>
+              <th>{t("maintenances.status")}</th>
+              <th>{t("maintenances.responsible")}</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {data.pending_maintenances.map((task) => (
+              <tr key={task.id}>
+                <td>{task.room_number}</td>
+                <td>{task.description}</td>
+                <td>{priorityLabels[task.priority]}</td>
+                <td>{statusLabels[task.status]}</td>
+                <td>{task.assigned_to}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };
 
 export default MaintenanceStackedChart;
-function usePendingManteinanceReport(accommodationId: number): {
-  data: any;
-  isLoading: any;
-} {
-  throw new Error("Function not implemented.");
-}

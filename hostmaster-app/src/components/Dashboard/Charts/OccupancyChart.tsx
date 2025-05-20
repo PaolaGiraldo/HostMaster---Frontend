@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { useOccupancyReport } from "../../../hooks/Reports/useOccupancyReport";
 import { useDateRange } from "../../../context/DateRangeContext";
+import { Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,7 @@ ChartJS.register(
 );
 
 const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
+  const { t } = useTranslation();
   const { range } = useDateRange();
   const { data: occupancy, isLoading } = useOccupancyReport(
     accommodationId,
@@ -30,28 +33,35 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
     range.endDate
   );
 
-  if (isLoading) return <p className="text-muted">Cargando reservas...</p>;
-  if (!occupancy)
-    return <p className="text-danger">No se pudo cargar el reporte.</p>;
+  if (isLoading)
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
 
   const chartData = {
     labels: occupancy.occupancy_data.map((item) => item.date),
     datasets: [
       {
         type: "bar",
-        label: "Habitaciones Ocupadas",
+        label: t("reports.bookedRooms"),
         data: occupancy.occupancy_data.map((item) => item.occupied_rooms),
         backgroundColor: "#60c4ab",
         borderRadius: 5,
+        yAxisID: "y",
       },
 
       {
         type: "line",
-        label: "Tasa de ocupación",
+        label: t("reports.occupancyRate"),
         data: occupancy.occupancy_data.map((item) => item.occupancy_rate),
-        borderColor: "#ff6384",
+        backgounrColor: "#1a2a6c",
+        borderColor: "#1a2a6c",
         borderWidth: 2,
         fill: false,
+        yAxisID: "y1",
       },
     ],
   };
@@ -62,18 +72,34 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
       mode: "index",
       intersect: false,
     },
+    stacked: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
     scales: {
       y: {
         type: "linear",
         display: true,
-        suggestedMax: 100,
+        positon: "left",
+      },
+      y1: {
+        type: "linear",
+        display: true,
+        positon: "right",
+        grid: {
+          drawnOnChartArea: false,
+        },
       },
     },
   };
 
   return (
     <>
-      <Chart type="bar" data={chartData} options={options} />;
+      <div className="chart-container">
+        <Chart type="bar" data={chartData} options={options} />;
+      </div>
     </>
   );
 };

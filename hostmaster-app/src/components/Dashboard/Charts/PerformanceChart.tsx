@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { usePerformanceReport } from "../../../hooks/Reports/usePerformanceReport";
+import { useTranslation } from "react-i18next";
+import { Spinner } from "react-bootstrap";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,7 @@ ChartJS.register(
 );
 
 const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
+  const { t } = useTranslation();
   const { range } = useDateRange();
   const { data: performance, isLoading } = usePerformanceReport(
     accommodationId,
@@ -30,40 +33,60 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
     range.endDate
   );
 
-  if (isLoading) return <p className="text-muted">Cargando reservas...</p>;
-  if (!performance)
-    return <p className="text-danger">No se pudo cargar el reporte.</p>;
-
+  if (isLoading)
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
   const options = {
     responsive: true,
     interaction: {
       mode: "index",
       intersect: false,
     },
+    stacked: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
     scales: {
       y: {
         type: "linear",
+        beginAtZero: true,
         display: true,
+        positon: "left",
+        margin: 20,
       },
     },
   };
 
   return (
     <>
-      <Bar
-        data={{
-          labels: performance.room_bookings.map((item) => item.room_number),
-          datasets: [
-            {
-              label: "Reservas",
-              data: performance.room_bookings.map((item) => item.bookings),
-              backgroundColor: "#60c4ab",
-              borderRadius: 5,
-            },
-          ],
-        }}
-        options={{ responsive: true }}
-      />
+      <strong>{t("reports.totalBookings")}: </strong>
+      {performance.total_reservations}
+      <br />
+      <strong>{t("reports.cancelRate")}: </strong>
+      {performance.cancellation_rate}
+      <div className="chart-container">
+        <Bar
+          data={{
+            labels: performance.room_bookings.map((item) => item.room_number),
+            datasets: [
+              {
+                label: t("reservations.title"),
+                data: performance.room_bookings.map((item) => item.bookings),
+                backgroundColor: "#60c4ab",
+                borderRadius: 5,
+                yAxisID: "y",
+              },
+            ],
+          }}
+          options={options}
+        />
+      </div>
     </>
   );
 };

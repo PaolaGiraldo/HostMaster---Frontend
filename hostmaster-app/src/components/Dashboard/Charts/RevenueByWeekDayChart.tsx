@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useRevenueByWeekDayReport } from "../../../hooks/Reports/useRevenueByWeekDayReport";
+import { Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +29,7 @@ const RevenueByWeekDayChart = ({
 }: {
   accommodationId: number;
 }) => {
+  const { t } = useTranslation();
   const { range } = useDateRange();
   const { data, isLoading } = useRevenueByWeekDayReport(
     accommodationId,
@@ -34,42 +37,53 @@ const RevenueByWeekDayChart = ({
     range.endDate
   );
 
-  if (isLoading) return <p className="text-muted">Cargando reservas...</p>;
-  if (!data)
-    return <p className="text-danger">No se pudo cargar el reporte.</p>;
-
+  if (isLoading)
+    return (
+      <div className="text-center my-5">
+        <Spinner animation="border" role="status" />
+        <div>{t("loading")}</div>
+      </div>
+    );
   const options = {
     responsive: true,
     interaction: {
       mode: "index",
       intersect: false,
     },
+    stacked: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
     scales: {
       y: {
         type: "linear",
         display: true,
-        suggestedMax: 100,
+        positon: "left",
       },
     },
   };
 
   return (
     <>
-      <Bar
-        data={{
-          labels: data.top_revenue_days.map((item) => item.weekday),
-          datasets: [
-            {
-              type: "bar",
-              label: "Ingresos por dia de la semana",
-              data: data.top_revenue_days.map((item) => item.total_revenue),
-              backgroundColor: "#60c4ab",
-              borderRadius: 5,
-            },
-          ],
-        }}
-        options={options}
-      />
+      <div className="chart-container">
+        <Bar
+          data={{
+            labels: data.top_revenue_days.map((item) => item.weekday),
+            datasets: [
+              {
+                type: "bar",
+                label: t("reports.revenuebyWeekDay"),
+                data: data.top_revenue_days.map((item) => item.total_revenue),
+                backgroundColor: "#60c4ab",
+                borderRadius: 5,
+              },
+            ],
+          }}
+          options={options}
+        />
+      </div>
     </>
   );
 };

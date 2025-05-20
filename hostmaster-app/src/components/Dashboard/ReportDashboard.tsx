@@ -1,13 +1,25 @@
 import React, { useState } from "react";
-import { Card, Container, Row, Col, Form, Accordion } from "react-bootstrap";
+import {
+  Card,
+  Container,
+  Row,
+  Col,
+  Form,
+  Accordion,
+  CardTitle,
+} from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import OccupancyChart from "./OccupancyChart";
+import OccupancyChart from "./Charts/OccupancyChart";
 import InventoryPieChart from "./InventoryPieChart";
 import ReviewSummary from "./ReviewSummary";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { DateRangeSelector } from "./DateRangeSelector";
 import { DateRangeProvider } from "../../context/DateRangeContext";
-import RevenueByWeekDayChart from "./RevenueByWeekDayChart";
+import RevenueByWeekDayChart from "./Charts/RevenueByWeekDayChart";
+import RevenueChart from "./Charts/RevenueChart";
+import PerformanceChart from "./Charts/PerformanceChart";
+import PendingMaintenanceChart from "./Charts/PendingMaintenanceChart";
+import MaintenanceStackedChart from "./Charts/MaintenanceStackedChart ";
 
 const ReportDashboard: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -45,6 +57,86 @@ const ReportDashboard: React.FC = ({}) => {
             </div>
           </div>
 
+          <Row xs={1} sm={2} md={2} className="g-4">
+            <Card
+              className="mb-3 shadow-sm"
+              style={{
+                //backgroundColor: STATUS_COLORS[reservation.status] || "#3a3a3a",
+                //color: "white",
+                padding: "1rem",
+                borderRadius: "0.5rem",
+                marginBottom: "1rem",
+              }}
+            >
+              <Card.Body>
+                <Card.Title>{t("reports.occupancy")}</Card.Title>
+
+                <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
+                <Card.Text>
+                  {t("reports.occupancyDescription")}
+                  <br />
+                  <div className="my-4">
+                    <OccupancyChart accommodationId={selectedAccommodationId} />
+                  </div>{" "}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+            <Col>
+              <Card
+                className="mb-3 shadow-sm"
+                style={{
+                  //backgroundColor: STATUS_COLORS[reservation.status] || "#3a3a3a",
+                  //color: "white",
+                  padding: "1rem",
+                  borderRadius: "0.5rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                <Card.Body>
+                  <Card.Title>{t("reports.revenue")}</Card.Title>
+
+                  <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
+                  <Card.Text>
+                    {t("reports.revenueDescription")}
+                    <br />
+                    <div className="my-4">
+                      <RevenueChart accommodationId={selectedAccommodationId} />
+                    </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <p className="mb-4">{t("reports.revenueDescription")}</p>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <p className="mb-4">{t("reports.revenueDescription")}</p>
+                  <div className="my-4">
+                    <RevenueChart accommodationId={selectedAccommodationId} />
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <p className="mb-4">{t("reports.revenueDescription")}</p>
+                  <div className="my-4">
+                    <RevenueChart accommodationId={selectedAccommodationId} />
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
           <Card className="shadow report-card">
             <Card.Body>
               <Accordion defaultActiveKey="0" className="my-4">
@@ -61,24 +153,26 @@ const ReportDashboard: React.FC = ({}) => {
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="1">
-                  <Accordion.Header>
-                    {t("reports.availability")}
-                  </Accordion.Header>
+                  <Accordion.Header>{t("reports.revenue")}</Accordion.Header>
                   <Accordion.Body>
-                    <p className="mb-4">
-                      {t("reports.availabilityDescription")}
-                    </p>
-                    <div className="my-4"></div>
+                    <p className="mb-4">{t("reports.revenueDescription")}</p>
+                    <div className="my-4">
+                      <RevenueChart accommodationId={selectedAccommodationId} />
+                    </div>
                   </Accordion.Body>
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="2">
-                  <Accordion.Header>{t("reports.inventory")}</Accordion.Header>
+                  <Accordion.Header>
+                    {t("reports.performance")}
+                  </Accordion.Header>
                   <Accordion.Body>
-                    <p className="mb-4">{t("reports.inventoryDescription")}</p>
+                    <p className="mb-4">
+                      {t("reports.performanceDescription")}
+                    </p>
 
                     <div className="my-4">
-                      <InventoryPieChart
+                      <PerformanceChart
                         accommodationId={selectedAccommodationId}
                       />
                     </div>
@@ -86,9 +180,13 @@ const ReportDashboard: React.FC = ({}) => {
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="3">
-                  <Accordion.Header>{t("reports.revenue")}</Accordion.Header>
+                  <Accordion.Header>
+                    {t("reports.revenuebyWeekDay")}
+                  </Accordion.Header>
                   <Accordion.Body>
-                    <p className="mb-4">{t("reports.revenueDescription")}</p>
+                    <p className="mb-4">
+                      {t("reports.revenuebyWeekDayDescription")}
+                    </p>
                     <div className="my-4">
                       <RevenueByWeekDayChart
                         accommodationId={selectedAccommodationId}
@@ -98,28 +196,18 @@ const ReportDashboard: React.FC = ({}) => {
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="4">
-                  <Accordion.Header>{t("reports.reviews")}</Accordion.Header>
+                  <Accordion.Header>
+                    {t("reports.maintenances")}
+                  </Accordion.Header>
                   <Accordion.Body>
-                    <p className="mb-4">{t("reports.reviewsDescription")}</p>
+                    <p className="mb-4">
+                      {t("reports.maintenancesDescription")}
+                    </p>
                     <div className="my-4">
-                      <ReviewSummary
+                      <MaintenanceStackedChart
                         accommodationId={selectedAccommodationId}
                       />
                     </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="5">
-                  <Accordion.Header>xxxx</Accordion.Header>
-                  <Accordion.Body>
-                    {/* Aquí va tu componente de inventario */}
-                  </Accordion.Body>
-                </Accordion.Item>
-
-                <Accordion.Item eventKey="6">
-                  <Accordion.Header>xxxx</Accordion.Header>
-                  <Accordion.Body>
-                    {/* Aquí va tu componente de inventario */}
                   </Accordion.Body>
                 </Accordion.Item>
 

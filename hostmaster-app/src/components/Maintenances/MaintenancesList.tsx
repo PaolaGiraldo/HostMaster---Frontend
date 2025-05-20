@@ -107,7 +107,6 @@ const MaintenanceList: React.FC<MaintenanceListProps> = () => {
   const handleSaveMaintenance = async (maintenance: Maintenance) => {
     try {
       if (maintenance.id) {
-        console.log(maintenance.assigned_to);
         await updateMaintenance(maintenance.id, maintenance);
       } else {
         await createMaintenance(maintenance);

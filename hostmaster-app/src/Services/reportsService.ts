@@ -11,7 +11,6 @@ export const getOccupancy = async ( {params} ) => {
 
 
   export const getRevenueByWeekDay = async ( {params} ) => {
-    console.log("2REVENUE")
     try {
     const response = await adminApi.get(`/dashboard/top-revenue-days-by-weekday`,{params});
     return response.data;
@@ -19,3 +18,33 @@ export const getOccupancy = async ( {params} ) => {
         throw error;
       }
   };
+
+  export const getRevenue = async ( {params} ) => {
+    try {
+    const response = await adminApi.get(`/dashboard/revenue`,{params});
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
+  export const getPerformance = async ( {params} ) => {
+    try {
+    const response = await adminApi.get(`/dashboard/performance`,{params});
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
+  export const getPendingMaintenances = async ( {params} ) => {
+    try {
+    const response = await adminApi.get(`/dashboard/maintenance`,{params});
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
+
+  

@@ -9,8 +9,8 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
-import { useOccupancyReport } from "../../hooks/useOccupancyReport";
-import { useDateRange } from "../../context/DateRangeContext";
+import { useOccupancyReport } from "../../../hooks/Reports/useOccupancyReport";
+import { useDateRange } from "../../../context/DateRangeContext";
 
 ChartJS.register(
   CategoryScale,

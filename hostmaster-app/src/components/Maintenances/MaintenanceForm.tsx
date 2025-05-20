@@ -53,7 +53,6 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({
         (option) => option.value === editingMaintenance.assigned_to
       );
       setValue("assigned_to", selectedPerson);
-      console.log(control._fields);
     }
   }, [editingMaintenance, reset]);
 

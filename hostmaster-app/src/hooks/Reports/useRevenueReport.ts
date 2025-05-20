@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { getRevenueByWeekDay } from "../Services/reportsService";
+import { getRevenue } from "../../Services/reportsService";
 
-export const useRevenueByWeekDayReport = (
+export const useRevenueReport = (
   accommodationId: number,
   startDate: Date,
   endDate: Date
@@ -11,14 +11,14 @@ export const useRevenueByWeekDayReport = (
   const formattedEnd = format(endDate, "yyyy-MM-dd");
 
   return useQuery({
-    queryKey: ["occupancy", formattedStart, formattedEnd, accommodationId],
+    queryKey: ["revenue", formattedStart, formattedEnd, accommodationId],
     queryFn: async () => {
       const params: any = {
         start_date: formattedStart,
         end_date: formattedEnd,
         accommodation_id: accommodationId,
       };
-      const revenue = await getRevenueByWeekDay({ params });
+      const revenue = await getRevenue({ params });
       return revenue;
     },
     staleTime: 1000 * 60 * 5, // 5 min

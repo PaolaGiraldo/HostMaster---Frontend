@@ -156,7 +156,15 @@ const ReportDashboard: React.FC = ({}) => {
 
           <Row xs={1} sm={2} md={2} className="g-4">
             <Col>
-              <Card className="mb-4 shadow-sm report-card">
+              <Card
+                className="mb-4 shadow-sm report-card"
+                onClick={() =>
+                  openModal(
+                    t("reports.revenue"),
+                    <RevenueChart accommodationId={selectedAccommodationId} />
+                  )
+                }
+              >
                 <Card.Body>
                   <Card.Title>{t("reports.revenue")}</Card.Title>
                   <Card.Text>{t("reports.revenueDescription")}</Card.Text>

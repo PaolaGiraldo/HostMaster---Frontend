@@ -55,11 +55,38 @@ const RevenueChart = ({ accommodationId }: { accommodationId: number }) => {
   };
 
   return (
-    <>
-      <div className="chart-container">
-        <Doughnut data={chartData} options={{ responsive: true }} />
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        width: "100%",
+        height: "310px",
+        background: " #ffffff",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "300px",
+          height: "90%",
+        }}
+      >
+        <Doughnut
+          data={chartData}
+          options={{
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "#3a3a3a", // texto blanco
+                },
+              },
+            },
+          }}
+        />
       </div>
-    </>
+    </div>
   );
 };
 

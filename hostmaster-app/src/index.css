@@ -362,6 +362,7 @@ button:hover {
   height: "100%";
   width: "100%";
   color: #3a3a3a;
+  overflow-y: auto;
 
 }
 

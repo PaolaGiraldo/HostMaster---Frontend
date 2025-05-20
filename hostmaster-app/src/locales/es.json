@@ -158,6 +158,7 @@
   },
   "reports":{
     "title":"Panel de Reportes",
+    "select":"Seleccione un alojamiento",
     "occupancy":"Ocupación Actual",
     "availability":"Disponibilidad",
     "inventory":"Estado del Inventario",
@@ -169,7 +170,7 @@
     "totalBookings":"Total de reservas",
     "cancelRate":"Tasa de Cancelación",
     "taskDetails":" Detalle de tareas",
-    "selectRange": "Seleccionar rango de fechas",
+    "selectRange": "Seleccione rango de fechas",
     "bookedRooms": "Habitaciones Reservadas",
     "occupancyRate": "Tasa de Ocupación",
     "estimatedRevenue": "Ingresos Estimados",

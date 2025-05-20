@@ -3,7 +3,6 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  Legend,
   LineElement,
   PointElement,
 } from "chart.js";
@@ -13,13 +12,6 @@ import { OverlayTrigger, Tooltip, Spinner, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import type { ChartData, ChartOptions } from "chart.js";
 import { useDailyMetricsReport } from "../../../hooks/Reports/useDailyMetricsReport";
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-  Key,
-} from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -140,6 +132,17 @@ const DailyMatricsChart = ({
     },
   };
 
+  const getStatusColor = (status: any) => {
+    switch (status) {
+      case "PENDING":
+        return "bg-warning text-dark";
+      case "IN_PROGRESS":
+        return "bg-info text-dark";
+      default:
+        return "bg-secondary text-white";
+    }
+  };
+
   return (
     <>
       <div className="chart-container">
@@ -178,27 +181,36 @@ const DailyMatricsChart = ({
                 <td>{d.reservations}</td>
                 <td>
                   {d.maintenance_issues.length > 0
-                    ? d.maintenance_issues.map(
-                        (issue: any, i: Key | null | undefined) => (
-                          <OverlayTrigger
-                            key={i}
-                            placement="top"
-                            overlay={(props) => (
-                              <Tooltip id={`tooltip-${i}`} {...props}>
-                                {issue}
-                              </Tooltip>
-                            )}
-                          >
-                            <span
-                              className="badge bg-warning text-dark me-1"
-                              style={{ cursor: "pointer" }}
+                    ? d.maintenance_issues.map((issue: any, index: any) => {
+                        const text = issue.split(" (")[0]; // Extrae el texto antes del paréntesis
+                        const statusMatch = issue.match(
+                          /\((MaintenanceStatus\.(\w+))\)/
+                        );
+                        const status = statusMatch ? statusMatch[2] : "UNKNOWN";
+                        const badgeClass = getStatusColor(status);
+
+                        return (
+                          <div>
+                            <OverlayTrigger
+                              key={index}
+                              placement="top"
+                              overlay={(props) => (
+                                <Tooltip id={`tooltip-${index}`} {...props}>
+                                  {text}
+                                </Tooltip>
+                              )}
                             >
-                              {issue.toString().slice(0, 8)}
-                              {/* Muestra una parte si es muy largo */}
-                            </span>
-                          </OverlayTrigger>
-                        )
-                      )
+                              <span
+                                key={index}
+                                className={`badge ${badgeClass} me-1`}
+                                style={{ cursor: "pointer" }}
+                              >
+                                {issue.toString().slice(0, 8)}
+                              </span>
+                            </OverlayTrigger>
+                          </div>
+                        );
+                      })
                     : t("reports.noIncidents")}
                 </td>
               </tr>

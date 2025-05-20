@@ -42,9 +42,7 @@ const ReportDashboard: React.FC = ({}) => {
                 padding: "50px",
               }}
             >
-              <Form.Label className="fw-bold">
-                Seleccionar un alojamiento
-              </Form.Label>
+              <Form.Label className="fw-bold">{t("reports.select")}</Form.Label>
               {accommodations?.map((accommodation) => (
                 <Form.Check
                   key={accommodation.id}

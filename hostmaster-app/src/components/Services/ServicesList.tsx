@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
 import ServiceForm from "./ServicesForm";
 import { Service } from "../../interfaces/serviceInterface";

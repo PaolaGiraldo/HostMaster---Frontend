@@ -84,6 +84,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
         display: true,
         position: "left",
         stacked: false,
+        grace: "10%",
       },
       y1: {
         type: "linear",

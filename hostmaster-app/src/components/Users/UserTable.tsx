@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, OverlayTrigger, Popover, Modal } from "react-bootstrap";
+import { Table, Button, Modal } from "react-bootstrap";
 import { FaCheck, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { User } from "../../interfaces/userInterface";
@@ -15,7 +15,6 @@ interface UserTableProps {
 
 const CustomerTable: React.FC<UserTableProps> = ({
   users,
-  accommodations,
   onEdit,
   onDelete,
 }) => {

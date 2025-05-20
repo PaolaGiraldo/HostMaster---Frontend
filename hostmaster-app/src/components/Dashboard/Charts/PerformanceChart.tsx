@@ -65,6 +65,7 @@ const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
           padding: 10,
         },
         stacked: false,
+        grace: "10%",
       },
     },
   };

@@ -3,8 +3,6 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { useLocation } from "../../context/LocationContext";
-import { createAccommodation } from "../../Services/accommodationService";
-import { uploadAccommodationImages } from "./UploadImages";
 
 interface AccommodationFormProps {
   show: boolean;

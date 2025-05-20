@@ -2,7 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import { useMutation } from "@tanstack/react-query";
-import { createClient } from "../../Services/serviceService";
+import { createUser } from "../../Services/userService";
+import { User } from "../../interfaces/userInterface";
 
 interface IClientForm {
   username: string;
@@ -16,25 +17,42 @@ const AddClientForm: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IClientForm>();
 
-  const mutation = useMutation(createClient, {
+  const mutation = useMutation({
+    mutationFn: createUser,
     onSuccess: () => {
       alert("Cliente agregado exitosamente");
-      // Aquí podrías también redirigir o resetear el formulario.
+      reset(); // Resetea el formulario
     },
-    onError: (error) => {
-      alert("Hubo un error al agregar el cliente: " + error.message);
+    onError: (error: unknown) => {
+      const errorMessage =
+        error instanceof Error ? error.message : "Error desconocido";
+      alert("Hubo un error al agregar el cliente: " + errorMessage);
     },
   });
 
   const onSubmit = (data: IClientForm) => {
-    mutation.mutate(data);
+    const user: User = {
+      username: data.username,
+      email: data.email,
+      password: "defaultPassword123", // O pide este campo en el formulario
+      full_name: `${data.firstName} ${data.lastName}`,
+      role: "client", // O el rol que corresponda
+      firstname: data.firstName,
+      lastname: data.lastName,
+      document_number: data.documentNumber,
+      phone_number: "", // Si no lo tienes, puedes dejarlo vacío o eliminarlo si es opcional
+      reviews: [],
+    };
+
+    mutation.mutate(user);
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Form.Group controlId="username">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -43,6 +61,7 @@ const AddClientForm: React.FC = () => {
             required: "El nombre de usuario es obligatorio",
           })}
           isInvalid={!!errors.username}
+          aria-invalid={!!errors.username}
         />
         <Form.Control.Feedback type="invalid">
           {errors.username?.message}
@@ -53,8 +72,15 @@ const AddClientForm: React.FC = () => {
         <Form.Label>Email</Form.Label>
         <Form.Control
           type="email"
-          {...register("email", { required: "El email es obligatorio" })}
+          {...register("email", {
+            required: "El email es obligatorio",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Formato de email inválido",
+            },
+          })}
           isInvalid={!!errors.email}
+          aria-invalid={!!errors.email}
         />
         <Form.Control.Feedback type="invalid">
           {errors.email?.message}
@@ -67,6 +93,7 @@ const AddClientForm: React.FC = () => {
           type="text"
           {...register("firstName", { required: "El nombre es obligatorio" })}
           isInvalid={!!errors.firstName}
+          aria-invalid={!!errors.firstName}
         />
         <Form.Control.Feedback type="invalid">
           {errors.firstName?.message}
@@ -79,6 +106,7 @@ const AddClientForm: React.FC = () => {
           type="text"
           {...register("lastName", { required: "El apellido es obligatorio" })}
           isInvalid={!!errors.lastName}
+          aria-invalid={!!errors.lastName}
         />
         <Form.Control.Feedback type="invalid">
           {errors.lastName?.message}
@@ -93,14 +121,15 @@ const AddClientForm: React.FC = () => {
             required: "El número de documento es obligatorio",
           })}
           isInvalid={!!errors.documentNumber}
+          aria-invalid={!!errors.documentNumber}
         />
         <Form.Control.Feedback type="invalid">
           {errors.documentNumber?.message}
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Button type="submit" variant="primary" disabled={mutation.isLoading}>
-        {mutation.isLoading ? "Agregando..." : "Agregar Cliente"}
+      <Button type="submit" variant="primary" disabled={mutation.isPending}>
+        {mutation.isPending ? "Agregando..." : "Agregar Cliente"}
       </Button>
     </Form>
   );

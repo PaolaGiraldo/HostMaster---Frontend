@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Table, Button, Modal } from "react-bootstrap";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import React from "react";
+import { Table, Button } from "react-bootstrap";
+import { FaEdit } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";
 import { Room } from "../../interfaces/roomInterface";
@@ -25,7 +25,6 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
   accommodations,
   staff,
   onEdit,
-  onDelete,
 }) => {
   const { t } = useTranslation();
 

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
 import { useTranslation } from "react-i18next";
 import { Maintenance } from "../../interfaces/maintenanceInterface";
 import { Accommodation } from "../../interfaces/accommodationInterface";
@@ -31,14 +31,7 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit, reset, watch, setValue } = useForm();
 
   useEffect(() => {
     if (editingMaintenance) {
@@ -176,9 +169,9 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({
                     isSearchable
                     placeholder={t("select")}
                     value={field.value}
-                    onChange={(option: { value: any }) =>
-                      field.onChange(option)
-                    }
+                    onChange={(
+                      option: SingleValue<{ value: any; label: string }>
+                    ) => field.onChange(option)}
                   />
                 )}
               />

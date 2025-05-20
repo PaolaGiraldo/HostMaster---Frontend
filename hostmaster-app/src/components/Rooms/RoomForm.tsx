@@ -29,13 +29,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit, reset } = useForm();
 
   useEffect(() => {
     if (editingRoom) {
@@ -192,7 +186,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
             <Controller
               control={control}
               name="images"
-              render={({ field, fieldState }) => (
+              render={({ fieldState }) => (
                 <>
                   <Form.Control
                     type="file"

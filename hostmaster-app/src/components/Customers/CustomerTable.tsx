@@ -26,7 +26,7 @@ const CustomerTable: React.FC<ClientTableProps> = ({
     string | null
   >(null);
 
-  const { counts, isLoading } = useReservationsByCustomer(clients);
+  const { counts } = useReservationsByCustomer(clients);
 
   const handleDeleteClick = (username?: string) => {
     setSelectedselectedUsername(username ?? null);

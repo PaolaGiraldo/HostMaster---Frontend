@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import ReservationCalendar from "./ReservationCalendar";
 import { Reservation } from "../../interfaces/reservationInterface";
 import { getReservations } from "../../Services/reservationService";
@@ -33,8 +32,6 @@ const ReservationCalendarList: React.FC = () => {
       console.error("Error fetching reservations:", error);
     }
   };
-
-  const { t } = useTranslation();
 
   return (
     <Container>

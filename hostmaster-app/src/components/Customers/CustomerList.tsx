@@ -8,7 +8,6 @@ import { createUser, deleteUser, updateUser } from "../../Services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 import { useAccommodations } from "../../hooks/useAccommodations";
-import { userRoleList } from "../../constants/userRolesList";
 
 const CustomersList: React.FC = () => {
   const { t } = useTranslation();

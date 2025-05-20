@@ -10,6 +10,7 @@ import { Chart } from "react-chartjs-2";
 import { Spinner, Table } from "react-bootstrap"; // asegúrate de tener react-bootstrap instalado
 import { usePendingMaintenanceReport } from "../../../hooks/Reports/usePendingManteinanceReport";
 import { useTranslation } from "react-i18next";
+import { relative } from "path";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -65,6 +66,7 @@ const MaintenanceStackedChart = ({
   };
 
   const options = {
+    maintainAspectRadio: false,
     responsive: true,
     plugins: {
       tooltip: { mode: "index", intersect: false },
@@ -92,7 +94,7 @@ const MaintenanceStackedChart = ({
 
   return (
     <div>
-      <div className="chart-container ">
+      <div className="chart-container mb-4">
         <Chart type="bar" data={chartData} options={options} />
 
         <h5 className="mt-4">{t("reports.taskDetails")}</h5>

@@ -141,7 +141,11 @@ const ReportDashboard: React.FC = ({}) => {
                   )
                 }
               >
-                <Card.Body>
+                <Card.Body
+                  style={{
+                    overflowX: "auto",
+                  }}
+                >
                   <Card.Title> {t("reports.maintenances")}</Card.Title>
                   <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                   <div className="my-4">

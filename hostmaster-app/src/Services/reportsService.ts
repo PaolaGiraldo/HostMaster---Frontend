@@ -46,5 +46,15 @@ export const getOccupancy = async ( {params} ) => {
       }
   };
 
+  export const getSummary = async ( {params} ) => {
+    try {
+    const response = await adminApi.get(`/dashboard/summary`,{params});
+    return response.data;
+} catch (error) {
+        throw error;
+      }
+  };
+
+
 
   

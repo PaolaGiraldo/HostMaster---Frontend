@@ -43,6 +43,7 @@ const RoomList: React.FC = () => {
   const [filterAccommodation, setFilterAccommodation] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterAvailability, setFilterAvailability] = useState("");
+  const [filterRoom, setFilterRoom] = useState("");
 
   const filteredRooms = rooms.filter((room) => {
     return (
@@ -52,7 +53,8 @@ const RoomList: React.FC = () => {
       (!filterAvailability ||
         (filterAvailability === "available"
           ? room.isAvailable
-          : !room.isAvailable))
+          : !room.isAvailable)) &&
+      (!filterRoom || room.number.startsWith(filterRoom))
     );
   });
 
@@ -201,9 +203,13 @@ const RoomList: React.FC = () => {
               setFilterType("");
               setFilterAvailability("");
               setFilterAccommodation("");
+              setFilterRoom("");
             }}
             disabled={
-              !filterType && !filterAccommodation && !filterAvailability
+              !filterType &&
+              !filterAccommodation &&
+              !filterAvailability &&
+              !filterRoom
             } // Deshabilita el botón si no hay filtro aplicado
           >
             {t("clearFilters")}
@@ -211,41 +217,74 @@ const RoomList: React.FC = () => {
         </Col>
       </Row>
 
-      <div className="d-flex gap-3 mb-3">
-        <Form.Select
-          value={filterAccommodation}
-          onChange={(e) => setFilterAccommodation(e.target.value)}
-        >
-          <option value="">{t("rooms.filterAccommodation")}</option>
-          {accommodations.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </Form.Select>
+      <div className="mb-4">
+        <Row className="g-3">
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("rooms.filterAccommodation")}
+              </Form.Label>
+              <Form.Select
+                value={filterAccommodation}
+                onChange={(e) => setFilterAccommodation(e.target.value)}
+              >
+                <option value="">{t("rooms.filterAccommodation")}</option>
+                {accommodations.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-        <Form.Select
-          value={filterType}
-          onChange={(e) => {
-            setFilterType(e.target.value);
-          }}
-        >
-          <option value="">{t("rooms.filterType")}</option>
-          {roomTypes.map((rt) => (
-            <option key={rt.id} value={rt.id}>
-              {rt.name}
-            </option>
-          ))}
-        </Form.Select>
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("rooms.filterType")}
+              </Form.Label>
+              <Form.Select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+              >
+                <option value="">{t("rooms.filterType")}</option>
+                {roomTypes.map((rt) => (
+                  <option key={rt.id} value={rt.id}>
+                    {rt.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-        <Form.Select
-          value={filterAvailability}
-          onChange={(e) => setFilterAvailability(e.target.value)}
-        >
-          <option value="">{t("rooms.filterAvailability")}</option>
-          <option value="available">{t("available")}</option>
-          <option value="unavailable">{t("unavailable")}</option>
-        </Form.Select>
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>
+                {t("rooms.filterAvailability")}
+              </Form.Label>
+              <Form.Select
+                value={filterAvailability}
+                onChange={(e) => setFilterAvailability(e.target.value)}
+              >
+                <option value="">{t("rooms.filterAvailability")}</option>
+                <option value="available">{t("available")}</option>
+                <option value="unavailable">{t("unavailable")}</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label style={{ color: "#FFFFFF" }}>{t("room")}</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={t("rooms.roomNumber")}
+                value={filterRoom}
+                onChange={(e) => setFilterRoom(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
       </div>
 
       <RoomTable

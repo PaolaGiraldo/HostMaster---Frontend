@@ -24,12 +24,10 @@ const RoomTable: React.FC<RoomTableProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
-  const [filterAvailability] = useState<string>("");
-  const [filterType] = useState<string>("");
-  const [searchRoomNumber, setSearchRoomNumber] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [showInventoryModal, setShowInventoryModal] = useState(false);
@@ -45,18 +43,6 @@ const RoomTable: React.FC<RoomTableProps> = ({
     }
     setShowConfirm(false);
   };
-
-  const { t } = useTranslation();
-  // Filtrar habitaciones
-  const filteredRooms = rooms.filter((room) => {
-    return (
-      (filterAvailability === "" ||
-        String(room.isAvailable) === filterAvailability) &&
-      (filterType === "" || room.type_id) &&
-      (searchRoomNumber === "" ||
-        String(room.number).startsWith(searchRoomNumber))
-    );
-  });
 
   const openImageModal = (images: Image[]) => {
     const imageUrls = images.map((img) => img.url);
@@ -80,23 +66,6 @@ const RoomTable: React.FC<RoomTableProps> = ({
 
   return (
     <>
-      {/* Filtros */}
-      <Row className="mb-3">
-        <Col md={4}>
-          <Form.Group>
-            <Form.Label style={{ color: "#FFFFFF" }}>
-              {t("rooms.filterNumber")}
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={t("rooms.InsertNumber")}
-              value={searchRoomNumber}
-              onChange={(e) => setSearchRoomNumber(e.target.value)}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-
       {/* Tabla de habitaciones */}
       <div className="table-responsive scrollable-table">
         <Table striped bordered hover className="room-table">
@@ -113,7 +82,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {filteredRooms.map((room) => (
+            {rooms.map((room) => (
               <tr key={room.id}>
                 <td>
                   {accommodations.find((a) => a.id === room.accommodation_id)

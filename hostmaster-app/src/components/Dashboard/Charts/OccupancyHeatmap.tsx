@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useDailyMetricsReport } from "../../../hooks/Reports/useDailyMetricsReport";
 import { Spinner } from "react-bootstrap";
+import { Tooltip } from "react-tooltip";
+import { es } from "date-fns/locale";
 
 interface HeatmapValue {
   date: string;
@@ -26,14 +28,23 @@ const OccupancyHeatmap = ({ accommodationId }: { accommodationId: number }) => {
   );
 
   const heatmapValues: HeatmapValue[] = data?.daily_metrics.map(
-    (metric: { date: string; occupied_rooms: any }) => ({
-      date: metric.date,
-      count: metric.occupied_rooms,
-      tooltip: `${format(parseISO(metric.date), "yyyy-MM-dd")}: ${
-        metric.occupied_rooms
-      } ${t("reports.occupiedRooms")}`,
-    })
+    (metric: { date: string; occupied_rooms: any }) => {
+      const fecha = parseISO(metric.date);
+      const mesAbreviado = format(fecha, "MMM", { locale: es });
+      const mesCapitalizado =
+        mesAbreviado.charAt(0).toUpperCase() + mesAbreviado.slice(1);
+      const fechaFormateada = `${mesCapitalizado}-01-${format(fecha, "yyyy")}`;
+
+      return {
+        date: metric.date,
+        count: metric.occupied_rooms,
+        tooltip: `${fechaFormateada}: ${metric.occupied_rooms} ${t(
+          "reports.occupiedRooms"
+        )}`,
+      };
+    }
   );
+
   if (isLoading || !data)
     return (
       <div className="text-center my-5">
@@ -78,7 +89,19 @@ const OccupancyHeatmap = ({ accommodationId }: { accommodationId: number }) => {
           }
           return "color-scale-4";
         }}
+        tooltipDataAttrs={(value) =>
+          ({
+            "data-tooltip-content": (value as HeatmapValue)?.tooltip ?? "",
+            "data-tooltip-id": "heatmap-tooltip",
+          } as unknown as React.HTMLAttributes<SVGElement>)
+        }
         showWeekdayLabels
+      />
+
+      <Tooltip
+        id="heatmap-tooltip"
+        place="top"
+        style={{ background: "#1a2a6c" }}
       />
     </div>
   );

@@ -1,10 +1,14 @@
 import axios from "axios";
 
+
+
+const token = localStorage.getItem("token");
+
+
 // URL base del backend
 const baseUrl = import.meta.env.VITE_SERVER_URL; 
 
 // Token (puedes cargarlo desde localStorage o variables de entorno si es dinámico)
-const AUTH_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0Nzg0NjI3Nn0.B7b4uGm63yUj68bip364E-8Z5hx6gBjhiauGgTvjvKY";
 
 // Crear una función que genere instancias de Axios
 const createApiService = (prefix: "admin" | "hotel") => {
@@ -12,7 +16,7 @@ const createApiService = (prefix: "admin" | "hotel") => {
     baseURL: `${baseUrl}/${prefix}`,
     headers: {
       "Content-Type": "application/json",
-      "Authorization": AUTH_TOKEN,
+      Authorization: token ? `Bearer ${token}` : "",
     },
   });
 

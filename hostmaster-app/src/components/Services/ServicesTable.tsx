@@ -47,8 +47,8 @@ const ServiceTable: React.FC<ServiceTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {services.map((service) => (
-              <tr key={service.id}>
+            {services.map((service, index) => (
+              <tr key={index}>
                 <td>{service.id}</td>
                 <td>{service.name}</td>
                 <td>{service.description}</td>

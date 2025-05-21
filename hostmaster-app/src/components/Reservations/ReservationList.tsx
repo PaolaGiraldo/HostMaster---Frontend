@@ -35,8 +35,6 @@ const ReservationList: React.FC<ReservationListProps> = () => {
   const [filterRoom, setFilterRoom] = useState("");
   const [filterCustomer, setFilterCustomer] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-
-  const [roomId, setRoomId] = useState<number | null>(null);
   const [customerName, setCustomerName] = useState<string | null>(null);
 
   const [selectedReservation, setSelectedReservation] =
@@ -104,14 +102,6 @@ const ReservationList: React.FC<ReservationListProps> = () => {
           reservation.status.toLowerCase() === filterStatus.toLowerCase())
       );
     });
-
-  const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFilterRoom(value);
-
-    const foundRoom = rooms.find((room) => room.number === value);
-    setRoomId(foundRoom?.id ?? null);
-  };
 
   const handleClientChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -222,7 +212,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                   type="text"
                   placeholder={t("rooms.roomNumber")}
                   value={filterRoom}
-                  onChange={handleRoomChange}
+                  onChange={(e) => setFilterRoom(e.target.value)}
                 />
               </Form.Group>
             </Col>
@@ -333,7 +323,11 @@ const ReservationList: React.FC<ReservationListProps> = () => {
           {selectedReservation?.start_date}
           <br />
           <strong>{t("reservations.customer")}:</strong>{" "}
-          {selectedReservation?.user_username}
+          {
+            clients?.find(
+              (c) => c.username === selectedReservation?.user_username
+            )?.full_name
+          }
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowCancelModal(false)}>

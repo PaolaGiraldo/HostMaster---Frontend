@@ -142,13 +142,15 @@ const ReservationCalendar: React.FC<ReservationCalendarProps> = ({
                 <strong>{t("customer")}:</strong> {selectedEvent.guest_name}
               </p>
               <p>
-                <strong>{t("starDate")}:</strong> {selectedEvent.start_date}
+                <strong>{t("reservations.start_date")}:</strong>{" "}
+                {selectedEvent.start_date}
               </p>
               <p>
-                <strong>{t("endDate")}:</strong> {selectedEvent.end_date}
+                <strong>{t("reservations.end_date")}:</strong>{" "}
+                {selectedEvent.end_date}
               </p>
               <p>
-                <strong>{t("observations")} :</strong>{" "}
+                <strong>{t("reservations.observations")} :</strong>{" "}
                 {selectedEvent.notes || "Sin notas"}
               </p>
             </>

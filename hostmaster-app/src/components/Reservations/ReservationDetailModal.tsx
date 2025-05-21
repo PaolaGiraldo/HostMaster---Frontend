@@ -29,42 +29,42 @@ const ReservationDetailModal: React.FC<ReservationDetailModalProps> = ({
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("reservation.detailsTitle")}</Modal.Title>
+        <Modal.Title>{t("reservations.detailsTitle")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {reservation && (
           <>
             <p>
-              <strong>{t("reservation.client")}:</strong> {client?.full_name}
+              <strong>{t("reservations.client")}:</strong> {client?.full_name}
             </p>
             <p>
-              <strong>{t("reservation.accommodation")}:</strong>{" "}
+              <strong>{t("reservations.accommodation")}:</strong>{" "}
               {accommmodation?.name}
             </p>
             <p>
-              <strong>{t("reservation.room")}:</strong> {room?.number}
+              <strong>{t("reservations.room")}:</strong> {room?.number}
             </p>
             <p>
-              <strong>{t("reservation.checkin")}:</strong>{" "}
+              <strong>{t("reservations.checkin")}:</strong>{" "}
               {reservation.start_date}
             </p>
             <p>
-              <strong>{t("reservation.checkout")}:</strong>{" "}
+              <strong>{t("reservations.checkout")}:</strong>{" "}
               {reservation.end_date}
             </p>
 
             <p>
-              <strong>{t("reservation.services")}:</strong>{" "}
+              <strong>{t("reservations.services")}:</strong>{" "}
               {reservation.extra_services?.length > 0
                 ? reservation.extra_services.map((s) => s.name).join(", ")
-                : t("reservation.noExtraServices")}
+                : t("reservations.noExtraServices")}
             </p>
 
             <p>
-              <strong>{t("reservation.status")}:</strong> {reservation.status}
+              <strong>{t("reservations.status")}:</strong> {reservation.status}
             </p>
             <p>
-              <strong>{t("reservation.observations")}:</strong>{" "}
+              <strong>{t("reservations.observations")}:</strong>{" "}
               {reservation.observations}
             </p>
           </>

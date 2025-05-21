@@ -1,8 +1,5 @@
 import { Accommodation } from "./accommodationInterface";
 import { Room } from "./roomInterface";
-import { Service } from "./serviceInterface";
-import { User } from "./userInterface";
-
 interface ReservationDetails{
     start_date: string;
     end_date: string;
@@ -15,16 +12,31 @@ interface ReservationDetails{
 interface CostBreakdown {
     room_cost: number;
     extra_services_cost: number;
-    extra_services: Service[]
+    extra_services: InvoiceServices[]
+    total_cost: number;
+}
+
+interface InvoiceUser{
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    document_number: string;
+
+}
+
+interface InvoiceServices{
+    service_name: string;
+    price: number;
 }
 
 export interface ReservationInvoice {
-    id?: number; 
-    user: User;
+    reservation_id: number; 
+    user: InvoiceUser;
     accommodation: Accommodation;
     room: Room;
     reservation_details: ReservationDetails;
     cost_breakdown: CostBreakdown;
-    total_cost: number;
+    
     generated_at: string;
   }

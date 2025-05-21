@@ -33,7 +33,7 @@ const hotelApi = getApiService("hotel");
   };
 
 
-  export const getReservationInvoice = async (id: number): Promise<ReservationInvoice[]> => {
+  export const getReservationInvoice = async (id: number): Promise<ReservationInvoice> => {
      try {
        const response = await hotelApi.get(`/reservations/${id}/invoice`);
        return response.data;

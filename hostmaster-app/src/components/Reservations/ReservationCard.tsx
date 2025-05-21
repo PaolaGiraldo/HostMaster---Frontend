@@ -19,6 +19,8 @@ import {
 } from "../../services/reservationService";
 import { useQueryClient } from "@tanstack/react-query";
 import { useReservationInvoice } from "../../hooks/useReservationInvoice";
+import ReservationInvoiceModal from "./ReservationInvoiceModal";
+import { ReservationInvoice } from "../../interfaces/resevationInvoceInterface";
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -47,8 +49,13 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   );
 
   const [showModal, setShowModal] = useState(false);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+
+  const [invoice, setInvoice] = useState<ReservationInvoice | null>(null);
+
   const handleCloseModal = () => {
     setShowModal(false);
+    setShowInvoiceModal(false);
   };
 
   const isTodayStartDate = isToday(parseISO(reservation.start_date));
@@ -77,8 +84,17 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   const generateInvoice = async (reservationId: number) => {
     try {
       const invoice = await getReservationInvoice(reservationId);
-      console.log(invoice);
+      setInvoice(invoice);
+      setShowInvoiceModal(true);
+    } catch (error) {
+      console.error("Error updating reservation status", error);
+    }
+  };
+
+  const sendInvoice = async (reservationId: number) => {
+    try {
       await sendReservationInvoice(reservationId);
+      setShowInvoiceModal(false);
     } catch (error) {
       console.error("Error updating reservation status", error);
     }
@@ -175,6 +191,13 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
         accommmodation={accommodation}
         room={room}
       ></ReservationDetailModal>
+
+      <ReservationInvoiceModal
+        show={showInvoiceModal}
+        onClose={handleCloseModal}
+        sendInvoice={sendInvoice}
+        invoice={invoice}
+      ></ReservationInvoiceModal>
     </>
   );
 };

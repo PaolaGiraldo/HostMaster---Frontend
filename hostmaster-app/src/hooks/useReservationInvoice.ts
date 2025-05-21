@@ -4,7 +4,7 @@ import { getReservationInvoice } from "../services/reservationService";
 
 
 export const useReservationInvoice = (reservationId: number) => {
-    return useQuery<ReservationInvoice[]>({
+    return useQuery<ReservationInvoice>({
       queryKey: ['invoice', reservationId],
       queryFn: ({ queryKey }) => {
         const [, id] = queryKey;

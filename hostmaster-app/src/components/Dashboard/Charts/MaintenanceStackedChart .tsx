@@ -132,7 +132,7 @@ const MaintenanceStackedChart = ({
       <div
         style={{
           width: "50%",
-
+          padding: "20px",
           flex: "1 1 48%",
           minWidth: "300px",
           overflowX: "auto",

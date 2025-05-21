@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Navbar,
@@ -30,16 +30,21 @@ import { useAuth } from "../context/AuthContext";
 
 const NavigationBar: React.FC = () => {
   const { t, i18n } = useTranslation();
-
   const navigate = useNavigate();
+  const { userRole, logout } = useAuth();
+
+  const [expanded, setExpanded] = useState(false);
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === "en" ? "es" : "en");
   };
 
-  const { userRole, logout } = useAuth();
+  const handleLogOut = () => {
+    logout();
+    setExpanded(false);
+    navigate("/");
+  };
 
-  // Definir los enlaces según el rol del usuario
   const roleBasedLinks = [
     {
       path: "/accommodations",
@@ -103,13 +108,14 @@ const NavigationBar: React.FC = () => {
     },
   ];
 
-  const handleLogOut = () => {
-    logout();
-    navigate("/");
-  };
-
   return (
-    <Navbar expand="lg" variant="dark" className="navbar-custom">
+    <Navbar
+      expand="lg"
+      variant="dark"
+      className="navbar-custom"
+      expanded={expanded}
+      onToggle={() => setExpanded(!expanded)}
+    >
       <Container>
         <Navbar.Brand
           as={Link}
@@ -123,25 +129,18 @@ const NavigationBar: React.FC = () => {
           />
           HostMaster
         </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="basic-navbar-nav"
-          data-bs-toggle="collapse"
-          data-bs-target="#basic-navbar-nav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip>{t("navbar.home")}</Tooltip>}
             >
-              <Nav.Link as={Link} to="/">
+              <Nav.Link as={Link} to="/" onClick={() => setExpanded(false)}>
                 <FaHome size={30} />
               </Nav.Link>
             </OverlayTrigger>
 
-            {/* Enlaces según el rol */}
             {roleBasedLinks.map((link) =>
               link.roles.includes(userRole ?? "") ? (
                 <OverlayTrigger
@@ -153,6 +152,7 @@ const NavigationBar: React.FC = () => {
                     as={Link}
                     to={link.path}
                     style={{ padding: "10px 15px" }}
+                    onClick={() => setExpanded(false)}
                   >
                     {link.icon}
                   </Nav.Link>
@@ -175,13 +175,16 @@ const NavigationBar: React.FC = () => {
               placement="bottom"
               overlay={<Tooltip>{t("navbar.login")}</Tooltip>}
             >
-              <Nav.Link as={Link} to="/login">
+              <Nav.Link
+                as={Link}
+                to="/login"
+                onClick={() => setExpanded(false)}
+              >
                 <FaSignInAlt size={30} />
               </Nav.Link>
             </OverlayTrigger>
           )}
 
-          {/* Botón para cambiar de idioma */}
           <Button
             variant="Icon"
             onClick={toggleLanguage}

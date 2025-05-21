@@ -1,6 +1,6 @@
 // RoomTable.tsx - Componente para mostrar la tabla de habitaciones con filtros y estilos
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Row, Col } from "react-bootstrap";
+import { Table, Button, Modal } from "react-bootstrap";
 import { FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { Accommodation } from "../../interfaces/accommodationInterface";

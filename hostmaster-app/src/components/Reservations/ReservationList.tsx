@@ -150,14 +150,22 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     <>
       <div className="container mt-4">
         <h2 className="text-center my-4">{t("reservations.title")}</h2>
-
-        <Button
-          variant="primary"
-          className="mb-3"
-          onClick={() => setShowReservationForm(true)}
-        >
-          {t("reservations.new")}
-        </Button>
+        <Row className="mb-3">
+          <Col>
+            <Button
+              variant="primary"
+              className="mb-3"
+              onClick={() => setShowReservationForm(true)}
+            >
+              {t("reservations.new")}
+            </Button>
+          </Col>
+          <Col md={4} className="text-end">
+            <Button variant="secondary" onClick={handleClearFilters}>
+              {t("clearFilters")}
+            </Button>
+          </Col>
+        </Row>
 
         <Form className="mb-3">
           <Row>
@@ -248,13 +256,6 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                   ))}
                 </Form.Select>
               </Form.Group>
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col className="text-end">
-              <Button variant="secondary" onClick={handleClearFilters}>
-                {t("clearFilters")}
-              </Button>
             </Col>
           </Row>
         </Form>

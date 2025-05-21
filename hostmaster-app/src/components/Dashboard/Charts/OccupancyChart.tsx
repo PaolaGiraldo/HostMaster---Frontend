@@ -120,6 +120,7 @@ const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
           options={options}
         />
       </div>
+      {}
     </>
   );
 };

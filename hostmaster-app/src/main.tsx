@@ -7,6 +7,8 @@ import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import "react-calendar-heatmap/dist/styles.css";
+import "react-tooltip/dist/react-tooltip.css";
 import "./i18n"; // Importamos la configuración de idiomas
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

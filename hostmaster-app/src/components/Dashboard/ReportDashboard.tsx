@@ -12,6 +12,7 @@ import MaintenanceStackedChart from "./Charts/MaintenanceStackedChart ";
 import ReportModal from "./ReportModal";
 import ReviewSummary from "./ReviewSummary";
 import DailyMatricsChart from "./Charts/DailyMetricChart";
+import OccupancyHeatmap from "./Charts/OccupancyHeatmap";
 
 const ReportDashboard: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -62,7 +63,7 @@ const ReportDashboard: React.FC = ({}) => {
             </div>
           </div>
 
-          <Row xs={1} sm={2} md={2} className="g-4">
+          <Row xs={1} sm={1} md={2} className="g-4">
             <Col>
               <Card
                 className="mb-4 shadow-sm report-card"
@@ -107,14 +108,33 @@ const ReportDashboard: React.FC = ({}) => {
               </Card>
             </Col>
           </Row>
+          <Row xs={1} sm={1} md={1} className="g-4">
+            <Card
+              className="mb-4 shadow-sm report-card"
+              onClick={() =>
+                openModal(
+                  t("reports.daily"),
+                  <OccupancyHeatmap accommodationId={selectedAccommodationId} />
+                )
+              }
+            >
+              <Card.Body>
+                <Card.Title>{t("reports.calendar")}</Card.Title>
+                <Card.Text>{t("reports.calendarDescription")}</Card.Text>
+                <div className="my-4">
+                  <OccupancyHeatmap accommodationId={selectedAccommodationId} />
+                </div>
+              </Card.Body>
+            </Card>
+          </Row>
 
-          <Row xs={1} sm={2} md={2} className="g-4">
+          <Row xs={1} sm={1} md={2} className="g-4">
             <Col>
               <Card
                 className="mb-4 shadow-sm report-card"
                 onClick={() =>
                   openModal(
-                    t("reports.revenue"),
+                    t("reports.revenuebyWeekDay"),
                     <RevenueByWeekDayChart
                       accommodationId={selectedAccommodationId}
                     />
@@ -134,36 +154,7 @@ const ReportDashboard: React.FC = ({}) => {
                 </Card.Body>
               </Card>
             </Col>
-            <Col>
-              <Card
-                className="mb-4 shadow-sm report-card"
-                onClick={() =>
-                  openModal(
-                    t("reports.maintenances"),
-                    <MaintenanceStackedChart
-                      accommodationId={selectedAccommodationId}
-                    />
-                  )
-                }
-              >
-                <Card.Body
-                  style={{
-                    overflowX: "auto",
-                  }}
-                >
-                  <Card.Title> {t("reports.maintenances")}</Card.Title>
-                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
-                  <div className="my-4">
-                    <MaintenanceStackedChart
-                      accommodationId={selectedAccommodationId}
-                    />
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
 
-          <Row xs={1} sm={2} md={2} className="g-4">
             <Col>
               <Card
                 className="mb-4 shadow-sm report-card"
@@ -186,63 +177,74 @@ const ReportDashboard: React.FC = ({}) => {
             </Col>
           </Row>
 
-          <Row>
+          <Row xs={1} sm={1} md={1} className="g-4">
             <Col>
               <Card
-                style={{
-                  height: "750px",
-                }}
                 className="mb-4 shadow-sm report-card"
                 onClick={() =>
                   openModal(
-                    t("reports.revenue"),
-                    <ReviewSummary accommodationId={selectedAccommodationId} />
-                  )
-                }
-              >
-                <Card.Body
-                  style={{
-                    overflowX: "auto",
-                  }}
-                >
-                  <Card.Title> {t("reports.summary")}</Card.Title>
-                  <Card.Text>{t("reports.summaryDescription")}</Card.Text>
-                  <div className="my-4">
-                    <ReviewSummary accommodationId={selectedAccommodationId} />
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Card
-                style={{
-                  height: "500px",
-                  overflowX: "auto",
-                }}
-                className="mb-4 shadow-sm report-card"
-                onClick={() =>
-                  openModal(
-                    t("reports.daily"),
-                    <DailyMatricsChart
+                    t("reports.maintenances"),
+                    <MaintenanceStackedChart
                       accommodationId={selectedAccommodationId}
                     />
                   )
                 }
               >
                 <Card.Body>
-                  <Card.Title>{t("reports.daily")}</Card.Title>
-
-                  <Card.Text>{t("reports.dailyDescription")}</Card.Text>
+                  <Card.Title> {t("reports.maintenances")}</Card.Title>
+                  <Card.Text>{t("reports.maintenancesDescription")}</Card.Text>
                   <div className="my-4">
-                    <DailyMatricsChart
+                    <MaintenanceStackedChart
                       accommodationId={selectedAccommodationId}
                     />
                   </div>
                 </Card.Body>
               </Card>
             </Col>
+          </Row>
+
+          <Row xs={1} sm={1} md={1} className="g-4">
+            <Card
+              className="mb-4 shadow-sm report-card"
+              onClick={() =>
+                openModal(
+                  t("reports.revenue"),
+                  <ReviewSummary accommodationId={selectedAccommodationId} />
+                )
+              }
+            >
+              <Card.Body>
+                <Card.Title> {t("reports.summary")}</Card.Title>
+                <Card.Text>{t("reports.summaryDescription")}</Card.Text>
+                <div className="my-4">
+                  <ReviewSummary accommodationId={selectedAccommodationId} />
+                </div>
+              </Card.Body>
+            </Card>
+          </Row>
+
+          <Row xs={1} sm={1} md={1} className="g-4">
+            <Card
+              className="mb-4 shadow-sm report-card"
+              onClick={() =>
+                openModal(
+                  t("reports.daily"),
+                  <DailyMatricsChart
+                    accommodationId={selectedAccommodationId}
+                  />
+                )
+              }
+            >
+              <Card.Body>
+                <Card.Title>{t("reports.daily")}</Card.Title>
+                <Card.Text>{t("reports.dailyDescription")}</Card.Text>
+                <div className="my-4">
+                  <DailyMatricsChart
+                    accommodationId={selectedAccommodationId}
+                  />
+                </div>
+              </Card.Body>
+            </Card>
           </Row>
         </Container>
       </DateRangeProvider>

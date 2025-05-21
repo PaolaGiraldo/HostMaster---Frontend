@@ -115,18 +115,40 @@ const MaintenanceStackedChart = ({
   };
 
   return (
-    <div>
-      <div className="chart-container mb-4">
-        <Chart type="bar" data={chartData} options={options} />
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        width: "100%",
+        gap: "1rem",
+        background: "#ffffff",
+        color: "#3a3a3a",
+      }}
+    >
+      <div
+        className="chart-container"
+        style={{
+          width: "50%",
 
-        <h6
-          className="mt-4"
-          style={{
-            color: "#ffffff",
-          }}
-        >
-          {t("reports.taskDetails")}
-        </h6>
+          flex: "1 1 48%",
+          minWidth: "300px",
+        }}
+      >
+        <Chart type="bar" data={chartData} options={options} />
+      </div>
+
+      <div
+        style={{
+          width: "50%",
+
+          flex: "1 1 48%",
+          minWidth: "300px",
+          overflowX: "auto",
+        }}
+      >
+        <h6>{t("reports.taskDetails")}</h6> {" "}
         <Table striped bordered hover responsive style={{ fontSize: "0.9rem" }}>
           <thead>
             <tr>

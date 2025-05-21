@@ -333,7 +333,8 @@ button:hover {
   border-radius: 10px;
   padding: 1rem;  
   font-size: 0.95rem;
-  height: 550px;
+  height: auto;
+  overflow:auto;
 }
 
 .report-card {
@@ -366,6 +367,14 @@ button:hover {
   width: "100%";
   font-size: 0.95rem;
   color: #3a3a3a;
-  border-radius: 10px;
+  border-radius: 10px;  
+  max-width: 100%; 
+  overflow-x:auto, 
 }
 
+
+.color-scale-4 { fill: #60c4ab; }
+.color-scale-3 { fill: #88d3c0; }
+.color-scale-2 { fill: #b0e2d5; }
+.color-scale-1  { fill: #e3e6e5; }
+.color-empty{ fill: #ffffff; }

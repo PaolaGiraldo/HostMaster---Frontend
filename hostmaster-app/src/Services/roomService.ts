@@ -54,7 +54,11 @@ export const deleteRoom = async (id: number): Promise<void> => {
   };
 
   
-  export const getRoomsWithReservations = async (params: any): Promise<Room[]> => {
+  export const getRoomsWithReservations = async ({
+    params,
+    }: {
+    params: queryParams;
+    }): Promise<Room[]> => {
     try {
       const response = await hotelApi.get("/booked_rooms/", { params });
       return response.data;

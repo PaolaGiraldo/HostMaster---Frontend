@@ -38,7 +38,7 @@ const ReviewSummary = ({ accommodationId }: { accommodationId: number }) => {
   return (
     <div
       className="chart-container"
-      style={{ height: "550px", padding: "30px" }}
+      style={{ height: "auto", padding: "30px" }}
     >
       {/* Ocupación */}
       <h6 className="mb-3">

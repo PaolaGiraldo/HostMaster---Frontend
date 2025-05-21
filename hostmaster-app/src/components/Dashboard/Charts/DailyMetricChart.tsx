@@ -119,6 +119,7 @@ const DailyMatricsChart = ({
           drawOnChartArea: false,
         },
         ticks: { callback: (v) => `${v}%` },
+        grace: "10%",
       },
 
       y: {
@@ -128,6 +129,8 @@ const DailyMatricsChart = ({
         grid: {
           drawOnChartArea: false,
         },
+
+        grace: "10%",
       },
     },
   };
@@ -145,78 +148,82 @@ const DailyMatricsChart = ({
 
   return (
     <>
-      <div className="chart-container">
-        <ReactChart
-          type={"bar" as "bar" | "line" | "line"}
-          data={chartData}
-          options={options}
-        />
-        <h6
-          className="mt-4"
-          style={{
-            color: "#ffffff",
-          }}
-        >
-          {t("reports.taskDetails")}
-        </h6>
-
-        <Table striped bordered responsive style={{ fontSize: "0.9rem" }}>
-          <thead>
-            <tr>
-              <th>{t("date")}</th>
-              <th>{t("reports.revenue")}</th>
-              <th>{t("reports.occupiedRooms")}</th>
-              <th>{t("reports.occupancyRate")}</th>
-              <th>{t("reports.reservations")}</th>
-              <th>{t("reports.maintenanceIssues")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.daily_metrics.map((d: any) => (
-              <tr key={d.date}>
-                <td>{d.date}</td>
-                <td>{d.revenue}</td>
-                <td>{d.occupied_rooms}</td>
-                <td>{d.occupancy_rate.toFixed(2)}%</td>
-                <td>{d.reservations}</td>
-                <td>
-                  {d.maintenance_issues.length > 0
-                    ? d.maintenance_issues.map((issue: any, index: any) => {
-                        const text = issue.split(" (")[0]; // Extrae el texto antes del paréntesis
-                        const statusMatch = issue.match(
-                          /\((MaintenanceStatus\.(\w+))\)/
-                        );
-                        const status = statusMatch ? statusMatch[2] : "UNKNOWN";
-                        const badgeClass = getStatusColor(status);
-
-                        return (
-                          <div>
-                            <OverlayTrigger
-                              key={index}
-                              placement="top"
-                              overlay={(props) => (
-                                <Tooltip id={`tooltip-${index}`} {...props}>
-                                  {text}
-                                </Tooltip>
-                              )}
-                            >
-                              <span
-                                key={index}
-                                className={`badge ${badgeClass} me-1`}
-                                style={{ cursor: "pointer" }}
-                              >
-                                {issue.toString().slice(0, 8)}
-                              </span>
-                            </OverlayTrigger>
-                          </div>
-                        );
-                      })
-                    : t("reports.noIncidents")}
-                </td>
+      <div
+        style={{
+          width: "100%",
+          gap: "1rem",
+          background: "#ffffff",
+        }}
+      >
+        <div className="chart-container">
+          <ReactChart
+            type={"bar" as "bar" | "line" | "line"}
+            data={chartData}
+            options={options}
+          />
+        </div>
+        <h6></h6>
+        <div>
+          <Table striped bordered responsive style={{ fontSize: "0.9rem" }}>
+            <thead>
+              <tr>
+                <th>{t("date")}</th>
+                <th>{t("reports.revenue")}</th>
+                <th>{t("reports.occupiedRooms")}</th>
+                <th>{t("reports.occupancyRate")}</th>
+                <th>{t("reports.reservations")}</th>
+                <th>{t("reports.maintenanceIssues")}</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {data.daily_metrics.map((d: any) => (
+                <tr key={d.date}>
+                  <td>{d.date}</td>
+                  <td>{d.revenue}</td>
+                  <td>{d.occupied_rooms}</td>
+                  <td>{d.occupancy_rate.toFixed(2)}%</td>
+                  <td>{d.reservations}</td>
+                  <td>
+                    {d.maintenance_issues.length > 0
+                      ? d.maintenance_issues.map((issue: any, index: any) => {
+                          const text = issue.split(" (")[0]; // Extrae el texto antes del paréntesis
+                          const statusMatch = issue.match(
+                            /\((MaintenanceStatus\.(\w+))\)/
+                          );
+                          const status = statusMatch
+                            ? statusMatch[2]
+                            : "UNKNOWN";
+                          const badgeClass = getStatusColor(status);
+
+                          return (
+                            <div key={`${d.date}-${index}`}>
+                              <OverlayTrigger
+                                key={index}
+                                placement="top"
+                                overlay={(props) => (
+                                  <Tooltip id={`tooltip-${index}`} {...props}>
+                                    {text}
+                                  </Tooltip>
+                                )}
+                              >
+                                <span
+                                  key={index}
+                                  className={`badge ${badgeClass} me-1`}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {issue.toString().slice(0, 8)}
+                                </span>
+                              </OverlayTrigger>
+                            </div>
+                          );
+                        })
+                      : t("reports.noIncidents")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </div>
     </>
   );

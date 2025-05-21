@@ -122,7 +122,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
                   />
                 </td>
                 <td>
-                  <div className="d-flex flex-column flex-md-row gap-2 ">
+                  <div>
                     <Button
                       variant="warning"
                       size="sm"

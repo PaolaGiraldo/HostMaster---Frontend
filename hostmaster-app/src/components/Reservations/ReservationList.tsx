@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
@@ -107,6 +107,11 @@ const ReservationList: React.FC<ReservationListProps> = () => {
           reservation.status.toLowerCase() === filterStatus.toLowerCase())
       );
     });
+
+  const completedReservations = useMemo(
+    () => filteredReservations(completed),
+    [completed]
+  );
 
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -293,6 +298,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                   {showUpcoming ? "▲" : "▼"}
                 </button>
               </div>
+
               <Row xs={1} sm={2} md={2} className="g-4">
                 {showUpcoming && (
                   <>
@@ -325,16 +331,22 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                   {showCompleted ? "▲" : "▼"}
                 </button>
               </div>
-              <Row xs={1} sm={2} md={2} className="g-4">
-                {showCompleted && (
-                  <>
-                    {filteredReservations(completed).length === 0 ? (
+
+              {showCompleted && (
+                <div
+                  style={{
+                    maxHeight: "630px",
+                    overflowY: "auto",
+                    paddingRight: "10px",
+                  }}
+                >
+                  <Row xs={1} sm={2} md={2} className="g-4">
+                    {completedReservations.length === 0 ? (
                       <p>{t("reservations.noCompleted")}</p>
                     ) : (
-                      filteredReservations(completed).map((res) => (
+                      completedReservations.map((res: Reservation) => (
                         <Col key={res.id}>
                           <ReservationCard
-                            key={res.id}
                             reservation={res}
                             onCancel={handleCancelReservation}
                             onEdit={handleEditReservation}
@@ -342,9 +354,9 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                         </Col>
                       ))
                     )}
-                  </>
-                )}
-              </Row>
+                  </Row>
+                </div>
+              )}
             </section>
 
             <section className="mb-5">
@@ -358,7 +370,17 @@ const ReservationList: React.FC<ReservationListProps> = () => {
                 </button>
               </div>
 
-              <Row xs={1} sm={2} md={2} className="g-4">
+              <Row
+                xs={1}
+                sm={2}
+                md={2}
+                className="g-4"
+                style={{
+                  width: "100%",
+                  height: "630px",
+                  overflowX: "auto",
+                }}
+              >
                 {showCancelled && (
                   <>
                     {filteredReservations(cancelled).length === 0 ? (

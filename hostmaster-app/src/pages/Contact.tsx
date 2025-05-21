@@ -1,5 +1,7 @@
-const Contacto: React.FC = () => {
-  return <h1>Bienvenido al Panel de Contacto</h1>;
+import ContactForm from "../components/Contact/ContactForm";
+
+const Contact: React.FC = () => {
+  return <ContactForm />;
 };
 
-export default Contacto;
+export default Contact;

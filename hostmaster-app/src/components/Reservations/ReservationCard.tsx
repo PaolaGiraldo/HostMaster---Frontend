@@ -78,6 +78,8 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           padding: "1rem",
           borderRadius: "0.5rem",
           marginBottom: "1rem",
+          width: "100%",
+          height: "270px",
         }}
       >
         <Card.Body>
@@ -161,4 +163,4 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   );
 };
 
-export default ReservationCard;
+export default React.memo(ReservationCard);

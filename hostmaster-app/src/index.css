@@ -333,7 +333,7 @@ button:hover {
   border-radius: 10px;
   padding: 1rem;  
   font-size: 0.95rem;
-  height: auto;
+  height: 500px;
   overflow:auto;
 }
 
@@ -466,5 +466,74 @@ button:hover {
 
   .login-logo {
     max-width: 100px;
+  }
+}
+
+.contact-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.contact-card {
+  background-color: #1a2a6c;
+  color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.contact-title {
+  color: #60c4ab;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.contact-subtitle {
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d9d9d9;
+}
+
+.contact-input {
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.contact-input:focus {
+  outline: none;
+  box-shadow: 0 0 5px #60c4ab;
+  border: 1px solid #60c4ab;
+}
+
+.btn-mint {
+  background-color: #60c4ab;
+  color: #1a2a6c;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-mint:hover {
+  background-color: #4fb79d;
+}
+
+@media (max-width: 576px) {
+  .contact-card {
+    padding: 20px;
+  }
+
+  .contact-title {
+    font-size: 1.5rem;
   }
 }

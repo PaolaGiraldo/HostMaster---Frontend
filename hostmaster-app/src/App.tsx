@@ -22,6 +22,7 @@ import Calendar from "./pages/Calendar";
 import Users from "./pages/Users";
 import RoleProtectedRoute from "./context/RoleProtectedRoute";
 import "./config/chartConfig";
+import Contact from "./pages/Contact";
 
 const App: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC = () => {
       <Container className="mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route
             path="/accommodations"

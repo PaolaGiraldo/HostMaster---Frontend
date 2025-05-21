@@ -305,6 +305,19 @@
     "password":"Contraseña",
     "passwordLabel":"Ingresa tu contraseña",
     "login":"Entrar"
+  },
+  "contact":{
+    "title":"Contáctanos",
+    "subtitle": "Solicita información o una cotización personalizada.",
+    "name":"Nombre",
+    "email":"Email",
+    "phone":"Contraseña",
+    "requestType":"Tipo de solicitud",
+    "message":"Mensaje",
+    "required": "Requerido",
+    "infoRequest": "Solicitud de información",
+    "quoteRequest": "Solicitud de cotización",
+    "invalidEmail":"Email inválido"
   }
 
 

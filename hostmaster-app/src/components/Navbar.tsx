@@ -22,6 +22,7 @@ import {
   FaSignInAlt,
   FaSignOutAlt,
   FaHouseUser,
+  FaEnvelope,
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import logo from "../assets/hotel.svg";
@@ -37,6 +38,7 @@ const NavigationBar: React.FC = () => {
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === "en" ? "es" : "en");
+    setExpanded(false);
   };
 
   const handleLogOut = () => {
@@ -161,12 +163,26 @@ const NavigationBar: React.FC = () => {
             )}
           </Nav>
 
+          <OverlayTrigger
+            placement="bottom"
+            overlay={<Tooltip>{t("navbar.contact")}</Tooltip>}
+          >
+            <Nav.Link
+              as={Link}
+              to="/contact"
+              style={{ padding: "10px 15px" }}
+              onClick={() => setExpanded(false)}
+            >
+              <FaEnvelope size={30} />
+            </Nav.Link>
+          </OverlayTrigger>
+
           {userRole ? (
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip>{t("navbar.logout")}</Tooltip>}
             >
-              <Nav.Link onClick={handleLogOut}>
+              <Nav.Link style={{ padding: "10px 15px" }} onClick={handleLogOut}>
                 <FaSignOutAlt size={30} />
               </Nav.Link>
             </OverlayTrigger>
@@ -178,6 +194,7 @@ const NavigationBar: React.FC = () => {
               <Nav.Link
                 as={Link}
                 to="/login"
+                style={{}}
                 onClick={() => setExpanded(false)}
               >
                 <FaSignInAlt size={30} />
@@ -188,8 +205,12 @@ const NavigationBar: React.FC = () => {
           <Button
             variant="Icon"
             onClick={toggleLanguage}
-            className="text-light ms-3"
-            style={{ fontSize: "1.3rem", fontWeight: "bold" }}
+            className="text-light"
+            style={{
+              padding: "10px 10px",
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+            }}
           >
             <FaGlobe size={28} /> {i18n.language.toUpperCase()}
           </Button>

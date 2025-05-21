@@ -1,28 +1,56 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { authenticateUser, getMeUser } from "../Services/authService";
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
-
   const navigate = useNavigate();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const data = await authenticateUser(username, password);
-    console.log(data);
-    const token = data.access_token; // Obtener el perfil del usuario
 
-    const profile = await getMeUser(token);
-    const role = profile.role || "user"; // Ajusta según el campo real
+    const formData = new URLSearchParams();
+    formData.append("grant_type", "password");
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("scope", "");
+    formData.append("client_id", "string");
+    formData.append("client_secret", "string");
 
-    login(role, data.access_token);
-    navigate("/");
+    try {
+      const response = await fetch("http://3.85.88.149:8000/auth/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+        body: formData.toString(),
+      });
+
+      if (!response.ok) throw new Error("Credenciales inválidas");
+
+      const data = await response.json();
+      const token = data.access_token;
+
+      const profileRes = await fetch("http://3.85.88.149:8000/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!profileRes.ok) throw new Error("No se pudo obtener el perfil");
+
+      const profile = await profileRes.json();
+      const role = profile.role || "user";
+
+      login(role, token);
+      navigate("/home");
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (

@@ -11,7 +11,7 @@ const baseUrl = import.meta.env.VITE_SERVER_URL;
 // Token (puedes cargarlo desde localStorage o variables de entorno si es dinámico)
 
 // Crear una función que genere instancias de Axios
-const createApiService = (prefix: "admin" | "hotel") => {
+const createApiService = (prefix: "admin" | "hotel" | "auth") => {
   const instance = axios.create({
     baseURL: `${baseUrl}/${prefix}`,
     headers: {
@@ -34,3 +34,4 @@ const createApiService = (prefix: "admin" | "hotel") => {
 // Exportar ambas instancias según el contexto
 export const adminApi = createApiService("admin");
 export const hotelApi = createApiService("hotel");
+export const authApi = createApiService("auth");

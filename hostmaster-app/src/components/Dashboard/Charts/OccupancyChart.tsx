@@ -1,29 +1,9 @@
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  LineElement,
-  PointElement,
-} from "chart.js";
 import { Chart as ReactChart } from "react-chartjs-2";
 import { useOccupancyReport } from "../../../hooks/Reports/useOccupancyReport";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import type { ChartData, ChartOptions } from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement,
-  Legend,
-  Tooltip
-);
 
 const OccupancyChart = ({ accommodationId }: { accommodationId: number }) => {
   const { t } = useTranslation();

@@ -1,25 +1,9 @@
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-} from "chart.js";
 import { Chart as ReactChart } from "react-chartjs-2";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { OverlayTrigger, Tooltip, Spinner, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import type { ChartData, ChartOptions } from "chart.js";
 import { useDailyMetricsReport } from "../../../hooks/Reports/useDailyMetricsReport";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement
-);
 
 const DailyMatricsChart = ({
   accommodationId,

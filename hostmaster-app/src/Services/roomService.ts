@@ -1,6 +1,7 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { Room } from "../interfaces/roomInterface";
 
+const hotelApi = getApiService("hotel");
 
 // Obtener habitación por alojamiento
 export const getRoomsByAccommodation = async (accommodation_id?:number): Promise<Room[]> => {

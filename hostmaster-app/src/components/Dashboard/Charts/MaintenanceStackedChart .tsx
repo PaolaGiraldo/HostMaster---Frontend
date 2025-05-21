@@ -1,18 +1,8 @@
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  ChartOptions,
-} from "chart.js";
 import { Chart } from "react-chartjs-2";
 import { Spinner, Table } from "react-bootstrap";
 import { usePendingMaintenanceReport } from "../../../hooks/Reports/usePendingManteinanceReport";
 import { useTranslation } from "react-i18next";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+import { ChartOptions } from "chart.js";
 
 // Tipos seguros
 type Status = "pending" | "in_progress";

@@ -1,6 +1,7 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { RoomInventory } from "../interfaces/roomInventorynterface";
 
+const hotelApi = getApiService("hotel");
 
 export const getRoomInventory = async (id?:number): Promise<RoomInventory[]> => {
     try {

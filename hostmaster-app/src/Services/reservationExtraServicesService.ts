@@ -1,5 +1,8 @@
-import { hotelApi } from "../components/Apis/ApiService";
+import { getApiService } from "../components/Apis/ApiService";
 import { Service } from "../interfaces/serviceInterface";
+
+const hotelApi = getApiService("hotel");
+
 
 interface LinkServicePayload {
   reservation_id: number;

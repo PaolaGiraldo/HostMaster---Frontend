@@ -1,5 +1,8 @@
-import { hotelApi } from "../components/Apis/ApiService";
+import { getApiService } from "../components/Apis/ApiService";
 import { Image } from "../interfaces/imageInterface";
+
+
+const hotelApi = getApiService("hotel");
 
 export const uploadMultipleImagesRoom = async (roomid: number, image: FormData): Promise<Image> => {  
 

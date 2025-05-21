@@ -1,29 +1,10 @@
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  LineElement,
-  PointElement,
-  InteractionMode,
-} from "chart.js";
+
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useRevenueByWeekDayReport } from "../../../hooks/Reports/useRevenueByWeekDayReport";
 import { Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement,
-  Legend,
-  Tooltip
-);
+import { InteractionMode } from "chart.js";
 
 const RevenueByWeekDayChart = ({
   accommodationId,

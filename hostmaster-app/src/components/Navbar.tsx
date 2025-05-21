@@ -7,7 +7,7 @@ import {
   Tooltip,
   Button,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaBed,
@@ -30,6 +30,8 @@ import { useAuth } from "../context/AuthContext";
 
 const NavigationBar: React.FC = () => {
   const { t, i18n } = useTranslation();
+
+  const navigate = useNavigate();
 
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === "en" ? "es" : "en");
@@ -101,6 +103,11 @@ const NavigationBar: React.FC = () => {
     },
   ];
 
+  const handleLogOut = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <Navbar expand="lg" variant="dark" className="navbar-custom">
       <Container>
@@ -116,7 +123,13 @@ const NavigationBar: React.FC = () => {
           />
           HostMaster
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          data-bs-toggle="collapse"
+          data-bs-target="#basic-navbar-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <OverlayTrigger
@@ -153,7 +166,7 @@ const NavigationBar: React.FC = () => {
               placement="bottom"
               overlay={<Tooltip>{t("navbar.logout")}</Tooltip>}
             >
-              <Nav.Link onClick={logout}>
+              <Nav.Link onClick={handleLogOut}>
                 <FaSignOutAlt size={30} />
               </Nav.Link>
             </OverlayTrigger>

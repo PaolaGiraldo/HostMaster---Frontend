@@ -1,6 +1,8 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { Product } from "../interfaces/roomProductInterface";
 
+
+export const hotelApi = getApiService("hotel");
 // Obtener todos los servicios
 export const getProducts = async (): Promise<Product[]> => {
   try {

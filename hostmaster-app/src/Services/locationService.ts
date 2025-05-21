@@ -1,4 +1,6 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
+
+const hotelApi = getApiService("hotel");
 
 const locationService = {
   getCountries: async () => {

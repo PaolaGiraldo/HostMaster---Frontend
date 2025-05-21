@@ -1,5 +1,7 @@
-import {adminApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { User } from "../interfaces/userInterface";
+
+export const adminApi = getApiService("admin");
 
 export const getClients = async () => {
     try {

@@ -1,5 +1,7 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { Review } from "../interfaces/reviewInterface";
+
+const hotelApi = getApiService("hotel");
 
 export const getReviewByAccommodation = async (accommodation_id?:number): Promise<Review[]> => {
     try {

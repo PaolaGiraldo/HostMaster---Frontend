@@ -1,5 +1,7 @@
-import {hotelApi} from "../components/Apis/ApiService";
+import {getApiService} from "../components/Apis/ApiService";
 import { Maintenance } from "../interfaces/maintenanceInterface";
+
+const hotelApi = getApiService("hotel");
 
  export const getMaintenances = async (): Promise<Maintenance[]> => {
     try {

@@ -21,6 +21,7 @@ import Maintenances from "./pages/Maintenances";
 import Calendar from "./pages/Calendar";
 import Users from "./pages/Users";
 import RoleProtectedRoute from "./context/RoleProtectedRoute";
+import "./config/chartConfig";
 
 const App: React.FC = () => {
   return (

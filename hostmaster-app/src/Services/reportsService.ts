@@ -1,8 +1,9 @@
-import { adminApi } from "../components/Apis/ApiService";
+import { getApiService } from "../components/Apis/ApiService";
 import { OccupancyResponse } from "../interfaces/Reports/occupancyrResponseInterface";
 
 
-  
+export const adminApi = getApiService("admin");
+
 export const getOccupancy = async ({
   params,
   }: {

@@ -1,6 +1,8 @@
-import {authApi} from "../components/Apis/ApiService";
+import { getApiService} from "../components/Apis/ApiService";
 import { User } from "../interfaces/userInterface";
 
+
+export const authApi = getApiService("auth");
 
 export const getMeUser = async (token: string): Promise<User> => {
   try {

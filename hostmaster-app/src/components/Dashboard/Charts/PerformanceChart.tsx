@@ -1,29 +1,10 @@
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  LineElement,
-  PointElement,
-  ChartOptions,
-} from "chart.js";
+
 import { useDateRange } from "../../../context/DateRangeContext";
 import { usePerformanceReport } from "../../../hooks/Reports/usePerformanceReport";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "react-bootstrap";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement,
-  Legend,
-  Tooltip
-);
+import { ChartOptions } from "chart.js";
 
 const PerformanceChart = ({ accommodationId }: { accommodationId: number }) => {
   const { t } = useTranslation();

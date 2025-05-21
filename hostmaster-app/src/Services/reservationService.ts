@@ -1,5 +1,6 @@
 import {getApiService} from "../components/Apis/ApiService";
 import { Reservation} from "../interfaces/reservationInterface";
+import { ReservationInvoice } from "../interfaces/resevationInvoceInterface";
 
 
 const hotelApi = getApiService("hotel");
@@ -32,5 +33,23 @@ const hotelApi = getApiService("hotel");
   };
 
 
+  export const getReservationInvoice = async (id: number): Promise<ReservationInvoice[]> => {
+     try {
+       const response = await hotelApi.get(`/reservations/${id}/invoice`);
+       return response.data;
+     } catch (error) {
+       throw error;
+     }
+   };
+
+   export const sendReservationInvoice = async (id: number) => {
+    try {
+      const response = await hotelApi.post(`/reservations/${id}/send-invoice`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+ 
 
   

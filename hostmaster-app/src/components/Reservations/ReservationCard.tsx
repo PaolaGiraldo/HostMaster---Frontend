@@ -12,8 +12,13 @@ import {
 } from "../../constants/reservationStatusList";
 import { FaEdit } from "react-icons/fa";
 import { isToday, parseISO } from "date-fns";
-import { updateReservation } from "../../services/reservationService";
+import {
+  getReservationInvoice,
+  sendReservationInvoice,
+  updateReservation,
+} from "../../services/reservationService";
 import { useQueryClient } from "@tanstack/react-query";
+import { useReservationInvoice } from "../../hooks/useReservationInvoice";
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -52,6 +57,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       updateReservationStatus(reservation, "checkedIn");
     } else if (reservation.status === "checkedIn") {
       updateReservationStatus(reservation, "checkedOut");
+      generateInvoice(reservation.id!);
     }
   };
 
@@ -63,6 +69,16 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       reservation.status = newStatus;
       await updateReservation(reservation.id!, reservation);
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
+    } catch (error) {
+      console.error("Error updating reservation status", error);
+    }
+  };
+
+  const generateInvoice = async (reservationId: number) => {
+    try {
+      const invoice = await getReservationInvoice(reservationId);
+      console.log(invoice);
+      await sendReservationInvoice(reservationId);
     } catch (error) {
       console.error("Error updating reservation status", error);
     }

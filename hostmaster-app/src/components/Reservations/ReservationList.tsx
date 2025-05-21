@@ -71,6 +71,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
       setShowReservationForm(false);
       setEditingReservation(null);
 
+      toast.success("Reserva guardada correctamente");
       // Recargar la lista de reservas después de la actualización/creación
     } catch (error: any) {
       console.error("Error en handleSaveRoom:", error);
@@ -132,8 +133,9 @@ const ReservationList: React.FC<ReservationListProps> = () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
       toast.success("Reserva cancelada correctamente");
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-    } catch (error) {
-      toast.error("Error al cancelar la reserva");
+    } catch (error: any) {
+      const msg = error?.response?.data?.detail || "Error al cancelar reserva";
+      toast.error(msg);
     }
   };
 

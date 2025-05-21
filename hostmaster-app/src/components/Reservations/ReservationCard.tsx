@@ -20,6 +20,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import ReservationInvoiceModal from "./ReservationInvoiceModal";
 import { ReservationInvoice } from "../../interfaces/resevationInvoceInterface";
+import { toast } from "react-toastify";
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -76,8 +77,11 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       reservation.status = newStatus;
       await updateReservation(reservation.id!, reservation);
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
-    } catch (error) {
+      toast.success("Reserva guardad correctamente");
+    } catch (error: any) {
       console.error("Error updating reservation status", error);
+      const msg = error?.response?.data?.detail || "Error al guardar reserva";
+      toast.error(msg);
     }
   };
 
@@ -86,8 +90,12 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
       const invoice = await getReservationInvoice(reservationId);
       setInvoice(invoice);
       setShowInvoiceModal(true);
-    } catch (error) {
+      toast.success("Cuenta de cobro generada correctamente");
+    } catch (error: any) {
       console.error("Error updating reservation status", error);
+      const msg =
+        error?.response?.data?.detail || "Error al generar cuenta de cobro";
+      toast.error(msg);
     }
   };
 
@@ -95,8 +103,12 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     try {
       await sendReservationInvoice(reservationId);
       setShowInvoiceModal(false);
-    } catch (error) {
+      toast.success("Cuenta de cobro enviada correctamente");
+    } catch (error: any) {
       console.error("Error updating reservation status", error);
+      const msg =
+        error?.response?.data?.detail || "Error al enviar cuenta de cobro";
+      toast.error(msg);
     }
     queryClient.invalidateQueries({ queryKey: ["reservations"] });
   };

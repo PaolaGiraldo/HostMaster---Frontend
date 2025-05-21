@@ -10,6 +10,7 @@ import { createReview } from "../../services/reviewService";
 import { useQueryClient } from "@tanstack/react-query";
 import { Trans } from "react-i18next";
 import { useClients } from "../../hooks/useCustomers";
+import { toast } from "react-toastify";
 
 type Filter = {
   accommodationId?: number;
@@ -86,8 +87,11 @@ export const ReviewList: React.FC = () => {
       // Crear nueva reseña
       await createReview(review);
       queryClient.invalidateQueries({ queryKey: ["allAccommodationReviews"] });
-    } catch (error) {
-      console.error("Error en handleSaveRoom:", error);
+      toast.success("Reseña guardada correctamente");
+    } catch (error: any) {
+      console.error("Error en handleSaveReview:", error);
+      const msg = error?.response?.data?.detail || "Error al guardar reseña";
+      toast.error(msg);
     }
   };
 

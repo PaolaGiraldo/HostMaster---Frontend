@@ -25,6 +25,7 @@ import { useRooms } from "../../hooks/useRooms";
 import { useAvailableProducts } from "../../hooks/useAvailableProducts";
 import { useQueryClient } from "@tanstack/react-query";
 import { uploadRoomImages } from "./UploadImages";
+import { toast } from "react-toastify";
 
 const RoomList: React.FC = () => {
   const { t } = useTranslation();
@@ -73,8 +74,12 @@ const RoomList: React.FC = () => {
 
       setShowForm(false);
       setEditingRoom(false);
-    } catch (error) {
+      toast.success("Habitación guaradad correctamente");
+    } catch (error: any) {
       console.error("Error en handleSaveRoom:", error);
+      const msg =
+        error?.response?.data?.detail || "Error al guardar habitación";
+      toast.error(msg);
     }
   };
 
@@ -86,8 +91,12 @@ const RoomList: React.FC = () => {
       }
       await deleteRoom(roomId); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
-    } catch (error) {
+      toast.success("Habitación eliminada correctamente");
+    } catch (error: any) {
       console.error("Error deleting room", error);
+      const msg =
+        error?.response?.data?.detail || "Error al eliminar habitación";
+      toast.error(msg);
     }
   };
 
@@ -98,8 +107,12 @@ const RoomList: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
       setShowForm(false);
       setEditingRoom(false);
-    } catch (error) {
+      toast.success("Tipo de habitación guardado correctamente");
+    } catch (error: any) {
       console.error("Error adding room type", error);
+      const msg =
+        error?.response?.data?.detail || "Error al guardar tipo de habitación";
+      toast.error(msg);
     }
   };
 
@@ -111,8 +124,12 @@ const RoomList: React.FC = () => {
       }
       await updateRoomType(updatedRoomType.id, updatedRoomType);
       queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
-    } catch (error) {
+      toast.success("Información actualizada correctamente");
+    } catch (error: any) {
       console.error("Error updating room type", error);
+      const msg =
+        error?.response?.data?.detail || "Error al actualizar información";
+      toast.error(msg);
     }
   };
 
@@ -124,8 +141,11 @@ const RoomList: React.FC = () => {
       }
       await deleteRoomType(id); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["roomTypes"] });
-    } catch (error) {
-      console.error("Error deleting room type", error);
+      toast.success("Tipo de habitación eliminado correctamente");
+    } catch (error: any) {
+      const msg =
+        error?.response?.data?.detail || "Error al eliminar tipo de habitación";
+      toast.error(msg);
     }
   };
 
@@ -134,8 +154,11 @@ const RoomList: React.FC = () => {
     try {
       await createRoomProduct(newRoomProduct); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
-    } catch (error) {
+      toast.success("Producto agregado correctamente");
+    } catch (error: any) {
       console.error("Error adding room type", error);
+      const msg = error?.response?.data?.detail || "Error al guardar producto";
+      toast.error(msg);
     }
   };
 
@@ -147,8 +170,12 @@ const RoomList: React.FC = () => {
       }
       await updateRoomProduct(updatedRoomProduct.id, updatedRoomProduct);
       queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
-    } catch (error) {
+      toast.success("Información actualizada correctamente");
+    } catch (error: any) {
       console.error("Error updating room product", error);
+      const msg =
+        error?.response?.data?.detail || "Error al actualizar información";
+      toast.error(msg);
     }
   };
 
@@ -160,8 +187,11 @@ const RoomList: React.FC = () => {
       }
       await deleteRoomProduct(id); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["availableProducts"] });
-    } catch (error) {
+      toast.success("Producto elminada correctamente");
+    } catch (error: any) {
       console.error("Error deleting room product", error);
+      const msg = error?.response?.data?.detail || "Error al eliminar producto";
+      toast.error(msg);
     }
   };
 

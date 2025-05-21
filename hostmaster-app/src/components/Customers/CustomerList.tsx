@@ -8,6 +8,7 @@ import { createUser, deleteUser, updateUser } from "../../services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 import { useAccommodations } from "../../hooks/useAccommodations";
+import { toast } from "react-toastify";
 
 const CustomersList: React.FC = () => {
   const { t } = useTranslation();
@@ -41,8 +42,11 @@ const CustomersList: React.FC = () => {
       }
       await deleteUser(username); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["clients"] });
-    } catch (error) {
+      toast.success("Cliente eliminado correctamente");
+    } catch (error: any) {
       console.error("Error deleting room", error);
+      const msg = error?.response?.data?.detail || "Error al eliminar cliente";
+      toast.error(msg);
     }
   };
 
@@ -56,8 +60,12 @@ const CustomersList: React.FC = () => {
       setShowForm(false);
       seteditingClient(null);
       queryClient.invalidateQueries({ queryKey: ["clients"] });
-    } catch (error) {
+      toast.success("Información actualizada correctamente");
+    } catch (error: any) {
       console.error("Error saving service:", error);
+      const msg =
+        error?.response?.data?.detail || "Error al actualizar información";
+      toast.error(msg);
     }
   };
 

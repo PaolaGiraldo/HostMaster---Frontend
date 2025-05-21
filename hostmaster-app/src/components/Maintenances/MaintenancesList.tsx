@@ -99,8 +99,13 @@ const MaintenanceList: React.FC<MaintenanceListProps> = () => {
       }
       //await deleteRoom(roomId); // Llamado al backend
       queryClient.invalidateQueries({ queryKey: ["maintenances"] });
-    } catch (error) {
+      toast.success("Mantenimiento eliminado correctamente");
+    } catch (error: any) {
       console.error("Error deleting room", error);
+
+      const msg =
+        error?.response?.data?.detail || "Error al eliminar mantenimiento";
+      toast.error(msg);
     }
   };
 
@@ -114,9 +119,11 @@ const MaintenanceList: React.FC<MaintenanceListProps> = () => {
 
       // Recargar la lista de reservas después de la actualización/creación
       queryClient.invalidateQueries({ queryKey: ["maintenances"] });
+      toast.success("Mantenimiento guardado correctamente");
     } catch (error: any) {
       console.error("Error en handleSaveMaintenance:", error);
-      const msg = error?.response?.data?.detail || "Error al guardar reserva";
+      const msg =
+        error?.response?.data?.detail || "Error al guardar mantenimiento";
       toast.error(msg);
     }
   };

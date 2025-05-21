@@ -13,6 +13,7 @@ import {
 import { useAccommodationsComplete } from "../../hooks/useAccommodationsComplete";
 import { uploadAccommodationImages } from "./UploadImages";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const AccommodationList: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -51,8 +52,12 @@ const AccommodationList: React.FC = () => {
       setShowForm(false);
       setEditingAccommodation(null);
       refetch();
-    } catch (error) {
+      toast.success("Alojamiento guardado correctamente");
+    } catch (error: any) {
       console.error("Error saving accommodation:", error);
+      const msg =
+        error?.response?.data?.detail || "Error al guardar alojamiento";
+      toast.error(msg);
     }
   };
 
@@ -64,8 +69,12 @@ const AccommodationList: React.FC = () => {
     try {
       await deleteAccommodation(id);
       refetch();
-    } catch (error) {
+      toast.success("Alojamiento eliminado correctamente");
+    } catch (error: any) {
       console.error("Error deleting service:", error);
+      const msg =
+        error?.response?.data?.detail || "Error al eliminar alojamiento";
+      toast.error(msg);
     }
   };
 

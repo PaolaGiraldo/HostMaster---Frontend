@@ -10,6 +10,7 @@ import { deleteService } from "../../services/serviceService";
 import ServiceTable from "./ServicesTable";
 import { useServices } from "../../hooks/useServices";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const ServiceList: React.FC = () => {
   const { t } = useTranslation();
@@ -32,8 +33,11 @@ const ServiceList: React.FC = () => {
       setEditingService(null);
 
       queryClient.invalidateQueries({ queryKey: ["services"] });
-    } catch (error) {
+      toast.success("Servicio guardado correctamente");
+    } catch (error: any) {
       console.error("Error saving service:", error);
+      const msg = error?.response?.data?.detail || "Error al guardar Servicio";
+      toast.error(msg);
     }
   };
 
@@ -52,8 +56,12 @@ const ServiceList: React.FC = () => {
       await deleteService(id);
 
       queryClient.invalidateQueries({ queryKey: ["services"] });
-    } catch (error) {
+      toast.success("Servicio eliminado correctamente");
+    } catch (error: any) {
       console.error("Error deleting service:", error);
+
+      const msg = error?.response?.data?.detail || "Error al eliminar servicio";
+      toast.error(msg);
     }
   };
 

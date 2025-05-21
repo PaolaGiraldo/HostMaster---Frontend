@@ -5,6 +5,7 @@ import { Reservation } from "../../interfaces/reservationInterface";
 import { getReservations } from "../../services/reservationService";
 import { getRooms } from "../../services/roomService";
 import { Room } from "../../interfaces/roomInterface";
+import { toast } from "react-toastify";
 
 const ReservationCalendarList: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -19,8 +20,10 @@ const ReservationCalendarList: React.FC = () => {
     try {
       const response = await getReservations();
       setReservations(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching reservations:", error);
+      const msg = error?.response?.data?.detail || "Error al cargar reservas";
+      toast.error(msg);
     }
   };
 
@@ -28,8 +31,11 @@ const ReservationCalendarList: React.FC = () => {
     try {
       const response = await getRooms();
       setRooms(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching reservations:", error);
+      const msg =
+        error?.response?.data?.detail || "Error al cargar habitaciones";
+      toast.error(msg);
     }
   };
 

@@ -10,6 +10,7 @@ import CustomerForm from "./UserForm";
 import { useUsers } from "../../hooks/useUsers";
 import { userRoleList } from "../../constants/userRolesList";
 import { useAccommodations } from "../../hooks/useAccommodations";
+import { toast } from "react-toastify";
 
 const UsersList: React.FC = () => {
   const { t } = useTranslation();
@@ -41,8 +42,11 @@ const UsersList: React.FC = () => {
       }
       await deleteUser(username); // Llamado al backend
       queryUser.invalidateQueries({ queryKey: ["users"] });
-    } catch (error) {
+      toast.success("Usuario eliminado correctamente");
+    } catch (error: any) {
       console.error("Error deleting room", error);
+      const msg = error?.response?.data?.detail || "Error al eliminar usuario";
+      toast.error(msg);
     }
   };
 
@@ -57,8 +61,11 @@ const UsersList: React.FC = () => {
       setShowForm(false);
       seteditingUser(null);
       queryUser.invalidateQueries({ queryKey: ["users"] });
-    } catch (error) {
+      toast.success("Usuario gaurdado correctamente");
+    } catch (error: any) {
       console.error("Error saving service:", error);
+      const msg = error?.response?.data?.detail || "Error al guardar usuario";
+      toast.error(msg);
     }
   };
 

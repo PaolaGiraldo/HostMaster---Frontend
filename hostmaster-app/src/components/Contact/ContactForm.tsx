@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 type FormData = {
   name: string;
@@ -35,8 +36,10 @@ const ContactForm = () => {
       );
       console.log("Correo enviado:", result.text);
       reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error al enviar:", error);
+      const msg = error?.response?.data?.detail || "Error al enviar correo";
+      toast.error(msg);
     }
   };
 

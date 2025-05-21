@@ -1,7 +1,7 @@
 import {authApi} from "../components/Apis/ApiService";
 import { User } from "../interfaces/userInterface";
 
-// Obtener todos los servicios
+
 export const getMeUser = async (token: string): Promise<User> => {
   try {
     const response = await authApi.get("/users/me",{
@@ -29,9 +29,10 @@ export const authenticateUser = async (username: string, password: string)=> {
     
     try {
       const response = await authApi.post("/token", formData, {
-        headers: { "Content-Type": "multipart/form-data" ,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" ,
             Accept: "application/json",
         },
+        
       });
 
       return response.data;

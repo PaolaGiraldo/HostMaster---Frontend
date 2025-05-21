@@ -297,6 +297,14 @@
       "medium": "Media",
       "high": "Alta"
     }
+  },
+  "login":{
+    "title":"Iniciar sesión",
+    "user":"Usuario",
+    "userLabel":"Ingresa tu usuario",
+    "password":"Contraseña",
+    "passwordLabel":"Ingresa tu contraseña",
+    "login":"Entrar"
   }
 
 

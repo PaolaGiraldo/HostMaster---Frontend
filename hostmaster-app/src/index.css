@@ -333,7 +333,7 @@ button:hover {
   border-radius: 10px;
   padding: 1rem;  
   font-size: 0.95rem;
-  height: 500px;
+  height: auto;
   overflow:auto;
 }
 

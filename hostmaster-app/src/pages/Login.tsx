@@ -29,8 +29,12 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="login-container">
-      <div className="login-card shadow">
-        <h2 className="text-center mb-4 login-title">{t("login.title")}</h2>
+      <div className="login-card animate-login">
+        <h1 className="text-center mb-4 login-title">{t("HostMaster")}</h1>
+        <img src="/hostmaster.png" alt="Logo" className="login-logo mb-3" />
+        <h3 className="text-center mb-4 login-title">
+          {t("login.title")}
+        </h3>{" "}
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className="form-label text-white">{t("login.user")}</label>

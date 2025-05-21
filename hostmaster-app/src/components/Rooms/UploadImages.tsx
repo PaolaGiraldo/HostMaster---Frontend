@@ -1,4 +1,4 @@
-import { uploadMultipleImagesRoom } from "../../Services/imagesService";
+import { uploadMultipleImagesRoom } from "../../services/imagesService";
 
 export const uploadRoomImages = async (
   accommodationId: number,

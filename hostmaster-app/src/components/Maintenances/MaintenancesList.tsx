@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import {
   createMaintenance,
   updateMaintenance,
-} from "../../Services/maintenanceServices";
+} from "../../services/maintenanceServices";
 
 interface MaintenanceListProps {}
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getPendingMaintenances } from "../../Services/reportsService";
+import { getPendingMaintenances } from "../../services/reportsService";
 
 export const usePendingMaintenanceReport = (
   accommodationId: number

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Button, Alert, Modal } from "react-bootstrap";
-import { getReservations } from "../../Services/reservationService";
+import { getReservations } from "../../services/reservationService";
 import { Reservation } from "../../interfaces/reservationInterface";
 import { useForm, Controller } from "react-hook-form";
 import { Review } from "../../interfaces/reviewInterface";

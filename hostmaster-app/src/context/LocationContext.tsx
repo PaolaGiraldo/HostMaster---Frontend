@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import locationService from "../Services/locationService";
+import locationService from "../services/locationService";
 
 interface LocationContextType {
   countries: any[];

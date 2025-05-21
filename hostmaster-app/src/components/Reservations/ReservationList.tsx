@@ -8,7 +8,7 @@ import ReservationForm from "./RerservationForm";
 import {
   createReservation,
   updateReservation,
-} from "../../Services/reservationService";
+} from "../../services/reservationService";
 import { useReservationsOrdered } from "../../hooks/useReservationsOrdered";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ import { reservationStatuses } from "../../constants/reservationStatusList";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRooms } from "../../hooks/useRooms";
 import { useClients } from "../../hooks/useCustomers";
-import { linkMultipleServices } from "../../Services/reservationExtraServicesService";
+import { linkMultipleServices } from "../../services/reservationExtraServicesService";
 
 interface ReservationListProps {}
 

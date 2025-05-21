@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRoomsWithReservations } from "../Services/roomService";
+import { getRoomsWithReservations } from "../services/roomService";
 import { format } from "date-fns";
 
 export const useBookedRooms = (

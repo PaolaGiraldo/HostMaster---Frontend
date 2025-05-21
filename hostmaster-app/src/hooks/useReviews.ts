@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReviewByAccommodation } from "../Services/reviewService";
+import { getReviewByAccommodation } from "../services/reviewService";
 import { Review } from "../interfaces/reviewInterface";
 
 export const useReviews = (accommodationId?: number) => {

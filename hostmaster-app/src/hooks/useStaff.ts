@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "../interfaces/userInterface";
-import { getStaff } from "../Services/userService";
+import { getStaff } from "../services/userService";
 
 export const useStaff = (accommodationId?: number) => {
   return useQuery<User[]>({

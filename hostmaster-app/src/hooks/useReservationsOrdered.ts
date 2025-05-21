@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReservations } from "../Services/reservationService";
+import { getReservations } from "../services/reservationService";
 import { Reservation } from "../interfaces/reservationInterface";
 import { isAfter, parseISO, isBefore } from "date-fns";
 import { useMemo } from "react";

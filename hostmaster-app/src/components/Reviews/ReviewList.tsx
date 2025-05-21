@@ -6,7 +6,7 @@ import { useAccommodations } from "../../hooks/useAccommodations";
 import ReviewCard from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import { Review } from "../../interfaces/reviewInterface";
-import { createReview } from "../../Services/reviewService";
+import { createReview } from "../../services/reviewService";
 import { useQueryClient } from "@tanstack/react-query";
 import { Trans } from "react-i18next";
 import { useClients } from "../../hooks/useCustomers";

@@ -9,7 +9,7 @@ import {
   createAccommodation,
   deleteAccommodation,
   updateAccommodation,
-} from "../../Services/accommodationService";
+} from "../../services/accommodationService";
 import { useAccommodationsComplete } from "../../hooks/useAccommodationsComplete";
 import { uploadAccommodationImages } from "./UploadImages";
 import { useQueryClient } from "@tanstack/react-query";

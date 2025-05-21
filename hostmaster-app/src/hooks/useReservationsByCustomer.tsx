@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Reservation } from "../interfaces/reservationInterface";
-import { getReservations } from "../Services/reservationService";
+import { getReservations } from "../services/reservationService";
 import { User } from "../interfaces/userInterface";
 
 export const useReservationsByCustomer = (clients: User[]) => {

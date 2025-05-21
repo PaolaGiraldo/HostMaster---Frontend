@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getServices } from "../Services/serviceService";
+import { getServices } from "../services/serviceService";
 import { Service } from "../interfaces/serviceInterface";
 
 export const useServices = () => {

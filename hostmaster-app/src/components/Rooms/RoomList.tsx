@@ -4,12 +4,12 @@ import { useTranslation } from "react-i18next";
 import RoomTable from "./RoomTable";
 import RoomForm from "./RoomForm";
 import RoomTypeTable from "./RoomTypeTable";
-import { updateRoom, createRoom, deleteRoom } from "../../Services/roomService";
+import { updateRoom, createRoom, deleteRoom } from "../../services/roomService";
 import {
   createRoomType,
   updateRoomType,
   deleteRoomType,
-} from "../../Services/roomTypeService";
+} from "../../services/roomTypeService";
 import { RoomType } from "../../interfaces/roomTypeInterface";
 import { Room } from "../../interfaces/roomInterface";
 import { Product } from "../../interfaces/roomProductInterface";
@@ -18,7 +18,7 @@ import {
   createRoomProduct,
   updateRoomProduct,
   deleteRoomProduct,
-} from "../../Services/productsService";
+} from "../../services/productsService";
 import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRoomTypes } from "../../hooks/useRoomTypes";
 import { useRooms } from "../../hooks/useRooms";

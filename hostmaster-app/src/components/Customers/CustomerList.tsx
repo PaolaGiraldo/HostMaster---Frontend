@@ -4,7 +4,7 @@ import { useClients } from "../../hooks/useCustomers";
 import { useTranslation } from "react-i18next";
 import CustomerTable from "./CustomerTable";
 import { User } from "../../interfaces/userInterface";
-import { createUser, deleteUser, updateUser } from "../../Services/userService";
+import { createUser, deleteUser, updateUser } from "../../services/userService";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomerForm from "./CustomerForm";
 import { useAccommodations } from "../../hooks/useAccommodations";

@@ -1,6 +1,6 @@
 // hooks/useOccupancyReport.ts
 import { useQuery } from "@tanstack/react-query";
-import { getOccupancy } from "../../Services/reportsService";
+import { getOccupancy } from "../../services/reportsService";
 import { format } from "date-fns";
 import { OccupancyResponse } from "../../interfaces/Reports/occupancyrResponseInterface";
 

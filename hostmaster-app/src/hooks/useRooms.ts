@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRooms } from "../Services/roomService";
+import { getRooms } from "../services/roomService";
 import { Room } from "../interfaces/roomInterface";
 
 export const useRooms = () => {

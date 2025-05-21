@@ -6,7 +6,7 @@ import { useRoomInventory } from "../../hooks/useRoomIneventory";
 import AddProductModal from "./AddProductModal";
 import { RoomInventory } from "../../interfaces/roomInventorynterface";
 import { useAvailableProducts } from "../../hooks/useAvailableProducts";
-import { createRoomInventory } from "../../Services/roomInventoryService";
+import { createRoomInventory } from "../../services/roomInventoryService";
 import QuantityEditor from "../Inventory/QuantityEditor";
 
 interface RoomInventoryModalProps {

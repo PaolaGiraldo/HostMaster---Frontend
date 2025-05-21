@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { getRevenueByWeekDay } from "../../Services/reportsService";
+import { getRevenueByWeekDay } from "../../services/reportsService";
 
 export const useRevenueByWeekDayReport = (
   accommodationId: number,

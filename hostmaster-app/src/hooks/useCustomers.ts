@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getClients } from "../Services/userService";
+import { getClients } from "../services/userService";
 import { User } from "../interfaces/userInterface";
 
 export const useClients = (accommodationId?: number) => {

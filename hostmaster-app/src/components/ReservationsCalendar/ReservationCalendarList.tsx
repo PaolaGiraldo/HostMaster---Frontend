@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import ReservationCalendar from "./ReservationCalendar";
 import { Reservation } from "../../interfaces/reservationInterface";
-import { getReservations } from "../../Services/reservationService";
-import { getRooms } from "../../Services/roomService";
+import { getReservations } from "../../services/reservationService";
+import { getRooms } from "../../services/roomService";
 import { Room } from "../../interfaces/roomInterface";
 
 const ReservationCalendarList: React.FC = () => {

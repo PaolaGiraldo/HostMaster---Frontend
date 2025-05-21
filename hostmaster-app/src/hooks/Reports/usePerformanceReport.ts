@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { getPerformance } from "../../Services/reportsService";
+import { getPerformance } from "../../services/reportsService";
 
 export const usePerformanceReport = (
   accommodationId: number,

@@ -12,7 +12,7 @@ import {
 } from "../../constants/reservationStatusList";
 import { FaEdit } from "react-icons/fa";
 import { isToday, parseISO } from "date-fns";
-import { updateReservation } from "../../Services/reservationService";
+import { updateReservation } from "../../services/reservationService";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ReservationCardProps {

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAccommodations } from "../Services/accommodationService";
-import { getRoomsByAccommodation } from "../Services/roomService";
-import { getRoomTypeById } from "../Services/roomTypeService";
+import { getAccommodations } from "../services/accommodationService";
+import { getRoomsByAccommodation } from "../services/roomService";
+import { getRoomTypeById } from "../services/roomTypeService";
 import { useLocation } from "../context/LocationContext";
 
 export const useAccommodationsComplete = () => {

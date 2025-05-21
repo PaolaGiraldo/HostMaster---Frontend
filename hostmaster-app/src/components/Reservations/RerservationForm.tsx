@@ -12,7 +12,7 @@ import { Service } from "../../interfaces/serviceInterface";
 import DatePicker from "react-datepicker";
 import { format, parseISO } from "date-fns";
 import { reservationStatuses } from "../../constants/reservationStatusList";
-import { unlinkService } from "../../Services/reservationExtraServicesService";
+import { unlinkService } from "../../services/reservationExtraServicesService";
 
 interface ReservationFormProps {
   show: boolean;

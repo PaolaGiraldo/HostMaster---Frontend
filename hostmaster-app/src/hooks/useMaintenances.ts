@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMaintenances } from "../Services/maintenanceServices";
+import { getMaintenances } from "../services/maintenanceServices";
 import { Maintenance } from "../interfaces/maintenanceInterface";
 
 export const useMaintenances = () => {

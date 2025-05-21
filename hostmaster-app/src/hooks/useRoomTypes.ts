@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRoomTypes } from "../Services/roomTypeService";
+import { getRoomTypes } from "../services/roomTypeService";
 import { RoomType } from "../interfaces/roomTypeInterface";
 
 export const useRoomTypes = () => {

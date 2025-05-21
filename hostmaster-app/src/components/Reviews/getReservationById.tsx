@@ -1,4 +1,4 @@
-import { getReservations } from "../../Services/reservationService";
+import { getReservations } from "../../services/reservationService";
 import { Reservation } from "../../interfaces/reservationInterface";
 
 export const getReservationById = async (

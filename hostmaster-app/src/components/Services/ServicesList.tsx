@@ -4,9 +4,9 @@ import ServiceForm from "./ServicesForm";
 import { Service } from "../../interfaces/serviceInterface";
 
 import { useTranslation } from "react-i18next";
-import { createService } from "../../Services/serviceService";
-import { updateService } from "../../Services/serviceService";
-import { deleteService } from "../../Services/serviceService";
+import { createService } from "../../services/serviceService";
+import { updateService } from "../../services/serviceService";
+import { deleteService } from "../../services/serviceService";
 import ServiceTable from "./ServicesTable";
 import { useServices } from "../../hooks/useServices";
 import { useQueryClient } from "@tanstack/react-query";

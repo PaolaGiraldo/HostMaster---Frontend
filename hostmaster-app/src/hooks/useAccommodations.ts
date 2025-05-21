@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   getAccommodations
-} from "../Services/accommodationService";
+} from "../services/accommodationService";
 
 export const useAccommodations = () => {
     return useQuery({

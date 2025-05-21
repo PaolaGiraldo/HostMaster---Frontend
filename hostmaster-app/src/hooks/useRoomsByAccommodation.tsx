@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRoomsByAccommodation } from "../Services/roomService";
+import { getRoomsByAccommodation } from "../services/roomService";
 import { Room } from "../interfaces/roomInterface";
 
 const fetchRoomsByAccommodation = async (accommodationId: number) => {

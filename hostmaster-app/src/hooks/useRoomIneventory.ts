@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getRoomInventory, deleteRoomInventory, updateRoomInventory } from "../Services/roomInventoryService";
+import { getRoomInventory, deleteRoomInventory, updateRoomInventory } from "../services/roomInventoryService";
 import { RoomInventory } from '../interfaces/roomInventorynterface';
 
 export const useRoomInventory = (roomId: number | null) => {

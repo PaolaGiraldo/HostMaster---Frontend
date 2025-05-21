@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import { useMutation } from "@tanstack/react-query";
-import { createUser } from "../../Services/userService";
+import { createUser } from "../../services/userService";
 import { User } from "../../interfaces/userInterface";
 
 interface IClientForm {

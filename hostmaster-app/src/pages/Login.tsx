@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { authenticateUser, getMeUser } from "../Services/authService";
 
 const LoginForm: React.FC = () => {
+  const { t } = useTranslation();
   const { login } = useAuth();
 
   const navigate = useNavigate();

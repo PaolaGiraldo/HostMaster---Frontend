@@ -537,3 +537,34 @@ button:hover {
     font-size: 1.5rem;
   }
 }
+
+.btn-light {
+  color:#1a2a6c;
+  background-color: #60c4ab;
+  height: 55px;
+  width: 55px;
+  font-size: 1.5rem;
+  border-color: #1a2a6c;
+}
+
+/* Aplica a cualquier contenedor con scroll */
+.scroll-custom {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #1a2a6c #f1f1f1; /* Firefox */
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+.scroll-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-custom::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scroll-custom::-webkit-scrollbar-thumb {
+  background-color: #1a2a6c;
+  border-radius: 4px;
+  border: 2px solid #f1f1f1;
+}

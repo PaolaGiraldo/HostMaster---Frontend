@@ -18,7 +18,6 @@ import {
   updateReservation,
 } from "../../services/reservationService";
 import { useQueryClient } from "@tanstack/react-query";
-import { useReservationInvoice } from "../../hooks/useReservationInvoice";
 import ReservationInvoiceModal from "./ReservationInvoiceModal";
 import { ReservationInvoice } from "../../interfaces/resevationInvoceInterface";
 
@@ -59,6 +58,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   };
 
   const isTodayStartDate = isToday(parseISO(reservation.start_date));
+
   const handleCheckInOut = () => {
     if (reservation.status === "confirmed") {
       updateReservationStatus(reservation, "checkedIn");
@@ -98,6 +98,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     } catch (error) {
       console.error("Error updating reservation status", error);
     }
+    queryClient.invalidateQueries({ queryKey: ["reservations"] });
   };
 
   return (
@@ -110,8 +111,6 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           padding: "1rem",
           borderRadius: "0.5rem",
           marginBottom: "1rem",
-          width: "100%",
-          height: "270px",
         }}
       >
         <Card.Body>
@@ -119,7 +118,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             <div className="d-flex justify-content-between align-items-center mb-2">
               {accommodation?.name} {room?.number}
               {reservation.status !== "cancelled" &&
-                reservation.status !== "checkedOut  " && (
+                reservation.status !== "checkedOut" && (
                   <Button
                     variant="ligth"
                     size="lg"

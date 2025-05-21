@@ -254,7 +254,15 @@
       "checkedIn": "Ingresada",
       "checkedOut": "Finalizada"
     },
-    "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio."
+    "cancel_error_15_days": "No se puede cancelar la reserva porque faltan menos de 15 días para su inicio.",
+    "detailsTitle": "Detalles de la Reserva",
+    "client": "Cliente",
+    "accommodation": "Alojamiento",
+    "room": "Habitación",
+    "checkin": "Check-in",
+    "checkout": "Check-out",
+    "services": "Servicios",
+    "noExtraServices": "No hay servicios adicionales."
   },
   "users":{
     "title":"Usuarios",
@@ -319,7 +327,24 @@
     "infoRequest": "Solicitud de información",
     "quoteRequest": "Solicitud de cotización",
     "invalidEmail":"Email inválido"
-  }
+  },
+  "invoice": {
+      "detailsTitle": "Detalles del Cobro",
+      "client": "Cliente",
+      "accommodation": "Alojamiento",
+      "room": "Habitación",
+      "checkin": "Check-in",
+      "checkout": "Check-out",
+      "guestCount": "Número de Huéspedes",
+      "nightCount": "Número de Noches",
+      "services": "Servicios",
+      "noExtraServices": "No hay servicios adicionales.",
+      "status": "Estado",
+      "total": "Total a pagar",
+      "send": "Enviar Factura"
+    }
+  
+  
 
 
 }

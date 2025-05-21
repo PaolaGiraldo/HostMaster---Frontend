@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Row, Col, Button, Modal } from "react-bootstrap";
 import { Spinner } from "react-bootstrap";
 import { Reservation } from "../../interfaces/reservationInterface";
-import ReservationCard from "./ReservationCard";
 import ReservationForm from "./RerservationForm";
 import {
   createReservation,
@@ -17,6 +16,7 @@ import { useAccommodations } from "../../hooks/useAccommodations";
 import { useRooms } from "../../hooks/useRooms";
 import { useClients } from "../../hooks/useCustomers";
 import { linkMultipleServices } from "../../services/reservationExtraServicesService";
+import ReservationSection from "./ReservationSection";
 
 interface ReservationListProps {}
 
@@ -38,10 +38,6 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
   const [roomId, setRoomId] = useState<number | null>(null);
   const [customerName, setCustomerName] = useState<string | null>(null);
-
-  const [showUpcoming, setShowUpcoming] = useState(true);
-  const [showCompleted, setShowCompleted] = useState(true);
-  const [showCancelled, setShowCancelled] = useState(true);
 
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
@@ -96,22 +92,18 @@ const ReservationList: React.FC<ReservationListProps> = () => {
 
   const filteredReservations = (reservations: Reservation[]) =>
     reservations?.filter((reservation) => {
+      const room = rooms.find((r) => r.id === reservation.room_id);
       return (
         (!filterDateFrom || reservation.start_date >= filterDateFrom) &&
         (!filterDateTo || reservation.end_date <= filterDateTo) &&
         (!filterAccommodation ||
           reservation.accommodation_id === Number(filterAccommodation)) &&
-        (!filterRoom || reservation.room_id === roomId) &&
+        (!filterRoom || (room && String(room.number).startsWith(filterRoom))) &&
         (!filterCustomer || reservation.user_username === customerName) &&
         (!filterStatus ||
           reservation.status.toLowerCase() === filterStatus.toLowerCase())
       );
     });
-
-  const completedReservations = useMemo(
-    () => filteredReservations(completed),
-    [completed]
-  );
 
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -147,6 +139,7 @@ const ReservationList: React.FC<ReservationListProps> = () => {
     try {
       reservation.status = "cancelled";
       await updateReservation(id, reservation);
+      queryClient.invalidateQueries({ queryKey: ["reservations"] });
       toast.success("Reserva cancelada correctamente");
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
     } catch (error) {
@@ -288,119 +281,33 @@ const ReservationList: React.FC<ReservationListProps> = () => {
         ) : (
           <div className="container py-4">
             {/* Próximas reservas */}
-            <section className="mb-5">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <h4 className="mb-3">📅 {t("reservations.upcoming")}</h4>
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={() => setShowUpcoming((prev) => !prev)}
-                >
-                  {showUpcoming ? "▲" : "▼"}
-                </button>
-              </div>
 
-              <Row xs={1} sm={2} md={2} className="g-4">
-                {showUpcoming && (
-                  <>
-                    {filteredReservations(upcoming).length === 0 ? (
-                      <p>{t("reservations.noUpcoming")}</p>
-                    ) : (
-                      filteredReservations(upcoming).map((res: Reservation) => (
-                        <Col key={res.id}>
-                          <ReservationCard
-                            key={res.id}
-                            reservation={res}
-                            onCancel={handleCancelReservation}
-                            onEdit={handleEditReservation}
-                          />
-                        </Col>
-                      ))
-                    )}
-                  </>
-                )}
-              </Row>
-            </section>
+            <ReservationSection
+              title={t("reservations.upcoming")}
+              icon="📅"
+              reservations={filteredReservations(upcoming)}
+              emptyMessage={t("reservations.noUpcoming")}
+              onCancel={handleCancelReservation}
+              onEdit={handleEditReservation}
+            />
 
-            <section className="mb-5">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <h4 className="mb-3">✅ {t("reservations.completed")}</h4>
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={() => setShowCompleted((prev) => !prev)}
-                >
-                  {showCompleted ? "▲" : "▼"}
-                </button>
-              </div>
+            <ReservationSection
+              title={t("reservations.completed")}
+              icon="✅"
+              reservations={filteredReservations(completed)}
+              emptyMessage={t("reservations.noCompleted")}
+              onCancel={handleCancelReservation}
+              onEdit={handleEditReservation}
+            />
 
-              {showCompleted && (
-                <div
-                  style={{
-                    maxHeight: "630px",
-                    overflowY: "auto",
-                    paddingRight: "10px",
-                  }}
-                >
-                  <Row xs={1} sm={2} md={2} className="g-4">
-                    {completedReservations.length === 0 ? (
-                      <p>{t("reservations.noCompleted")}</p>
-                    ) : (
-                      completedReservations.map((res: Reservation) => (
-                        <Col key={res.id}>
-                          <ReservationCard
-                            reservation={res}
-                            onCancel={handleCancelReservation}
-                            onEdit={handleEditReservation}
-                          />
-                        </Col>
-                      ))
-                    )}
-                  </Row>
-                </div>
-              )}
-            </section>
-
-            <section className="mb-5">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <h4 className="mb-3">❌ {t("reservations.cancelled")}</h4>
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={() => setShowCancelled((prev) => !prev)}
-                >
-                  {showCancelled ? "▲" : "▼"}
-                </button>
-              </div>
-
-              <Row
-                xs={1}
-                sm={2}
-                md={2}
-                className="g-4"
-                style={{
-                  width: "100%",
-                  height: "630px",
-                  overflowX: "auto",
-                }}
-              >
-                {showCancelled && (
-                  <>
-                    {filteredReservations(cancelled).length === 0 ? (
-                      <p>{t("reservations.noCancelled")}</p>
-                    ) : (
-                      filteredReservations(cancelled).map((res) => (
-                        <Col key={res.id}>
-                          <ReservationCard
-                            key={res.id}
-                            reservation={res}
-                            onCancel={handleCancelReservation}
-                            onEdit={handleEditReservation}
-                          />
-                        </Col>
-                      ))
-                    )}
-                  </>
-                )}
-              </Row>
-            </section>
+            <ReservationSection
+              title={t("reservations.cancelled")}
+              icon="❌"
+              reservations={filteredReservations(cancelled)}
+              emptyMessage={t("reservations.noCancelled")}
+              onCancel={handleCancelReservation}
+              onEdit={handleEditReservation}
+            />
           </div>
         )}
         <ReservationForm

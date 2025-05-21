@@ -27,59 +27,55 @@ const ReservationDetailModal: React.FC<ReservationDetailModalProps> = ({
   const { t } = useTranslation();
 
   return (
-    <>
-      {/* Modal de Detalles de Reserva */}
-      <Modal show={show} onHide={onClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Detalles de la Reserva</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {reservation && (
-            <>
-              <p>
-                <strong>Cliente:</strong> {client?.full_name}
-              </p>
-              <p>
-                <strong>Alojamiento:</strong> {accommmodation?.name}
-              </p>
-              <p>
-                <strong>Habiación:</strong> {room?.number}
-              </p>
-              <p>
-                <strong>Check-in:</strong> {reservation.start_date}
-              </p>
-              <p>
-                <strong>Check-out:</strong> {reservation.end_date}
-              </p>
+    <Modal show={show} onHide={onClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("reservation.detailsTitle")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {reservation && (
+          <>
+            <p>
+              <strong>{t("reservation.client")}:</strong> {client?.full_name}
+            </p>
+            <p>
+              <strong>{t("reservation.accommodation")}:</strong>{" "}
+              {accommmodation?.name}
+            </p>
+            <p>
+              <strong>{t("reservation.room")}:</strong> {room?.number}
+            </p>
+            <p>
+              <strong>{t("reservation.checkin")}:</strong>{" "}
+              {reservation.start_date}
+            </p>
+            <p>
+              <strong>{t("reservation.checkout")}:</strong>{" "}
+              {reservation.end_date}
+            </p>
 
-              {reservation.extra_services?.length > 0 ? (
-                <p>
-                  <strong>Servicios:</strong>{" "}
-                  {reservation.extra_services
-                    .map((service) => service.name)
-                    .join(", ")}
-                </p>
-              ) : (
-                <p>
-                  <strong>Servicios:</strong> No hay servicios adicionales.
-                </p>
-              )}
-              <p>
-                <strong>Estado:</strong> {reservation.status}
-              </p>
-              <p>
-                <strong>Observaciones:</strong> {reservation.observations}
-              </p>
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
-            {t("close")}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+            <p>
+              <strong>{t("reservation.services")}:</strong>{" "}
+              {reservation.extra_services?.length > 0
+                ? reservation.extra_services.map((s) => s.name).join(", ")
+                : t("reservation.noExtraServices")}
+            </p>
+
+            <p>
+              <strong>{t("reservation.status")}:</strong> {reservation.status}
+            </p>
+            <p>
+              <strong>{t("reservation.observations")}:</strong>{" "}
+              {reservation.observations}
+            </p>
+          </>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onClose}>
+          {t("close")}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

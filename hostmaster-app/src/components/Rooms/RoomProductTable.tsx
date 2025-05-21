@@ -94,7 +94,7 @@ const RoomProductTable: React.FC<RoomProductProps> = ({
             </tr>
           </thead>
           <tbody>
-            {roomProducts.map((product, index) => (
+            {roomProducts.map((product) => (
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td>{product.description}</td>

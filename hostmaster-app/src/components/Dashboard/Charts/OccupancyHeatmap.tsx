@@ -1,11 +1,9 @@
-import React from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { parseISO, format, subDays } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useDateRange } from "../../../context/DateRangeContext";
 import { useDailyMetricsReport } from "../../../hooks/Reports/useDailyMetricsReport";
 import { Spinner } from "react-bootstrap";
-import { Tooltip } from "react-tooltip";
 
 interface HeatmapValue {
   date: string;
@@ -80,16 +78,8 @@ const OccupancyHeatmap = ({ accommodationId }: { accommodationId: number }) => {
           }
           return "color-scale-4";
         }}
-        tooltipDataAttrs={(value) => {
-          if (!value || !value.tooltip) return null;
-          return {
-            "data-tip": value.tooltip,
-          };
-        }}
         showWeekdayLabels
       />
-
-      <Tooltip />
     </div>
   );
 };

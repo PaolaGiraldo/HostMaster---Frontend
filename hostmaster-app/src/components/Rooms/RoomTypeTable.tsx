@@ -92,7 +92,7 @@ const RoomTypeTable: React.FC<RoomTypeTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {roomTypes.map((roomType, index) => (
+            {roomTypes.map((roomType) => (
               <tr key={roomType.id}>
                 <td>{roomType.name}</td>
                 <td>{roomType.description}</td>

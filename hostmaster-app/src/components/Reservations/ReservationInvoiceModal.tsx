@@ -84,7 +84,10 @@ const ReservationInvoiceModal: React.FC<ReservationDetailModalProps> = ({
               </p>
               <p>
                 <strong>Total a pagar:</strong>{" "}
-                {invoice.cost_breakdown.total_cost}
+                {new Intl.NumberFormat("es-ES", {
+                  style: "currency",
+                  currency: "COP",
+                }).format(invoice.cost_breakdown.total_cost)}
               </p>
             </>
           )}

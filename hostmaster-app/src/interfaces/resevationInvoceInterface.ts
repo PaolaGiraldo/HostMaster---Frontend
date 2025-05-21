@@ -25,7 +25,7 @@ interface InvoiceUser{
 
 }
 
-interface InvoiceServices{
+export interface InvoiceServices{
     service_name: string;
     price: number;
 }
